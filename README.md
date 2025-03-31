@@ -20,8 +20,8 @@ The goal of this project is to create a console "rougue-like" turn based game!
 ### Should Have
 | Dungeon | Character | Player | Enemy | Items | Rooms | Console |
 |-----|-----|-----|-----|-----|-----|-----|
-|Retreat method | | |Death loot drop | | | |
-| |Weaknesses | | | | | |
+|Retreat method |Weaknesses | |Death loot drop | | | |
+| | | | | | | |
 | | | | | | | |
 | | | | | | | |
 | | | | | | | |
