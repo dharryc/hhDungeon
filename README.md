@@ -4,7 +4,7 @@
 
 The goal of this project is to create a console "rougue-like" turn based game!
 
-### Must Have
+<!-- ### Must Have
 | Dungeon | Character | Player | Enemy | Items | Rooms | Console |
 |-----|-----|-----|-----|-----|-----|-----|
 |Floor generation Method|Health | | |Armor |List<Room> connected rooms |Draw dungeon |
@@ -56,7 +56,7 @@ The goal of this project is to create a console "rougue-like" turn based game!
 | | | | | | | |
 | | | | | | | |
 
--------
+------- -->
 
 #### Dungeon
 
@@ -91,3 +91,10 @@ Methods:
 -  +checkDoors() : NESW (bool hasNorthDoor, bool hasEastDoor, bool hsaSouthDoor, bool hasWestDoor)
 
 -------
+
+#### Player
+
+Fields:
+- +Health : int
+- +Items : List<item>
+- +Effects? : List<string> (I'm not sure about this one, but it could be fun)
