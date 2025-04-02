@@ -71,6 +71,7 @@ Fields:
 Methods:
 - saveGame(Player currentPlayer) : void
 - MoveRooms(enum direction) : Room
+- Dungeon(Player? savedPlayer) : Dungeon
 
 -------
 
@@ -88,8 +89,10 @@ Fields:
 
 Methods:
 
--  +checkDoors() : NESW (bool hasNorthDoor, bool hasEastDoor, bool hsaSouthDoor, bool hasWestDoor)
--  +Room(coord Cord , Enum direction_in, int difficulty, int RoomsExplored) : Room  // percent to be stairs based of explored
+- +checkDoors() : NESW (bool hasNorthDoor, bool hasEastDoor, bool hsaSouthDoor, bool hasWestDoor)
+- +Room(coord Cord , Enum direction_in, int difficulty, int RoomsExplored) : Room  // percent to be stairs based of explored
+- +Loot(enemy) : (int? Gold, item? loot)
+- +grabLoot((int? Gold, item? loot)) : bool
 
 -------
 
@@ -98,4 +101,15 @@ Methods:
 Fields:
 - +Health : int
 - +Items : List<item>
-- +Effects? : List<string> (I'm not sure about this one, but it could be fun)
+- +Effects? : List<enum> // I'm not sure about this one, but it could be fun
+- +EquippedWeapon : item
+- +Gold : int {get; private set;}
+- +MaxInventorySpace : int
+
+
+Methods:
+
+- attack(item EquippedWeapon)
+- getInventory() : List<items>
+- getStatus() : (int Health, List<enum> effects)
+- checkGold() : int
