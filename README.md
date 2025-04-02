@@ -63,10 +63,10 @@ The goal of this project is to create a console "rougue-like" turn based game!
 Fields:
 
 - coordMap : dictionary<(coord : (int x, int y), room : Room)>
-- difficultyLevel : int
+- difficultyLevel : int // +1 per floor
 - currentPlayer : Player
 - currentRoom : Room
-- roomsExplored : int
+- roomsExplored : int // set to zero at each floor
 
 Methods:
 - saveGame(Player currentPlayer) : void
@@ -89,6 +89,7 @@ Fields:
 Methods:
 
 -  +checkDoors() : NESW (bool hasNorthDoor, bool hasEastDoor, bool hsaSouthDoor, bool hasWestDoor)
+-  +Room(coord Cord , Enum direction_in, int difficulty, int RoomsExplored) : Room  // percent to be stairs based of explored
 
 -------
 
