@@ -97,3 +97,4 @@ C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\refint\hhDungeon.dll
 C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.pdb
 C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.genruntimeconfig.cache
 C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\ref\hhDungeon.dll
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.sourcelink.json
