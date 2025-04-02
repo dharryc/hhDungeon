@@ -58,7 +58,7 @@ The goal of this project is to create a console "rougue-like" turn based game!
 
 ------- -->
 
-#### Dungeon
+## Dungeon
 
 Fields:
 
@@ -75,7 +75,7 @@ Methods:
 
 -------
 
-#### Room
+## Room
 
 Fields:
 
@@ -96,7 +96,7 @@ Methods:
 
 -------
 
-#### Player
+## Player
 
 Fields:
 - +Health : int
