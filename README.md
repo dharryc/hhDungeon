@@ -15,6 +15,7 @@ Fields:
 - currentPlayer : Player
 - currentRoom : Room
 - roomsExplored : int // set to zero at each floor
+- MaxRooms : int // set to x at each floor
 
 Methods:
 - saveGame(Player currentPlayer) : void
@@ -31,7 +32,6 @@ Fields:
 - +Type : enum
 - -N,E,S,W room pointers? : room
 - -NESW : (bool hasNorthDoor, bool hasEastDoor, bool hsaSouthDoor, bool hasWestDoor)
-- +Explored : bool
 - -enemies : List<enemy>
 - -loot : List<Item>
 
@@ -47,7 +47,7 @@ Methods:
 -----
 ### Enemy rooms
 
-Enemy rooms will contain 1-3 enemies of varying difficulty. As far as mechanics go, the inital room generation will use the difficulty level to weigh first the number of enemies in the room, and once there's been a decision on how many enemies there are, it will also generate those enemies to have some level of difficulty and loot. The room might(?) contain some retreat option, but thats something for later to decide.
+Enemy rooms will contain 1-3 (5 for slimes) enemies of varying difficulty. As far as mechanics go, the inital room generation will use the difficulty level to weigh first the number of enemies in the room, and once there's been a decision on how many enemies there are, it will also generate those enemies to have some level of difficulty and loot. The room might(?) contain some retreat option, but thats something for later to decide.
  
  ### Loot rooms
 
@@ -71,13 +71,15 @@ Similar to loot rooms, but with little to no guarantee of anything in there at a
 
 Fields:
 - +XP : int
-- +Health : int
+- +MaxHealth : int
+- +CurrentHealth : int
 - +Items : List<item>
-- +Effects? : List<enum> // I'm not sure about this one, but it could be fun
+- +Effects? : List<enum>
 - +EquippedWeapon : item
 - +Gold : int {get; private set;}
 - +MaxInventorySpace : int
-- LevelThreshold : int
+- NewLevelXPThreshold : int
+- CurrentLevel : int
 
 
 Methods:
@@ -86,6 +88,7 @@ Methods:
 - getInventory() : List<items>
 - getStatus() : (int Health, List<enum> effects)
 - checkGold() : int
+- levelUp() : void
 
 
 ## Enimies
@@ -94,12 +97,10 @@ Fields:
 - +Difficulty : int // used in constructor to determine other fields.
 - +Health : int
 - +Potential_Loot : <item> // I assume singular item per enimy
-- +Effects? : List<enum> // I'm not sure about this one, but it could be fun
-- +ATK_Power: int
+- EquippedWeapon : item
 - +defense: int // reduces incoming damage? if wanted.
 - +goldfromKill: int
-- +Imuene_Effect: List<enum> // If effects this might be fun. 
-- +Creature type : <enum> // fun but not nessasary.
+- +Creature type : <enum>
 - +XPDrop : int
 
 Methods:
