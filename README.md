@@ -114,12 +114,74 @@ Methods:
 -----
 ### Goblin
 
+Goblin is the most "basic" enemy type. Very common, a small little green guy. Will be fairly easy to deal with on almost every difficulty, usually only holding a dagger or shortsword, sometimes not even that.
+##### Damage
+    ((1/(7-12) * maxPlayerHP) + base weapon damage) * floor/3
+##### Gold range
+    ((dif + 1) * (0 - 2)) + (floor * player level)capped at 10
+##### Item pool:
+- Dagger
+- Shortsword
+- +10 health potion
+- leather armor
+##### Damage
+    ((1/(7-12) * maxPlayerHP) + base weapon damage) * floor/3
+##### Gold range
+    ((dif + 1) * (0 - 2)) + (floor * player level)capped at 10
+##### Item pool:
+- Dagger
+- Shortsword
+- +10 health potion
+- leather armor
+
 ### Orc
+
+Orcs are goblins big brothers. They're bigger, tougher, and harder to beat. They usually carry a club or sword, and instead of ever being unarmed, they always have at LEAST a dagger. Somewhat harder to beat, less frequent to spawn.
+##### Damage
+    ((1/(6-9) * maxPlayerHP) + base weapon damage) * floor/4
+##### Gold range
+    ((dif + 1) * (1 - 4)) + (floor * player level)capped at 20
+##### Item pool:
+- Club
+- Dagger
+- Sword
+- chain armor
 
 ### Troll
 
+BIG OL THICCUMS. They're much bigger, and much harder to beat than Goblins or Orcs. Also generally carrying a club. If in a room, are the only ones there.
+##### Damage
+    ((1/(3-6) * maxPlayerHP) + base weapon damage) * floor/5
+##### Gold range
+    ((dif + 1) * (0 - 7)) + (floor * player level)capped at 30
+##### Item pool:
+- Club
+- Sword
+- +50% max health
+- +(n%)strength for (3-5) rooms
+- +(n%)defense for (3-5) rooms
+- permanant +(n%) strength or defense 
+
 ### Skeleton
+
+More similar to goblins in difficulty and frequency, generally armed with their own ribs or something similar, maybe a chain.
+##### Damage
+    ((1/(7-12) * maxPlayerHP) + base weapon damage) * floor/3
+##### Gold range
+    ((dif + 1) * (0 - 2)) + (floor * player level)capped at 15
+##### Item pool:
+- Rib
+- +15 health potion
+- nicer armor (tbd)
+- +(n%) strength or defence potion
 
 ### Slime
 
-### 
+Literally a slime creature. Very tough and hard to kill, but they do very little damage. The risk of slimes is the effects that they can give you. You can also have many more per room
+##### Damage
+    ((1/(15-20) * maxPlayerHP) + base weapon damage) * floor/5
+    EFFECTS(tbd)
+##### Gold range
+    ((dif + 1) * (0 - 1)) + (floor * player level)capped at 5
+##### Item pool:
+- potions(tbd)
