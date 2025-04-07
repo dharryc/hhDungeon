@@ -136,3 +136,25 @@ Methods:
 - getInventory() : List<items>
 - getStatus() : (int Health, List<enum> effects)
 - checkGold() : int
+
+
+## Enimies
+
+Fields:
+- +Difficulty : int // used in constructor to determine other fields.
+- +Health : int
+- +Potential_Loot : <item> // I assume singular item per enimy
+- +Effects? : List<enum> // I'm not sure about this one, but it could be fun
+- +ATK_Power: int
+- +defense: int // reduces incoming damage? if wanted.
+- +goldfromKill: int
+- +Imuene_Effect: List<enum> // If effects this might be fun. 
+- +Creature type : <enum> // fun but not nessasary.
+
+Methods:
+- +takeDamage(int amount) // this could just take in the amount or it could take in the weapon status and then calculate it.
+- +Attak(Player)
+- +ViewLoot(): <item> int gold // if dead will return possible loot
+- +GrabLoot(): <item> int gold // and set those to 0.
+- +GetType(): <enum> type // if types added becomes nessasary.
+- +WeakenArmor(): void // small chance to weeken its defence if desired.
