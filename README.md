@@ -4,59 +4,7 @@
 
 The goal of this project is to create a console "rougue-like" turn based game!
 
-<!-- ### Must Have
-| Dungeon | Character | Player | Enemy | Items | Rooms | Console |
-|-----|-----|-----|-----|-----|-----|-----|
-|Floor generation Method|Health | | |Armor |List<Room> connected rooms |Draw dungeon |
-|Size of floor|Strength | | |Weapon |Room Type | |
-|Default room |Attack | | | | | |
-|Room quantities | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-
-### Should Have
-| Dungeon | Character | Player | Enemy | Items | Rooms | Console |
-|-----|-----|-----|-----|-----|-----|-----|
-|Retreat method |Weaknesses | |Death loot drop | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-
-### Could Have
-| Dungeon | Character | Player | Enemy | Items | Rooms | Console |
-|-----|-----|-----|-----|-----|-----|-----|
-| |Move speed? |Death effect | |Enchantements | | |
-| | | | |Retreat wings? | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-
-### Won't Have (yet)
-| Dungeon | Character | Player | Enemy | Items | Rooms | Console |
-|-----|-----|-----|-----|-----|-----|-----|
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-
-------- -->
+Methods are assumed to be public unless otherwise specified.
 
 ## Dungeon
 
@@ -122,12 +70,14 @@ Similar to loot rooms, but with little to no guarantee of anything in there at a
 ## Player
 
 Fields:
+- +XP : int
 - +Health : int
 - +Items : List<item>
 - +Effects? : List<enum> // I'm not sure about this one, but it could be fun
 - +EquippedWeapon : item
 - +Gold : int {get; private set;}
 - +MaxInventorySpace : int
+- LevelThreshold : int
 
 
 Methods:
@@ -150,6 +100,7 @@ Fields:
 - +goldfromKill: int
 - +Imuene_Effect: List<enum> // If effects this might be fun. 
 - +Creature type : <enum> // fun but not nessasary.
+- +XPDrop : int
 
 Methods:
 - +takeDamage(int amount) // this could just take in the amount or it could take in the weapon status and then calculate it.
@@ -158,3 +109,17 @@ Methods:
 - +GrabLoot(): <item> int gold // and set those to 0.
 - +GetType(): <enum> type // if types added becomes nessasary.
 - +WeakenArmor(): void // small chance to weeken its defence if desired.
+
+### Enemy types
+-----
+### Goblin
+
+### Orc
+
+### Troll
+
+### Skeleton
+
+### Slime
+
+### 
