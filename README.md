@@ -16,7 +16,6 @@ Fields:
 - currentRoom : Room
 - roomsExplored : int // set to zero at each floor
 - MaxRooms : int // set to x at each floor
-- currentPlayer : Player
 
 Methods:
 - saveGame(Player currentPlayer) : void
