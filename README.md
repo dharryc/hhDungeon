@@ -16,6 +16,7 @@ Fields:
 - currentRoom : Room
 - roomsExplored : int // set to zero at each floor
 - MaxRooms : int // set to x at each floor
+- currentPlayer : Player
 
 Methods:
 - saveGame(Player currentPlayer) : void
@@ -85,7 +86,7 @@ Fields:
 
 Methods:
 
-- attack(item EquippedWeapon)
+- attack(item EquippedWeapon) : int
 - getInventory() : List<items>
 - getStatus() : (int Health, List<enum> effects)
 - checkGold() : int
@@ -187,6 +188,7 @@ Literally a slime creature. Very tough and hard to kill, but they do very little
     ((dif + 1) * (0 - 1)) + (floor * player level)capped at 5
 ##### Item pool:
 - potions(tbd)
+
 
 ## Equipment
 Fields:
