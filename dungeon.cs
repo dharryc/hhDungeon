@@ -1,37 +1,52 @@
-using System.Reflection.Metadata.Ecma335;
-
 namespace hhDungeon;
+public enum Direction
+{
+    north,
+    south,
+    east,
+    west,
+}
+
+public record Coordinate { (int x, int y) }
 public class Dungeon
 {
-    static int baseDif = 1;
+    static int baseDif;
     Dictionary<(int x, int y), Room> coordMap;
     int DifficultyLevel;
     Player currentPlayer;
     Room currentRoom;
     int RoomsExplored;
     int MaxRooms;
-    public enum direction
-    {
-        north,
-        south,
-        east,
-        west,
-    }
-    public Dungeon(Player? player)
+    public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     {
         coordMap = [];
         DifficultyLevel = baseDif;
         currentRoom = new Room();
         currentPlayer = player ?? new Player();
+        MaxRooms = firstFloorSize;
+        baseDif = baseDifficulty;
     }
-    public Room MoveRooms(direction Direction)
+    public Room MoveRooms(Direction direction)
     {
-        Room returnRoom = new();
-        Direction switch
+        RoomsExplored += 1;
+        switch (direction)
         {
-            direction.east => returnRoom = new Room(),
-            
+            case Direction.east:
+                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
+            case Direction.west:
+                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
+            case Direction.north:
+                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
+            case Direction.south:
+                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
         }
         return new Room();
+    }
+    public void SaveGame(List<Dungeon>? savedGames)
+    {
+        if(!File.Exists("./savedGames")) File.Create("./savedGames");
+        if(savedGames is null) savedGames = new List<Dungeon>();
+        savedGames.Add(this);
+        
     }
 }
