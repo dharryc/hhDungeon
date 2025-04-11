@@ -3,21 +3,17 @@ using System.Text.Json;
 namespace hhDungeon;
 public enum Direction
 {
-    north,
-    south,
-    east,
-    west,
+    north, south, east, west,
 }
 public enum RoomType
 {
-    enemy,
-    loot,
-    store,
-    stair,
-    empty,
-
+    enemy, loot, store, stair, empty,
 }
 
+public enum Effects
+{
+    strength, weakness, defenseBoost, healthBoost, poison, defenseDown, healthDown, attackDown, regeneration,
+}
 public record Coordinate { int x; int y; }
 public class Dungeon
 {
