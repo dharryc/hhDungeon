@@ -91,7 +91,7 @@ Methods:
 - getStatus() : (int Health, List<enum> effects)
 - checkGold() : int
 - levelUp() : void
-
+- TakeDamage() : void
 
 ## Enimies
 
