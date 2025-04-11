@@ -13,30 +13,42 @@ public class Player
     public int NewLevelXPThreshold;
     public int CurrentLevel;
     public int BaseATK;
+    public double CurrentATK;
     public int critOdds = 9;
-    public int Attack()
+    public double Attack()
     {
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
         if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
-        return (BaseATK + EquippedWeapon.Damage) * critMult;
+        return (CurrentATK + EquippedWeapon.Damage) * critMult;
     }
     public (int Health, List<Effects> effects) getStatus()
     {
         List<Effects> returnedEffects = [];
-        foreach(var i in currentEffects) returnedEffects.Add(i.effect);
+        foreach (var i in currentEffects) returnedEffects.Add(i.effect);
         return (CurrentHealth, returnedEffects);
     }
     public void CheckStateBasedActions()
     {
-        if(XP > NewLevelXPThreshold) levelUp();
-        if(CurrentHealth < 0) //deathSomething;
-        foreach(var i in currentEffects)
+        if (XP > NewLevelXPThreshold) levelUp();
+        if (CurrentHealth < 0) //deathSomething;
+            foreach (var i in currentEffects)
+            {
+                if (i.duration <= 0) currentEffects.Remove(i);
+                else checkEffect(i.effect);
+            }
+    }
+    public void checkEffect(Effects effect)
+    {
+        switch (effect)
         {
-            checkEffect(i);
+            case Effects.strength:
+                CurrentATK = BaseATK * 1.5;
+                break;
         }
     }
-    public void levelUp(){
+    public void levelUp()
+    {
 
     }
 }
