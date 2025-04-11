@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace hhDungeon;
 public enum Direction
 {
@@ -6,12 +8,20 @@ public enum Direction
     east,
     west,
 }
+public enum RoomType
+{
+    enemy,
+    loot,
+    store,
+    stair,
+    empty,
 
-public record Coordinate { (int x, int y) }
+}
+
+public record Coordinate { int x; int y; }
 public class Dungeon
 {
-    static int baseDif;
-    Dictionary<(int x, int y), Room> coordMap;
+    Dictionary<Coordinate, Room> coordMap;
     int DifficultyLevel;
     Player currentPlayer;
     Room currentRoom;
@@ -20,11 +30,10 @@ public class Dungeon
     public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     {
         coordMap = [];
-        DifficultyLevel = baseDif;
-        currentRoom = new Room();
+        DifficultyLevel = baseDifficulty;
+        currentRoom = new Room(RoomType.empty);
         currentPlayer = player ?? new Player();
         MaxRooms = firstFloorSize;
-        baseDif = baseDifficulty;
     }
     public Room MoveRooms(Direction direction)
     {
@@ -44,9 +53,9 @@ public class Dungeon
     }
     public void SaveGame(List<Dungeon>? savedGames)
     {
-        if(!File.Exists("./savedGames")) File.Create("./savedGames");
-        if(savedGames is null) savedGames = new List<Dungeon>();
+        if (!File.Exists("./savedGames")) File.Create("./savedGames");
+        savedGames ??= [];
         savedGames.Add(this);
-        
+        File.WriteAllText("./savedGames", JsonSerializer.Serialize(savedGames));
     }
 }
