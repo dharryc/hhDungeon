@@ -12,7 +12,7 @@ public enum RoomType
 
 public enum Effects
 {
-    strength, weakness, defenseBoost, healthBoost, poison, defenseDown, healthDown, attackDown, regeneration,
+    strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
 }
 public record Coordinate { int x; int y; }
 public class Dungeon

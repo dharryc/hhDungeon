@@ -97,7 +97,7 @@ Methods:
 Fields:
 - +Difficulty : int // used in constructor to determine other fields.
 - +Health : int
-- +Potential_Loot : <item> // I assume singular item per enimy
+- +Potential_Loot : <item> // I assume singular item per enemy
 - EquippedWeapon : item
 - +defense: int // reduces incoming damage? if wanted.
 - +goldfromKill: int

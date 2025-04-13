@@ -3,7 +3,7 @@ public class Player
 {
     public Random rnd = new();
     public int XP;
-    public int MaxHealth;
+    public double MaxHealth;
     public int CurrentHealth;
     public List<Item> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
@@ -12,9 +12,11 @@ public class Player
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
     public int CurrentLevel;
-    public int BaseATK;
+    public double BaseATK;
     public double CurrentATK;
     public int critOdds = 9;
+    public double BaseDefense;
+    public double CurrentDefense;
     public double Attack()
     {
         int hitCrit = rnd.Next(1, critOdds);
@@ -43,13 +45,35 @@ public class Player
         switch (effect)
         {
             case Effects.strength:
-                CurrentATK = BaseATK * 1.5;
+                CurrentATK = BaseATK * 1.2;
+                break;
+            case Effects.weakness:
+                CurrentATK = BaseATK * 0.9;
+                break;
+            case Effects.weakness2:
+                CurrentATK = BaseATK * 0.8;
+                break;
+            case Effects.weakness3:
+                CurrentATK = BaseATK * 0.75;
+                break;
+            case Effects.regeneration:
+                CurrentHealth += 5;
+                break;
+            case Effects.poison:
+                CurrentHealth -= 5;
+                break;
+            case Effects.defenseDown:
+                CurrentDefense = BaseDefense * 0.9;
+                break;
+            case Effects.defenseBoost:
+                CurrentDefense = BaseDefense * 1.15;
                 break;
         }
     }
     public void levelUp()
     {
-
+        BaseATK *= 1.5;
+        BaseDefense *= 1.5;
+        MaxHealth += 1.5;
     }
 }
-//     levelUp() : void
