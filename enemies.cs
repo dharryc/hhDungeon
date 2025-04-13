@@ -1,11 +1,9 @@
 // in Attack methods, weapon damage isn't caculated yet. // to do after weapons implemented.
 
-using System.Drawing;
-
 namespace hhDungeon;
 
 
-public enum EnemyType { goblin, slime, orc, troll, skeleton };
+public enum EnemyType { goblin, slime, orc, troll, skeleton, dragon };
 public abstract class Enimies
 {
     protected int Difficulty { get; set; }
