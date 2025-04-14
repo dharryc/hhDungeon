@@ -52,21 +52,27 @@ public class Dungeon
                     else
                     {
                         RoomsExplored += 1;
-                        return new Room((currentRoom.x - 1, currentRoom.y), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.x - 1, currentRoom.y), DifficultyLevel);
+                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        return nextRoom;
                     }
                 case Direction.north:
-                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    if (currentRoom.NorthRoom is not null) return currentRoom.NorthRoom;
                     else
                     {
                         RoomsExplored += 1;
-                        return new Room((currentRoom.x, currentRoom.y + 1), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.x, currentRoom.y + 1), DifficultyLevel);
+                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        return nextRoom;
                     }
                 case Direction.south:
-                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    if (currentRoom.SouthRoom is not null) return currentRoom.SouthRoom;
                     else
                     {
                         RoomsExplored += 1;
-                        return new Room((currentRoom.x, currentRoom.y - 1), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.x, currentRoom.y - 1), DifficultyLevel);
+                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        return nextRoom;
                     }
             }
         }
