@@ -5,10 +5,6 @@ public enum Direction
 {
     north, south, east, west,
 }
-public enum RoomType
-{
-    enemy, loot, store, stair, empty,
-}
 
 public enum Effects
 {
