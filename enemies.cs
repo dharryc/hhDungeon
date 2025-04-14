@@ -9,7 +9,7 @@ public abstract class Enimies
     protected int Difficulty { get; set; }
     protected int Health { get; set; }
     protected List<object> Potential_Loot { get; private set; }
-    protected object equipedweapon { get; set; }
+    protected object equipedWeapon { get; set; }
     protected int defense { get; set; }
     protected int goldFromKill { get; set; }
 
