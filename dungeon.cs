@@ -33,17 +33,42 @@ public class Dungeon
     }
     public Room MoveRooms(Direction direction)
     {
-        RoomsExplored += 1;
-        switch (direction)
+        bool lastRoom = RoomsExplored < MaxRooms;
+        if (!lastRoom)
         {
-            case Direction.east:
-                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
-            case Direction.west:
-                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
-            case Direction.north:
-                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
-            case Direction.south:
-                return new Room((currentRoom.x, currentRoom.y), RoomsExplored, DifficultyLevel, );
+            switch (direction)
+            {
+                case Direction.east:
+                    if (currentRoom.EastRoom is not null) return currentRoom.EastRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        Room nextRoom = new Room((currentRoom.x + 1, currentRoom.y), DifficultyLevel);
+                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        return nextRoom;
+                    }
+                case Direction.west:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x - 1, currentRoom.y), DifficultyLevel);
+                    }
+                case Direction.north:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x, currentRoom.y + 1), DifficultyLevel);
+                    }
+                case Direction.south:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x, currentRoom.y - 1), DifficultyLevel);
+                    }
+            }
         }
         return new Room();
     }
