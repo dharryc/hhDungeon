@@ -1,0 +1,82 @@
+using System.Text.Json;
+
+namespace hhDungeon;
+public enum Direction
+{
+    north, south, east, west,
+}
+public enum RoomType
+{
+    enemy, loot, store, stair, empty,
+}
+
+public enum Effects
+{
+    strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
+}
+public record Coordinate { int x; int y; }
+public class Dungeon
+{
+    Dictionary<Coordinate, Room> coordMap;
+    int DifficultyLevel;
+    Player currentPlayer;
+    Room currentRoom;
+    int RoomsExplored;
+    int MaxRooms;
+    public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
+    {
+        coordMap = [];
+        DifficultyLevel = baseDifficulty;
+        currentRoom = new Room(RoomType.empty);
+        currentPlayer = player ?? new Player();
+        MaxRooms = firstFloorSize;
+    }
+    public Room MoveRooms(Direction direction)
+    {
+        bool lastRoom = RoomsExplored < MaxRooms;
+        if (!lastRoom)
+        {
+            switch (direction)
+            {
+                case Direction.east:
+                    if (currentRoom.EastRoom is not null) return currentRoom.EastRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        Room nextRoom = new Room((currentRoom.x + 1, currentRoom.y), DifficultyLevel);
+                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        return nextRoom;
+                    }
+                case Direction.west:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x - 1, currentRoom.y), DifficultyLevel);
+                    }
+                case Direction.north:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x, currentRoom.y + 1), DifficultyLevel);
+                    }
+                case Direction.south:
+                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
+                    else
+                    {
+                        RoomsExplored += 1;
+                        return new Room((currentRoom.x, currentRoom.y - 1), DifficultyLevel);
+                    }
+            }
+        }
+        return new Room();
+    }
+    public void SaveGame(List<Dungeon>? savedGames)
+    {
+        if (!File.Exists("./savedGames")) File.Create("./savedGames");
+        savedGames ??= [];
+        savedGames.Add(this);
+        File.WriteAllText("./savedGames", JsonSerializer.Serialize(savedGames));
+    }
+}
