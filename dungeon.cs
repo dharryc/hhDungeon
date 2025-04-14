@@ -10,7 +10,15 @@ public enum Effects
 {
     strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
 }
-public record Coordinate { int x; int y; }
+public record Coordinate
+{
+    public int x; public int y;
+    public Coordinate(int X, int Y)
+    {
+        x = X;
+        y = Y;
+    }
+}
 public class Dungeon
 {
     Dictionary<Coordinate, Room> coordMap;
@@ -39,7 +47,7 @@ public class Dungeon
                     else
                     {
                         RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.x + 1, currentRoom.y), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.X + 1, currentRoom.Y), DifficultyLevel);
                         coordMap.Add(nextRoom.Coordinate, nextRoom);
                         return nextRoom;
                     }
@@ -48,7 +56,7 @@ public class Dungeon
                     else
                     {
                         RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.x - 1, currentRoom.y), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.X - 1, currentRoom.Y), DifficultyLevel);
                         coordMap.Add(nextRoom.Coordinate, nextRoom);
                         return nextRoom;
                     }
@@ -57,7 +65,7 @@ public class Dungeon
                     else
                     {
                         RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.x, currentRoom.y + 1), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.X, currentRoom.Y + 1), DifficultyLevel);
                         coordMap.Add(nextRoom.Coordinate, nextRoom);
                         return nextRoom;
                     }
@@ -66,7 +74,7 @@ public class Dungeon
                     else
                     {
                         RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.x, currentRoom.y - 1), DifficultyLevel);
+                        Room nextRoom = new Room((currentRoom.X, currentRoom.Y - 1), DifficultyLevel);
                         coordMap.Add(nextRoom.Coordinate, nextRoom);
                         return nextRoom;
                     }
