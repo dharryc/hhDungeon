@@ -10,18 +10,9 @@ public enum Effects
 {
     strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
 }
-public record Coordinate
-{
-    public int x; public int y;
-    public Coordinate(int X, int Y)
-    {
-        x = X;
-        y = Y;
-    }
-}
 public class Dungeon
 {
-    Dictionary<Coordinate, Room> coordMap;
+    Dictionary<(int x, int y), Room> coordMap;
     int DifficultyLevel;
     Player currentPlayer;
     Room currentRoom;
@@ -48,7 +39,7 @@ public class Dungeon
                     {
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X + 1, currentRoom.Y), DifficultyLevel);
-                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        coordMap.Add(nextRoom.coord, nextRoom);
                         return nextRoom;
                     }
                 case Direction.west:
@@ -57,7 +48,7 @@ public class Dungeon
                     {
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X - 1, currentRoom.Y), DifficultyLevel);
-                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        coordMap.Add(nextRoom.coord, nextRoom);
                         return nextRoom;
                     }
                 case Direction.north:
@@ -66,7 +57,7 @@ public class Dungeon
                     {
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X, currentRoom.Y + 1), DifficultyLevel);
-                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        coordMap.Add(nextRoom.coord, nextRoom);
                         return nextRoom;
                     }
                 case Direction.south:
@@ -75,7 +66,7 @@ public class Dungeon
                     {
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X, currentRoom.Y - 1), DifficultyLevel);
-                        coordMap.Add(nextRoom.Coordinate, nextRoom);
+                        coordMap.Add(nextRoom.coord, nextRoom);
                         return nextRoom;
                     }
             }
