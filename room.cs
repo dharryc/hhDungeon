@@ -25,5 +25,3 @@ public class Room
         NorthRoom = coordMap[(X + 1, Y)];
     }
 }
-
-// Room nextRoom = new Room((currentRoom.x + 1, currentRoom.y), DifficultyLevel);
