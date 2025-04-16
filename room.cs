@@ -23,5 +23,10 @@ public class Room
         coord.x = workingCoordinate.x;
         coord.y = workingCoordinate.y;
         NorthRoom = coordMap[(X + 1, Y)];
+        
+    }
+    public Room(RoomType type)
+    {
+        
     }
 }
