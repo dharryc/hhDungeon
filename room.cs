@@ -10,7 +10,7 @@ public class Room
     public List<Items>? itemsInRoom;
     public List<(Items, int cost)>? storeCosts;
     public List<Enemies>? enemies;
-    public Coordinate coord;
+    public (int x, int y) coord;
     public Room NorthRoom;
     public Room SouthRoom;
     public Room EastRoom;
@@ -18,11 +18,11 @@ public class Room
     public (bool NorthDoor, bool SouthDoor, bool EastDoor, bool WestDoor) doors;
     public int X => coord.x;
     public int Y => coord.y;
-    public Room((int x, int y) workingCoordinate, int incomingDifficulty, Dictionary<Coordinate, Room> coordMap)
+    public Room((int x, int y) workingCoordinate, int incomingDifficulty, Dictionary<(int x, int y), Room> coordMap)
     {
         coord.x = workingCoordinate.x;
         coord.y = workingCoordinate.y;
-        NorthRoom = coordMap[new Coordinate(X + 1, Y)];
+        NorthRoom = coordMap[(X + 1, Y)];
     }
 }
 
