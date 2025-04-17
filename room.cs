@@ -11,10 +11,10 @@ public class Room
     public List<(Items, int cost)>? storeCosts;
     public List<Enemies>? enemies;
     public (int x, int y) coord;
-    public Room NorthRoom;
-    public Room SouthRoom;
-    public Room EastRoom;
-    public Room WestRoom;
+    public Room? NorthRoom;
+    public Room? SouthRoom;
+    public Room? EastRoom;
+    public Room? WestRoom;
     public (bool NorthDoor, bool SouthDoor, bool EastDoor, bool WestDoor) doors;
     public int X => coord.x;
     public int Y => coord.y;
