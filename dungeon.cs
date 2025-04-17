@@ -29,7 +29,7 @@ public class Dungeon
     public Room MoveRooms(Direction direction)
     {
         bool lastRoom = RoomsExplored < MaxRooms;
-        if (!lastRoom)
+        if (!lastRoogitm)
         {
             switch (direction)
             {

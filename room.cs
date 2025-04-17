@@ -18,15 +18,36 @@ public class Room
     public (bool NorthDoor, bool SouthDoor, bool EastDoor, bool WestDoor) doors;
     public int X => coord.x;
     public int Y => coord.y;
-    public Room((int x, int y) workingCoordinate, int incomingDifficulty, Dictionary<(int x, int y), Room> coordMap)
+    public Room((int x, int y) workingCoordinate, int incomingDifficulty, Dictionary<(int x, int y), Room> coordMap, int MaxRooms, int RoomsExplored)
     {
         coord.x = workingCoordinate.x;
         coord.y = workingCoordinate.y;
         NorthRoom = coordMap[(X + 1, Y)];
-        
+
     }
     public Room(RoomType type)
     {
-        
+
     }
+    public static Room EnemyRoom()
+    {
+        return new Room(RoomType.enemy);
+    }
+    public static Room LootRoom()
+    {
+        return new Room(RoomType.loot);
+    }
+    public Room StoreRoom()
+    {
+        return new Room(RoomType.store);
+    }
+    public Room StairRoom()
+    {
+        return new Room(RoomType.stair);
+    }
+    public Room EmptyRoom()
+    {
+        return new Room(RoomType.empty);
+    }
+
 }
