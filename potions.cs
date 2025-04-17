@@ -1,8 +1,15 @@
 namespace hhDungeon;
 
-public class Potion(Effects effectIn, int durationIn) : Items
+public class Potion : Items
 {
-    public ItemType potion = ItemType.potion;
-    public Effects effect = effectIn;
-    public int duration = durationIn;
+    public Effects effect {  get; }
+    public int duration {  get;}
+    public Potion(Effects effectIn, int durationIn)
+    {
+        effect = effectIn;
+        duration = durationIn;
+        size = 1;
+        _Durability = 1;
+        _type = ItemType.potion;
+    }
 }
