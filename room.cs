@@ -114,9 +114,14 @@ public class Room
             if (bigLoneEnemy) i = -1;
         }
     }
-    public void LootRoom()
+    public void LootRoom(int dif)
     {
-        return new Room(RoomType.loot);
+        double lootOdds = -(dif / (dif ^ 2)) + 1; //loot is more common as game gets harder
+        double getLoot = rnd.NextDouble();
+        if(getLoot > lootOdds)
+        {
+
+        }   
     }
     public void StoreRoom()
     {
@@ -128,7 +133,6 @@ public class Room
     }
     public void EmptyRoom()
     {
-
+        type = RoomType.empty;
     }
-
 }
