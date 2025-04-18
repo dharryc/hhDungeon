@@ -8,7 +8,7 @@ namespace hhDungeon;
 
 internal class FightingUI
 {
-   public static string GetEnimyList(Dungeon dungeon)
+   public static string GetEnemyList(Dungeon dungeon)
     {
         string enimies = string.Empty;
         foreach( var enemy in dungeon.currentRoom.enemies )

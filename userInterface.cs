@@ -37,7 +37,7 @@ public class Program
                 GetStoreItems();
                 break;
             case RoomType.enemy:
-                return FightingUI.GetEnimyList(dungeon);
+                return FightingUI.GetEnemyList(dungeon);
                 break;
         }
     }
