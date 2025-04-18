@@ -12,6 +12,7 @@ public enum Effects
 }
 public class Dungeon(int firstFloorSize, int baseDifficulty)
 {
+<<<<<<< HEAD
     public Dictionary<(int x, int y), Room> coordMap = [];
     public int DifficultyLevel = baseDifficulty;
     public Player currentPlayer = new Player();
@@ -20,6 +21,22 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
     public int MaxRooms = firstFloorSize;
     public bool seenStairs = false;
 
+=======
+    Dictionary<Coordinate, Room> coordMap;
+    int DifficultyLevel;
+    public Player currentPlayer;
+    public Room currentRoom;
+    int RoomsExplored;
+    int MaxRooms;
+    public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
+    {
+        coordMap = [];
+        DifficultyLevel = baseDifficulty;
+        currentRoom = new Room(RoomType.empty);
+        currentPlayer = player ?? new Player();
+        MaxRooms = firstFloorSize;
+    }
+>>>>>>> 68d3adbbb9d67fd06626bd53e9a6284899c52409
     public Room MoveRooms(Direction direction)
     {
         bool lastRoom = RoomsExplored < MaxRooms;
@@ -73,5 +90,18 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
         savedGames ??= [];
         savedGames.Add(this);
         File.WriteAllText("./savedGames", JsonSerializer.Serialize(savedGames));
+    }
+
+    public static Dungeon LoadGame()
+    {
+        if (!File.Exists("./savedGames"))
+        {
+            Dungeon savedDungeon = JsonSerializer.Deserialize<Dungeon>(File.ReadAllText("./savedGames"));
+            if (savedDungeon != null) return savedDungeon;
+        }
+
+        return new Dungeon(new Player(), 50, 1);
+
+
     }
 }

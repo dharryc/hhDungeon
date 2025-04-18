@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace hhDungeon;
 public class Player
 {
@@ -5,9 +7,9 @@ public class Player
     public int XP;
     public double MaxHealth;
     public int CurrentHealth;
-    public List<Item> items = [];
+    public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
-    public Item EquippedWeapon;
+    public Weapon? EquippedWeapon;
     public int Gold;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
@@ -22,7 +24,15 @@ public class Player
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
         if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
-        return (CurrentATK + EquippedWeapon.Damage) * critMult;
+        if(EquippedWeapon != null)
+        {
+        return (CurrentATK + EquippedWeapon.AttackWith()) * critMult;
+
+        }
+        else
+        {
+            return (CurrentATK) * critMult;
+        }
     }
     public (int Health, List<Effects> effects) getStatus()
     {
@@ -39,6 +49,10 @@ public class Player
                 if (i.duration <= 0) currentEffects.Remove(i);
                 else checkEffect(i.effect);
             }
+        if(EquippedWeapon.Durability() <= 0)
+        {
+            EquippedWeapon = null;
+        }
     }
     public void checkEffect(Effects effect)
     {

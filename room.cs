@@ -45,7 +45,8 @@ public class Room
         List<Enemies> enemyList = [];
         int enemyChoice;
         int enemyRange = 101;
-        for (int i = 5; i > 0; i--)
+        int numEnemies = rnd.Next(1,6);
+        for (int i = numEnemies; i > 0; i--)
         {
             enemyChoice = rnd.Next(0, enemyRange);
             if (enemyChoice < 40)
