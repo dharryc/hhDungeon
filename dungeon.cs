@@ -15,8 +15,8 @@ public class Dungeon
 {
     Dictionary<Coordinate, Room> coordMap;
     int DifficultyLevel;
-    Player currentPlayer;
-    Room currentRoom;
+    public Player currentPlayer;
+    public Room currentRoom;
     int RoomsExplored;
     int MaxRooms;
     public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
@@ -80,5 +80,18 @@ public class Dungeon
         savedGames ??= [];
         savedGames.Add(this);
         File.WriteAllText("./savedGames", JsonSerializer.Serialize(savedGames));
+    }
+
+    public static Dungeon LoadGame()
+    {
+        if (!File.Exists("./savedGames"))
+        {
+            Dungeon savedDungeon = JsonSerializer.Deserialize<Dungeon>(File.ReadAllText("./savedGames"));
+            if (savedDungeon != null) return savedDungeon;
+        }
+
+        return new Dungeon(new Player(), 50, 1);
+
+
     }
 }

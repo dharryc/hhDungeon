@@ -164,19 +164,21 @@ public class Slime : Enemies
             Potion pP1 = new Potion(Effects.strength, 3);
             Potion pP2 = new Potion(Effects.regeneration, 4);
             Potion pP3 = new Potion(Effects.defenseBoost, 2);
-
-            int chosen = rnd.Next(0, 3);
-            switch (chosen)
+            for (int i = 0; i < rnd.Next(0, 4); i++)
             {
-                case 0:
-                    Potential_Loot.Add(pP1);
-                    break;
-                case 1:
-                    Potential_Loot.Add(pP2);
-                    break;
-                case 2:
-                    Potential_Loot.Add(pP3);
-                    break;
+                int chosen = rnd.Next(0, 3);
+                switch (chosen)
+                {
+                    case 0:
+                        Potential_Loot.Add(pP1);
+                        break;
+                    case 1:
+                        Potential_Loot.Add(pP2);
+                        break;
+                    case 2:
+                        Potential_Loot.Add(pP3);
+                        break;
+                }
             }
 
         }
