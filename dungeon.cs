@@ -10,26 +10,20 @@ public enum Effects
 {
     strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
 }
-public class Dungeon
+public class Dungeon(int firstFloorSize, int baseDifficulty)
 {
-    Dictionary<(int x, int y), Room> coordMap;
-    int DifficultyLevel;
-    Player currentPlayer;
-    Room currentRoom;
-    int RoomsExplored;
-    int MaxRooms;
-    public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
-    {
-        coordMap = [];
-        DifficultyLevel = baseDifficulty;
-        currentRoom = new Room(RoomType.empty);
-        currentPlayer = player ?? new Player();
-        MaxRooms = firstFloorSize;
-    }
+    public Dictionary<(int x, int y), Room> coordMap = [];
+    public int DifficultyLevel = baseDifficulty;
+    public Player currentPlayer = new Player();
+    public Room currentRoom = new Room(RoomType.empty);
+    public int RoomsExplored;
+    public int MaxRooms = firstFloorSize;
+    public bool seenStairs = false;
+
     public Room MoveRooms(Direction direction)
     {
         bool lastRoom = RoomsExplored < MaxRooms;
-        if (!lastRoogitm)
+        if (!lastRoom)
         {
             switch (direction)
             {
@@ -71,7 +65,7 @@ public class Dungeon
                     }
             }
         }
-        return new Room();
+        return new Room(RoomType.stair);
     }
     public void SaveGame(List<Dungeon>? savedGames)
     {
