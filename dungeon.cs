@@ -12,17 +12,7 @@ public enum Effects
 }
 public class Dungeon(int firstFloorSize, int baseDifficulty)
 {
-<<<<<<< HEAD
-    public Dictionary<(int x, int y), Room> coordMap = [];
-    public int DifficultyLevel = baseDifficulty;
-    public Player currentPlayer = new Player();
-    public Room currentRoom = new Room(RoomType.empty);
-    public int RoomsExplored;
-    public int MaxRooms = firstFloorSize;
-    public bool seenStairs = false;
-
-=======
-    Dictionary<Coordinate, Room> coordMap;
+    Dictionary<(int x, int y), Room> coordMap;
     int DifficultyLevel;
     public Player currentPlayer;
     public Room currentRoom;
@@ -36,7 +26,6 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
         currentPlayer = player ?? new Player();
         MaxRooms = firstFloorSize;
     }
->>>>>>> 68d3adbbb9d67fd06626bd53e9a6284899c52409
     public Room MoveRooms(Direction direction)
     {
         bool lastRoom = RoomsExplored < MaxRooms;
@@ -51,6 +40,7 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X + 1, currentRoom.Y), DifficultyLevel);
                         coordMap.Add(nextRoom.coord, nextRoom);
+                        currentRoom.DoorLinks.EastRoom = nextRoom;
                         return nextRoom;
                     }
                 case Direction.west:
@@ -60,6 +50,7 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X - 1, currentRoom.Y), DifficultyLevel);
                         coordMap.Add(nextRoom.coord, nextRoom);
+                        currentRoom.DoorLinks.WestRoom = nextRoom;
                         return nextRoom;
                     }
                 case Direction.north:
@@ -69,6 +60,7 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X, currentRoom.Y + 1), DifficultyLevel);
                         coordMap.Add(nextRoom.coord, nextRoom);
+                        currentRoom.DoorLinks.NorthRoom = nextRoom;
                         return nextRoom;
                     }
                 case Direction.south:
@@ -78,6 +70,7 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
                         RoomsExplored += 1;
                         Room nextRoom = new Room((currentRoom.X, currentRoom.Y - 1), DifficultyLevel);
                         coordMap.Add(nextRoom.coord, nextRoom);
+                        currentRoom.DoorLinks.SouthRoom = nextRoom;
                         return nextRoom;
                     }
             }

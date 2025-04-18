@@ -24,28 +24,52 @@ public class Room
         // enemy 60% chance, loot 10% chance, store 5% chance, stair 5% chance, empty 20% chance
         coord.x = workingCoordinate.x;
         coord.y = workingCoordinate.y;
-        DoorLinks.NorthRoom = coordMap[(X + 1, Y)];
-        DoorLinks.EastRoom = coordMap[(X, Y + 1)];
-        DoorLinks.SouthRoom = coordMap[(X - 1, Y)];
-        DoorLinks.WestRoom = coordMap[(X, Y - 1)];
-        if (seenStairs)
-        {
-            int roomChoice = rnd.Next(0, 96); //not a magic number, there's no chance of getting another stair room if you've seen the stairs
-            if (roomChoice < 40) EnemyRoom(incomingDifficulty);
-        }
-    }
-    public Room(RoomType type)
-    {
 
+        if (coordMap.ContainsKey((X + 1, Y))) DoorLinks.NorthRoom = coordMap[(X + 1, Y)];
+        else DoorLinks.NorthRoom = null;
+        if (coordMap.ContainsKey((X, Y + 1))) DoorLinks.EastRoom = coordMap[(X, Y + 1)];
+        else DoorLinks.EastRoom = null;
+        if (coordMap.ContainsKey((X - 1, Y))) DoorLinks.SouthRoom = coordMap[(X - 1, Y)];
+        else DoorLinks.SouthRoom = null;
+        if (coordMap.ContainsKey((X, Y - 1))) DoorLinks.WestRoom = coordMap[(X, Y - 1)];
+        else DoorLinks.WestRoom = null;
+
+        int roomOdds = 101;
+        if (seenStairs) roomOdds = 96;
+
+        int roomChoice = rnd.Next(0, roomOdds);
+
+        if (roomChoice < 61)
+        {
+            EnemyRoom(incomingDifficulty);
+            roomChoice = 101;
+        }
+        if (roomChoice < 81)
+        {
+            EmptyRoom();
+            roomChoice = 101;
+        }
+        if (roomChoice < 91)
+        {
+            LootRoom();
+            roomChoice = 101;
+        }
+        if (roomChoice < 96)
+        {
+            StoreRoom();
+            roomChoice = 101;
+        }
+        else StairRoom();
     }
     public void EnemyRoom(int dif)
     {
         // goblin 40%, slime 30%, orc 10%, troll 5%, skeleton 13%, dragon 2%
+        type = RoomType.enemy;
         bool bigLoneEnemy = false;
         List<Enemies> enemyList = [];
         int enemyChoice;
         int enemyRange = 101;
-        int numEnemies = rnd.Next(1,6);
+        int numEnemies = rnd.Next(1, 6);
         for (int i = numEnemies; i > 0; i--)
         {
             enemyChoice = rnd.Next(0, enemyRange);
@@ -87,7 +111,7 @@ public class Room
                 enemyList.Add(new Dragon(dif));
                 bigLoneEnemy = true;
             }
-            if(bigLoneEnemy) i = -1;
+            if (bigLoneEnemy) i = -1;
         }
     }
     public void LootRoom()
