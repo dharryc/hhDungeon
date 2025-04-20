@@ -47,19 +47,19 @@ public class Program
 
         string availableDoors = "The available doors are ";
 
-        if (dungeon.currentRoom.NorthRoom is not null)
+        if (dungeon.currentRoom.DoorLinks.NorthRoom is not null)
         {
             availableDoors += "North ";
         }
-        if (dungeon.currentRoom.EastRoom is not null)
+        if (dungeon.currentRoom.DoorLinks.EastRoom is not null)
         {
             availableDoors += "East ";
         }
-        if (dungeon.currentRoom.SouthRoom is not null)
+        if (dungeon.currentRoom.DoorLinks.SouthRoom is not null)
         {
             availableDoors += "South ";
         }
-        if (dungeon.currentRoom.WestRoom is not null)
+        if (dungeon.currentRoom.DoorLinks.WestRoom is not null)
         {
             availableDoors += "West ";
         }
@@ -69,7 +69,7 @@ public class Program
 
     public string GetStoreItems()
     {
-
+        dungeon.currentRoom.
     }
 }
 

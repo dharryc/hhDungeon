@@ -54,6 +54,9 @@ public abstract class Enemies
         else
             return null;
     }
+
+    public int GetHealth()
+        { return Health; }
 }
 public class Goblin : Enemies
 {
@@ -90,11 +93,6 @@ public class Goblin : Enemies
 
     public Goblin(int difficulty)
     {
-        //protected int Difficulty { get; set; }
-        //protected int Health { get; set; }
-        //protected List<Items> Potential_Loot { get; private set; }
-        //protected object equipedWeapon { get; set; }
-        //protected int defense { get; set; }
         Difficulty = difficulty;
         Health = 3 ^ (difficulty / 4);
         defense = rnd.Next(0, 3);
@@ -108,6 +106,11 @@ public class Goblin : Enemies
         if (rnd.Next(0, (9 / difficulty) + 2) == 0)
         {
             Potential_Loot.Add(new Potion(Effects.regeneration, 2));
+        }
+
+        if (rnd.Next(0, 9) == 8)
+        {
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 2, 3));
         }
 
     }
@@ -224,6 +227,26 @@ public class Orc : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
     }
 
+
+    public Orc(int difficulty)
+    {
+        Difficulty = difficulty;
+        Health = 6 ^ (difficulty / 5);
+        defense = rnd.Next(0, 3);
+        if (rnd.Next(0, 9 / difficulty) == 0)
+        {
+            equipedWeapon = new Weapon(WeaponType.shortsword, difficulty, 1);
+            Potential_Loot.Add(equipedWeapon);
+        }
+        else { equipedWeapon = new Weapon(WeaponType.dagger, 2, 1); }
+
+        if (rnd.Next(0, 9) == 8)
+        {
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 4, 3));
+        }
+
+    }
+
 }
 
 public class Troll : Enemies
@@ -261,6 +284,58 @@ public class Troll : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
     }
 
+
+    public Troll(int difficulty)
+    {
+        Difficulty = difficulty;
+        Health = 9 ^ ((difficulty + 5) / 7);
+        defense = rnd.Next(0, 3);
+        if (rnd.Next(0, (7 / difficulty) + 2) == 0)
+        {
+            equipedWeapon = new Weapon(WeaponType.sword, 5, 2);
+            Potential_Loot.Add(equipedWeapon);
+        }
+        else { equipedWeapon = new Weapon(WeaponType.club, 3, 2); }
+
+        if (rnd.Next(0, 9) == 8)
+        {
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 5, 4));
+        }
+
+
+        if (rnd.Next(0, 5 / difficulty) <= 1)
+        {
+            Potion pP1 = new Potion(Effects.strength, 3);
+            Potion pP2 = new Potion(Effects.regeneration, 4);
+            Potion pP3 = new Potion(Effects.defenseBoost, 2);
+            Potion pP4 = new Potion(Effects.strength, 5);
+            Potion pP5 = new Potion(Effects.regeneration, 7);
+            for (int i = 0; i < rnd.Next(0, 7); i++)
+            {
+                int chosen = rnd.Next(0, 5);
+                switch (chosen)
+                {
+                    case 0:
+                        Potential_Loot.Add(pP1);
+                        break;
+                    case 1:
+                        Potential_Loot.Add(pP2);
+                        break;
+                    case 2:
+                        Potential_Loot.Add(pP3);
+                        break;
+                    case 3:
+                        Potential_Loot.Add(pP4);
+                        break;
+                    case 4:
+                        Potential_Loot.Add(pP5);
+                        break;
+                }
+            }
+
+        }
+
+    }
 }
 
 
@@ -300,6 +375,20 @@ public class Skeleton : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
     }
 
+    public Skeleton(int difficulty)
+    {
+        Difficulty = difficulty;
+        Health = 2 ^ (difficulty / 5);
+        defense = rnd.Next(0, 3);
+        if (rnd.Next(0, (7 / difficulty) + 2) == 0)
+        {
+            equipedWeapon = new Weapon(WeaponType.rib, 1, 2);
+            Potential_Loot.Add(equipedWeapon);
+        }
+
+
+    }
+
 }
 
 
@@ -335,6 +424,14 @@ public class Dragon : Enemies
         }
 
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
+    }
+
+    public Dragon(int difficulty)
+    {
+        Difficulty = difficulty;
+        Health = 10 ^ ((difficulty + 7) / 7);
+        defense = rnd.Next(0, 3);
+
     }
 
 }
