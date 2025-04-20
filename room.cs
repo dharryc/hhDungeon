@@ -11,8 +11,8 @@ public enum RoomType
 public class Room
 {
     public RoomType type;
-    public List<Items>? itemsInRoom;
-    public List<(Items, int cost)>? storeCosts;
+    public List<Items> itemsInRoom = [];
+    public List<(ItemType _type, Items item, int cost)>? storeCosts;
     public List<Enemies>? enemies;
     public (int x, int y) coord;
     public (Room? NorthRoom, Room? SouthRoom, Room? EastRoom, Room? WestRoom) DoorLinks;
@@ -116,13 +116,34 @@ public class Room
     }
     public void LootRoom(int dif)
     {
+        type = RoomType.loot;
+        // ItemType { potion, weapon, armor }   50% chance for a potion, 30% for a weapon, 20% for armor
+        // WeaponType { dagger, sword, club, shortsword }
+        // ArmorType { chestplate, leggings, boots, helmet }
+        // potionType { strength, defenseBoost, regeneration }
         double lootOdds = -(dif / (dif ^ 2)) + 1; //loot is more common as game gets harder
         double getLoot = rnd.NextDouble();
-        if(getLoot > lootOdds)
+        if (getLoot > lootOdds)
         {
-
-        }   
+            int itemType = rnd.Next(0, 11);
+            if(itemType < 6)
+            {
+                addPotion();
+                itemType = 12;
+            }
+            if(itemType < 9)
+            {
+                addWeapon();
+            }
+            else addArmor();
+        }
     }
+
+    private void addPotion()
+    {
+        itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects) , rnd.Next(0, 4)), rnd.Next(1,5)));
+    }
+
     public void StoreRoom()
     {
         return new Room(RoomType.store);
