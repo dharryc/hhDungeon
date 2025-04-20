@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace hhDungeon;
 
-internal class FightingUI
+public class FightingUI
 {
-   public static string GetEnemyList(Dungeon dungeon)
+    private string EnemyFightInstructions = "";
+    public static string GetEnimyList(Dungeon dungeon)
     {
         string enimies = string.Empty;
-        foreach( var enemy in dungeon.currentRoom.enemies )
+        foreach (var enemy in dungeon.currentRoom.enemies)
         {
             enimies += enemy.GetType().ToString();
             if (enemy != dungeon.currentRoom.enemies.Last())
@@ -21,4 +22,20 @@ internal class FightingUI
         }
         return enimies;
     }
-}
+
+    public static void FightEnimies(Dungeon dungeon)
+    {
+        Console.WriteLine(BuildEnemyStringFormat(dungeon));
+
+    }
+
+    public static string BuildEnemyStringFormat(Dungeon dungeon)
+    {
+        string ToReturn = "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room, they are ";
+        foreach (var enemy in dungeon.currentRoom.enemies)
+        {
+            ToReturn += enemy.GetType().ToString() + " at " + enemy.GetHealth() + " health";
+        }
+        return ToReturn;
+
+    }}

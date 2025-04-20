@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace hhDungeon;
 
 public enum ItemType { potion, weapon, armor };
-public enum WeaponType { dagger, sword, club, shortsword };
+public enum WeaponType { dagger, sword, club, shortsword,rib };
 
 public enum ArmorType { chestplate, leggings, boots, helmet };
 public abstract class Items
@@ -87,10 +87,10 @@ public class Armor : Equipment
 
     public int GetDefence() => _defence;
 
-    public Armor(ArmorType type, int base_damage = 3, int _size = 2)
+    public Armor(ArmorType type, int base_defense = 3, int _size = 2)
     {
         _Type = type;
-        _defence = base_damage;
+        _defence = base_defense;
         size = _size;
     }
 }
