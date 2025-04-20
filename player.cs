@@ -24,50 +24,54 @@ public class Player
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
         if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
-        if(EquippedWeapon != null)
+        if (EquippedWeapon != null)
         {
-        return (CurrentATK + EquippedWeapon.AttackWith()) * critMult;
-
+            return (CurrentATK + EquippedWeapon.AttackWith()) * critMult;
         }
         else
         {
-            return (CurrentATK) * critMult;
+            return CurrentATK * critMult;
         }
     }
-    public (int Health, List<Effects> effects) getStatus()
+    public (int Health, List<Effects> effects) GetStatus()
     {
         List<Effects> returnedEffects = [];
-        foreach (var i in currentEffects) returnedEffects.Add(i.effect);
+        foreach (var (effect, duration) in currentEffects) returnedEffects.Add(effect);
         return (CurrentHealth, returnedEffects);
     }
-    public void CheckStateBasedActions()
+    public bool CheckStateBasedActions()
     {
-        if (XP > NewLevelXPThreshold) levelUp();
-        if (CurrentHealth < 0) //deathSomething;
-            foreach (var i in currentEffects)
-            {
-                if (i.duration <= 0) currentEffects.Remove(i);
-                else checkEffect(i.effect);
-            }
-        if(EquippedWeapon.Durability() <= 0)
+        if (CurrentHealth < 0) return false;
+        if (XP > NewLevelXPThreshold) LevelUp();
+        foreach (var i in currentEffects)
+        {
+            if (i.duration <= 0) currentEffects.Remove(i);
+            else CheckEffect(i.effect);
+        }
+        if (EquippedWeapon?.Durability() <= 0)
         {
             EquippedWeapon = null;
         }
+        return true;
     }
-    public void checkEffect(Effects effect)
+    public void CheckEffect(Effects effect)
     {
         switch (effect)
         {
             case Effects.strength:
+                CurrentATK = BaseATK; //make sure you're starting at normal
                 CurrentATK = BaseATK * 1.2;
                 break;
             case Effects.weakness:
+                CurrentATK = BaseATK; //make sure you're starting at normal
                 CurrentATK = BaseATK * 0.9;
                 break;
             case Effects.weakness2:
+                CurrentATK = BaseATK; //make sure you're starting at normal
                 CurrentATK = BaseATK * 0.8;
                 break;
             case Effects.weakness3:
+                CurrentATK = BaseATK; //make sure you're starting at normal
                 CurrentATK = BaseATK * 0.75;
                 break;
             case Effects.regeneration:
@@ -77,14 +81,16 @@ public class Player
                 CurrentHealth -= 5;
                 break;
             case Effects.defenseDown:
+                CurrentDefense = BaseDefense; //make sure you're starting at base
                 CurrentDefense = BaseDefense * 0.9;
                 break;
             case Effects.defenseBoost:
+                CurrentDefense = BaseDefense; //make sure you're starting at base
                 CurrentDefense = BaseDefense * 1.15;
                 break;
         }
     }
-    public void levelUp()
+    public void LevelUp()
     {
         BaseATK *= 1.5;
         BaseDefense *= 1.5;

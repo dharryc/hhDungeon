@@ -12,7 +12,7 @@ public class Room
 {
     public RoomType type;
     public List<Items> itemsInRoom = [];
-    public List<(ItemType _type, Items item, int cost)>? storeCosts;
+    public List<(ItemType _type, Items item, int cost)>? storeCosts = [];
     public List<Enemies>? enemies;
     public (int x, int y) coord;
     public (Room? NorthRoom, Room? SouthRoom, Room? EastRoom, Room? WestRoom) DoorLinks;
@@ -51,7 +51,7 @@ public class Room
         }
         if (roomChoice < 91)
         {
-            LootRoom();
+            LootRoom(incomingDifficulty);
             roomChoice = 101;
         }
         if (roomChoice < 96)
@@ -126,31 +126,41 @@ public class Room
         if (getLoot > lootOdds)
         {
             int itemType = rnd.Next(0, 11);
-            if(itemType < 6)
+            if (itemType < 6)
             {
-                addPotion();
+                AddPotion();
                 itemType = 12;
             }
-            if(itemType < 9)
+            if (itemType < 9)
             {
-                addWeapon();
+                addWeapon(dif);
             }
-            else addArmor();
+            else AddArmor(dif);
         }
     }
 
-    private void addPotion()
+    private void AddArmor(int dif)
     {
-        itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects) , rnd.Next(0, 4)), rnd.Next(1,5)));
+        itemsInRoom.Add(new Armor((ArmorType)Enum.ToObject(typeof(ArmorType), rnd.Next(0, 4))));
+    }
+
+    private void addWeapon(int difficulty)
+    {
+        itemsInRoom.Add(new Weapon((WeaponType)Enum.ToObject(typeof(WeaponType), rnd.Next(0, 4)), rnd.Next(3, 3 * difficulty)));
+    }
+
+    private void AddPotion()
+    {
+        itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects), rnd.Next(0, 4)), rnd.Next(1, 5)));
     }
 
     public void StoreRoom()
     {
-        return new Room(RoomType.store);
+        type = RoomType.store;
     }
     public void StairRoom()
     {
-        return new Room(RoomType.stair);
+        type = RoomType.stair;
     }
     public void EmptyRoom()
     {
