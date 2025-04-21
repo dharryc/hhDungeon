@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 namespace hhDungeon;
@@ -10,14 +11,21 @@ public enum Effects
 {
     strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
 }
-public class Dungeon(int firstFloorSize, int baseDifficulty)
+public class Dungeon
 {
-    Dictionary<(int x, int y), Room> coordMap;
+    public Dictionary<(int x, int y), Room> coordMap;
+    int X = 0;
+    int Y = 0;
+    public (int x, int y) north => (X, Y + 1);
+    public (int x, int y) south => (X, Y - 1);
+    public (int x, int y) east => (X + 1, Y);
+    public (int x, int y) west => (X - 1, Y);
     int DifficultyLevel;
     public Player currentPlayer;
     public Room currentRoom;
     int RoomsExplored;
     int MaxRooms;
+    bool seenStairs = false;
     public Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     {
         coordMap = [];
@@ -28,54 +36,74 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
     }
     public Room MoveRooms(Direction direction)
     {
-        bool lastRoom = RoomsExplored < MaxRooms;
-        if (!lastRoom)
+        switch (direction)
         {
-            switch (direction)
-            {
-                case Direction.east:
-                    if (currentRoom.EastRoom is not null) return currentRoom.EastRoom;
-                    else
-                    {
-                        RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.X + 1, currentRoom.Y), DifficultyLevel);
-                        coordMap.Add(nextRoom.coord, nextRoom);
-                        currentRoom.DoorLinks.EastRoom = nextRoom;
-                        return nextRoom;
-                    }
-                case Direction.west:
-                    if (currentRoom.WestRoom is not null) return currentRoom.WestRoom;
-                    else
-                    {
-                        RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.X - 1, currentRoom.Y), DifficultyLevel);
-                        coordMap.Add(nextRoom.coord, nextRoom);
-                        currentRoom.DoorLinks.WestRoom = nextRoom;
-                        return nextRoom;
-                    }
-                case Direction.north:
-                    if (currentRoom.NorthRoom is not null) return currentRoom.NorthRoom;
-                    else
-                    {
-                        RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.X, currentRoom.Y + 1), DifficultyLevel);
-                        coordMap.Add(nextRoom.coord, nextRoom);
-                        currentRoom.DoorLinks.NorthRoom = nextRoom;
-                        return nextRoom;
-                    }
-                case Direction.south:
-                    if (currentRoom.SouthRoom is not null) return currentRoom.SouthRoom;
-                    else
-                    {
-                        RoomsExplored += 1;
-                        Room nextRoom = new Room((currentRoom.X, currentRoom.Y - 1), DifficultyLevel);
-                        coordMap.Add(nextRoom.coord, nextRoom);
-                        currentRoom.DoorLinks.SouthRoom = nextRoom;
-                        return nextRoom;
-                    }
-            }
+            case Direction.east:
+                if (coordMap.ContainsKey(east))
+                {
+                    Room returnRoom = coordMap[east];
+                    X += 1;
+                    return returnRoom;
+                }
+                else
+                {
+                    RoomsExplored += 1;
+                    Room nextRoom = new(DifficultyLevel, seenStairs, MaxRooms > RoomsExplored);
+                    coordMap.Add(east, nextRoom);
+                    X += 1;
+                    seenStairs = nextRoom.type == RoomType.stair;
+                    return nextRoom;
+                }
+            case Direction.west:
+                if (coordMap.ContainsKey(west))
+                {
+                    Room returnRoom = coordMap[west];
+                    X -= 1;
+                    return returnRoom;
+                }
+                else
+                {
+                    RoomsExplored += 1;
+                    Room nextRoom = new(DifficultyLevel, seenStairs, MaxRooms > RoomsExplored);
+                    coordMap.Add(west, nextRoom);
+                    X -= 1;
+                    seenStairs = nextRoom.type == RoomType.stair;
+                    return nextRoom;
+                }
+            case Direction.north:
+                if (coordMap.ContainsKey(north))
+                {
+                    Room returnRoom = coordMap[north];
+                    Y += 1;
+                    return returnRoom;
+                }
+                else
+                {
+                    RoomsExplored += 1;
+                    Room nextRoom = new(DifficultyLevel, seenStairs, MaxRooms > RoomsExplored);
+                    coordMap.Add(north, nextRoom);
+                    Y += 1;
+                    seenStairs = nextRoom.type == RoomType.stair;
+                    return nextRoom;
+                }
+            case Direction.south:
+                if (coordMap.ContainsKey(south))
+                {
+                    Room returnRoom = coordMap[south];
+                    Y -= 1;
+                    return returnRoom;
+                }
+                else
+                {
+                    RoomsExplored += 1;
+                    Room nextRoom = new(DifficultyLevel, seenStairs, MaxRooms > RoomsExplored);
+                    coordMap.Add(south, nextRoom);
+                    Y -= 1;
+                    seenStairs = nextRoom.type == RoomType.stair;
+                    return nextRoom;
+                }
         }
-        return new Room(RoomType.stair);
+        return new Room(RoomType.empty);
     }
     public void SaveGame(List<Dungeon>? savedGames)
     {
@@ -92,9 +120,6 @@ public class Dungeon(int firstFloorSize, int baseDifficulty)
             Dungeon savedDungeon = JsonSerializer.Deserialize<Dungeon>(File.ReadAllText("./savedGames"));
             if (savedDungeon != null) return savedDungeon;
         }
-
         return new Dungeon(new Player(), 50, 1);
-
-
     }
 }

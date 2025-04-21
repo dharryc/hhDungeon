@@ -14,51 +14,42 @@ public class Room
     public List<Items> itemsInRoom = [];
     public List<(ItemType _type, Items item, int cost)> storeCosts = [];
     public List<Enemies>? enemies;
-    public (int x, int y) coord;
-    public (Room? NorthRoom, Room? SouthRoom, Room? EastRoom, Room? WestRoom) DoorLinks;
-    public int X => coord.x;
-    public int Y => coord.y;
     readonly Random rnd = new();
-    public Room((int x, int y) workingCoordinate, int incomingDifficulty, Dictionary<(int x, int y), Room> coordMap, bool seenStairs)
+    public Room(int incomingDifficulty, bool seenStairs, bool lastRoom)
     {
         // enemy 60% chance, loot 10% chance, store 5% chance, stair 5% chance, empty 20% chance
-        coord.x = workingCoordinate.x;
-        coord.y = workingCoordinate.y;
-
-        if (coordMap.ContainsKey((X + 1, Y))) DoorLinks.NorthRoom = coordMap[(X + 1, Y)];
-        else DoorLinks.NorthRoom = null;
-        if (coordMap.ContainsKey((X, Y + 1))) DoorLinks.EastRoom = coordMap[(X, Y + 1)];
-        else DoorLinks.EastRoom = null;
-        if (coordMap.ContainsKey((X - 1, Y))) DoorLinks.SouthRoom = coordMap[(X - 1, Y)];
-        else DoorLinks.SouthRoom = null;
-        if (coordMap.ContainsKey((X, Y - 1))) DoorLinks.WestRoom = coordMap[(X, Y - 1)];
-        else DoorLinks.WestRoom = null;
-
-        int roomOdds = 101;
-        if (seenStairs) roomOdds = 96;
-
-        int roomChoice = rnd.Next(0, roomOdds);
-
-        if (roomChoice < 61)
+        if (lastRoom && !seenStairs)
         {
-            EnemyRoom(incomingDifficulty);
-            roomChoice = 101;
+            StairRoom();
         }
-        if (roomChoice < 81)
+        else
         {
-            EmptyRoom();
-            roomChoice = 101;
+            int roomOdds = 101;
+            if (seenStairs) roomOdds = 96;
+
+            int roomChoice = rnd.Next(0, roomOdds);
+
+            if (roomChoice < 61)
+            {
+                EnemyRoom(incomingDifficulty);
+                roomChoice = 101;
+            }
+            if (roomChoice < 81)
+            {
+                EmptyRoom();
+                roomChoice = 101;
+            }
+            if (roomChoice < 91)
+            {
+                LootRoom(incomingDifficulty);
+                roomChoice = 101;
+            }
+            if (roomChoice < 96)
+            {
+                StoreRoom(incomingDifficulty);
+            }
+            else StairRoom();
         }
-        if (roomChoice < 91)
-        {
-            LootRoom(incomingDifficulty);
-            roomChoice = 101;
-        }
-        if (roomChoice < 96)
-        {
-            StoreRoom(incomingDifficulty);
-        }
-        else StairRoom();
     }
     public void EnemyRoom(int dif)
     {
@@ -155,7 +146,7 @@ public class Room
 
     public void StoreRoom(int dif)
     {
-        int itemChoice = 0;
+        int itemChoice;
         type = RoomType.store;
         for (int i = 0; i < 5; i++)
         {
@@ -182,5 +173,9 @@ public class Room
     public void EmptyRoom()
     {
         type = RoomType.empty;
+    }
+    public Room(RoomType inType)
+    {
+        type = inType;
     }
 }

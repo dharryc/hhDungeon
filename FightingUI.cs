@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace hhDungeon;
+﻿namespace hhDungeon;
 
 public class FightingUI
 {
@@ -38,4 +32,10 @@ public class FightingUI
         }
         return ToReturn;
 
-    }}
+    }
+
+    public static string GetEnemyList(Dungeon dungeon)
+    {
+        throw new NotImplementedException();
+    }
+}

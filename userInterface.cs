@@ -1,3 +1,4 @@
+
 namespace hhDungeon;
 
 public class Program
@@ -32,43 +33,22 @@ public class Program
         {
             case RoomType.empty:
                 return GetAvailableDoors();
-                break;
             case RoomType.store:
                 GetStoreItems();
                 break;
             case RoomType.enemy:
                 return FightingUI.GetEnemyList(dungeon);
-                break;
         }
+        return "wheee";
     }
 
-    public string GetAvailableDoors()
+    private void GetStoreItems()
     {
-
-        string availableDoors = "The available doors are ";
-
-        if (dungeon.currentRoom.DoorLinks.NorthRoom is not null)
-        {
-            availableDoors += "North ";
-        }
-        if (dungeon.currentRoom.DoorLinks.EastRoom is not null)
-        {
-            availableDoors += "East ";
-        }
-        if (dungeon.currentRoom.DoorLinks.SouthRoom is not null)
-        {
-            availableDoors += "South ";
-        }
-        if (dungeon.currentRoom.DoorLinks.WestRoom is not null)
-        {
-            availableDoors += "West ";
-        }
-
-        return availableDoors;
+        throw new NotImplementedException();
     }
 
-    public string GetStoreItems()
+    private string GetAvailableDoors()
     {
-        dungeon.currentRoom.
+        throw new NotImplementedException();
     }
 }
