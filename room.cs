@@ -12,7 +12,7 @@ public class Room
 {
     public RoomType type;
     public List<Items> itemsInRoom = [];
-    public List<(ItemType _type, Items item, int cost)>? storeCosts = [];
+    public List<(ItemType _type, Items item, int cost)> storeCosts = [];
     public List<Enemies>? enemies;
     public (int x, int y) coord;
     public (Room? NorthRoom, Room? SouthRoom, Room? EastRoom, Room? WestRoom) DoorLinks;
@@ -56,8 +56,7 @@ public class Room
         }
         if (roomChoice < 96)
         {
-            StoreRoom();
-            roomChoice = 101;
+            StoreRoom(incomingDifficulty);
         }
         else StairRoom();
     }
@@ -154,9 +153,27 @@ public class Room
         itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects), rnd.Next(0, 4)), rnd.Next(1, 5)));
     }
 
-    public void StoreRoom()
+    public void StoreRoom(int dif)
     {
+        int itemChoice = 0;
         type = RoomType.store;
+        for (int i = 0; i < 5; i++)
+        {
+            itemChoice = rnd.Next(0, 3);
+            switch (itemChoice)
+            {
+                case 0:
+                    AddArmor(dif);
+                    break;
+                case 1:
+                    addWeapon(dif);
+                    break;
+                case 2:
+                    AddPotion();
+                    break;
+            }
+        }
+        foreach (Items item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
     }
     public void StairRoom()
     {

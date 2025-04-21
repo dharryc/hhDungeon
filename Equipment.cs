@@ -14,7 +14,7 @@ public enum WeaponType { dagger, sword, club, shortsword,rib };
 public enum ArmorType { chestplate, leggings, boots, helmet };
 public abstract class Items
 {
-    protected ItemType _type { get; set; }
+    public ItemType _type { get; set; }
     protected int size { get; set; }
     protected int _Durability { get; set; }
 
