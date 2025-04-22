@@ -58,22 +58,91 @@ public class Program
             switch (RunningDungeon.currentRoom.type)
             {
                 case RoomType.empty:
-                    EmptyRoomUi();
+                    EmptyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.loot:
-                    LootRoomUi();
+                    LootRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.enemy:
-                    EnemyRoomUi();
+                    EnemyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.stair:
-                    StairRoomUi();
+                    StairRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.store:
-                    StoreRoomUi();
+                    StoreRoomUi(RunningDungeon.currentRoom);
                     break;
             }
         }
         EndGame();
+    }
+
+    private static void StoreRoomUi(Room store)
+    {
+        Console.Clear();
+        Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
+        foreach (var workingItem in store.storeCosts)
+        {
+            switch (workingItem._type)
+            {
+                case ItemType.armor:
+                    Armor workingArmor = (Armor)workingItem.item;
+                    Console.WriteLine("A ");
+                    switch (workingArmor.GetType())
+                    {
+                        case ArmorType.boots:
+                            Console.Write("pair of Boots that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.chestplate:
+                            Console.Write("Chestplate that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.helmet:
+                            Console.Write("Helmet that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.leggings:
+                            Console.Write("set of Leggings that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        }
+                    break;
+                case ItemType.potion:
+                    Potion workingPotion = (Potion)workingItem.item;
+                    Console.WriteLine("A ");
+                    switch (workingPotion.effect)
+                    {
+                        case Effects.:
+                            Console.Write("pair of Boots that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.chestplate:
+                            Console.Write("Chestplate that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.helmet:
+                            Console.Write("Helmet that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        case ArmorType.leggings:
+                            Console.Write("set of Leggings that costs ");
+                            Console.Write(workingItem.cost);
+                            Console.Write("gold");
+                            break;
+                        }
+                    break;
+                case ItemType.weapon:
+                    break;
+
+            }
+        }
     }
 }

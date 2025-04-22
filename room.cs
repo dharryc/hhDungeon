@@ -141,6 +141,7 @@ public class Room
 
     private void AddPotion()
     {
+        
         itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects), rnd.Next(0, 4)), rnd.Next(1, 5)));
     }
 
