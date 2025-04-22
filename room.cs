@@ -123,7 +123,7 @@ public class Room
             }
             if (itemType < 9)
             {
-                addWeapon(dif);
+                AddWeapon(dif);
             }
             else AddArmor(dif);
         }
@@ -134,15 +134,16 @@ public class Room
         itemsInRoom.Add(new Armor((ArmorType)Enum.ToObject(typeof(ArmorType), rnd.Next(0, 4))));
     }
 
-    private void addWeapon(int difficulty)
+    private void AddWeapon(int difficulty)
     {
         itemsInRoom.Add(new Weapon((WeaponType)Enum.ToObject(typeof(WeaponType), rnd.Next(0, 4)), rnd.Next(3, 3 * difficulty)));
     }
 
     private void AddPotion()
     {
-        
-        itemsInRoom.Add(new Potion((Effects)Enum.ToObject(typeof(Effects), rnd.Next(0, 4)), rnd.Next(1, 5)));
+        List<Effects> goodPool = [Effects.regeneration, Effects.strength, Effects.defenseBoost];
+        Potion generatedPotion = new(goodPool[rnd.Next(0, 3)], rnd.Next(1, 4));
+        itemsInRoom.Add(generatedPotion);
     }
 
     public void StoreRoom(int dif)
@@ -158,7 +159,7 @@ public class Room
                     AddArmor(dif);
                     break;
                 case 1:
-                    addWeapon(dif);
+                    AddWeapon(dif);
                     break;
                 case 2:
                     AddPotion();
