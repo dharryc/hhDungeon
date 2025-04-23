@@ -37,9 +37,8 @@ public class Player
         foreach (var (effect, duration) in currentEffects) returnedEffects.Add(effect);
         return (CurrentHealth, returnedEffects);
     }
-    public bool CheckStateBasedActions()
+    public void CheckStateBasedActions()
     {
-        if (CurrentHealth < 0) return false;
         if (XP > NewLevelXPThreshold) LevelUp();
         foreach (var i in currentEffects)
         {
@@ -50,7 +49,6 @@ public class Player
         {
             EquippedWeapon = null;
         }
-        return true;
     }
     public void CheckEffect(Effects effect)
     {
