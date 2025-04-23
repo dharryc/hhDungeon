@@ -54,7 +54,6 @@ public class Program
     {
         while (RunningGame)
         {
-
             switch (RunningDungeon.currentRoom.type)
             {
                 case RoomType.empty:
@@ -81,6 +80,7 @@ public class Program
     {
         Console.Clear();
         Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
+        Console.WriteLine("   ITEM TYPE   |   ITEM COST   |   ");
         foreach (var workingItem in store.storeCosts)
         {
             switch (workingItem._type)
