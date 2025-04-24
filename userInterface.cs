@@ -260,33 +260,74 @@ public class Program
         }
     }
 
+    public static void DisplayInventoryItem(Items item, int i)
+    {
+
+        switch (item._type)
+        {
+            case ItemType.potion:
+                var potion = (Potion)item;
+                Console.WriteLine("{2})     POTION     | {0}  |        {1}          |", potion.effect, potion.duration, i);
+                break;
+            case ItemType.weapon:
+                var weapon = (Weapon)item;
+                Console.WriteLine("{2})     WEAPON     | {0}  |        {1}          |", weapon.Get_Type(), weapon.Durability(), i);
+                break;
+            case ItemType.armor:
+                var armor = (Armor)item;
+                Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor._Type, armor.Durability(), i);
+                break;
+        }
+    }
     private static void InventoryUI()
     {
+        Console.Clear();
         if (Inventory.Count > 0)
         {
             int i = 0;
             Console.WriteLine("    ITEM TYPE   |   SUBTYPE   |   ITEM DURABILITY   |");
             foreach (var item in Inventory)
             {
-                switch (item._type)
-                {
-                    case ItemType.potion:
-                        var potion = (Potion)item;
-                        Console.WriteLine("{2})     POTION     | {0}  |        {1}          |", potion.effect, potion.duration, i);
-                        break;
-                    case ItemType.weapon:
-                        var weapon = (Weapon)item;
-                        Console.WriteLine("{2})     WEAPON     | {0}  |        {1}          |", weapon.Get_Type(), weapon.Durability(), i);
-                        break;
-                    case ItemType.armor:
-                        var armor = (Armor)item;
-                        Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor._Type, armor.Durability(), i);
-                        break;
-                }
+                DisplayInventoryItem(item, i);
                 i++;
             }
             Console.WriteLine("To equip or use an item, select it by number");
             var selectedItem = Console.ReadKey();
+            if (char.IsDigit(selectedItem.KeyChar))
+            {
+                EquipOrConsume(int.Parse(selectedItem.KeyChar.ToString()));
+            }
+            else
+            {
+                Console.WriteLine("It looks like your inventory is empty right now!");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
+            }
+        }
+    }
+    private static void EquipOrConsume(int itemChoice)
+    {
+        Console.Clear();
+        Console.WriteLine("The item you've chosen to use is:");
+        DisplayInventoryItem(Inventory[itemChoice], itemChoice);
+        Console.WriteLine("\n Is this correct (y/n)?");
+        var confirm = Console.ReadKey();
+        if (char.IsDigit(confirm.KeyChar))
+        {
+            if (confirm.KeyChar == 'n' || confirm.KeyChar == 'N')
+            {
+                InventoryUI();
+            }
+            else
+            {
+                
+            }
+        }
+        else
+        {
+            Console.WriteLine("Please enter y/n");
+            Thread.Sleep(1000);
+            EquipOrConsume(itemChoice);
         }
     }
 
