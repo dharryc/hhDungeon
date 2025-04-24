@@ -6,27 +6,25 @@ public class Program
     public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
     Player? player;
     public static Dungeon? RunningDungeon;
-    public bool RunningGame = true;
-    // public void Main(string[] args)
-    // {
-    //     RunningDungeon = Dungeon.LoadGame();
-    //     player = RunningDungeon.currentPlayer;
-    //     GreetPlayer();
-    // }
+    public static bool RunningGame = true;
+    public static List<Items> Inventory => RunningDungeon.currentPlayer.items;
+    public static void Main()
+    {
+        RunningDungeon = new(new Player(), 15, 1);
+        GreetPlayer();
+    }
 
-    public void GreetPlayer()
+    public static void GreetPlayer()
     {
         Console.WriteLine(Greeting);
         Console.ReadKey();
         MainGameLoop();
     }
 
-    public void MainGameLoop()
+    public static void MainGameLoop()
     {
         while (RunningGame)
         {
-            Console.WriteLine("You're here now");
-            Thread.Sleep(500);
             switch (RunningDungeon?.currentRoom.type)
             {
                 case RoomType.empty:
@@ -40,12 +38,12 @@ public class Program
                     // LootRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.enemy:
-                    Console.WriteLine("You're in a loot Room");
+                    Console.WriteLine("You're in an enemy Room");
                     Thread.Sleep(2000);
                     // EnemyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.stair:
-                    Console.WriteLine("You're in a loot Room");
+                    Console.WriteLine("You're in a stair Room");
                     Thread.Sleep(2000);
                     // StairRoomUi(RunningDungeon.currentRoom);
                     break;
@@ -59,7 +57,7 @@ public class Program
         // EndGame();
     }
 
-    private void EmptyRoomUi(Room currentRoom)
+    private static void EmptyRoomUi(Room currentRoom)
     {
         Console.WriteLine("AAAAA");
         Thread.Sleep(2000);
@@ -219,6 +217,7 @@ public class Program
         Console.WriteLine(2 + ") Go East");
         Console.WriteLine(3 + ") Go South");
         Console.WriteLine(4 + ") Go West");
+        Console.WriteLine(5 + ") View Inventory");
         try
         {
             var keyPressed = Console.ReadKey();
@@ -229,19 +228,28 @@ public class Program
                 switch (roomChoice)
                 {
                     case 1:
-                        RunningDungeon.MoveRooms(Direction.north);
+                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.north);
                         break;
                     case 2:
                         Console.Write("youdidmakeithere");
-                        RunningDungeon.MoveRooms(Direction.east);
+                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.east);
                         break;
                     case 3:
-                        RunningDungeon.MoveRooms(Direction.south);
+                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.south);
                         break;
                     case 4:
-                        RunningDungeon.MoveRooms(Direction.west);
+                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.west);
+                        break;
+                    case 5:
+                        InventoryUI();
                         break;
                 }
+            }
+            else
+            {
+                Console.WriteLine("Please choose a valid option");
+                Thread.Sleep(500);
+                RoomNavigation();
             }
         }
         catch
@@ -252,18 +260,48 @@ public class Program
         }
     }
 
+    private static void InventoryUI()
+    {
+        if (Inventory.Count > 0)
+        {
+            int i = 0;
+            Console.WriteLine("    ITEM TYPE   |   SUBTYPE   |   ITEM DURABILITY   |");
+            foreach (var item in Inventory)
+            {
+                switch (item._type)
+                {
+                    case ItemType.potion:
+                        var potion = (Potion)item;
+                        Console.WriteLine("{2})     POTION     | {0}  |        {1}          |", potion.effect, potion.duration, i);
+                        break;
+                    case ItemType.weapon:
+                        var weapon = (Weapon)item;
+                        Console.WriteLine("{2})     WEAPON     | {0}  |        {1}          |", weapon.Get_Type(), weapon.Durability(), i);
+                        break;
+                    case ItemType.armor:
+                        var armor = (Armor)item;
+                        Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor._Type, armor.Durability(), i);
+                        break;
+                }
+                i++;
+            }
+            Console.WriteLine("To equip or use an item, select it by number");
+            var selectedItem = Console.ReadKey();
+        }
+    }
+
     private static void PurchaseItem(Room store, int itemToBuy)
     {
         if (RunningDungeon?.currentPlayer.Gold > store.storeCosts[itemToBuy].cost)
         {
             RunningDungeon.currentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
-            RunningDungeon.currentPlayer.items.Add(store.storeCosts[itemToBuy].item);
+            Inventory.Add(store.storeCosts[itemToBuy].item);
             store.storeCosts.Remove(store.storeCosts[itemToBuy]);
         }
         else
         {
             Console.WriteLine("It looks like you don't have enough gold to purchase that item!");
-            Thread.Sleep(2000);
+            Console.WriteLine("Press any key to continue");
             Console.Clear();
             StoreRoomUi(store);
         }
