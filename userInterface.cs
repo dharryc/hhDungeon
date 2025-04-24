@@ -4,9 +4,9 @@ namespace hhDungeon;
 public class Program
 {
     public static string Greeting = "Welcome to our dungeon this dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enimies these enimies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and the lengendary Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
-    Player player;
-    public static Dungeon RunningDungeon;
-    public static bool RunningGame;
+    Player? player;
+    public static Dungeon? RunningDungeon;
+    public bool RunningGame;
     public void Main(string[] args)
     {
         RunningDungeon = Dungeon.LoadGame();
@@ -20,41 +20,11 @@ public class Program
         Console.ReadKey();
     }
 
-    public void StartDungeon()
-    {
-        string Instructions = "Welcome to the first room your available options are currently" + GetCurrentOptions();
-    }
-
-
-    public string GetCurrentOptions()
-    {
-        switch (RunningDungeon.currentRoom.type)
-        {
-            case RoomType.empty:
-                return GetAvailableDoors();
-            case RoomType.store:
-                GetStoreItems();
-                break;
-            case RoomType.enemy:
-                return FightingUI.GetEnemyList(RunningDungeon);
-        }
-        return "wheee";
-    }
-
-    private void GetStoreItems()
-    {
-        throw new NotImplementedException();
-    }
-
-    private string GetAvailableDoors()
-    {
-        throw new NotImplementedException();
-    }
-    public static void MainGameLoop()
+    public void MainGameLoop()
     {
         while (RunningGame)
         {
-            switch (RunningDungeon.currentRoom.type)
+            switch (RunningDungeon?.currentRoom.type)
             {
                 case RoomType.empty:
                     EmptyRoomUi(RunningDungeon.currentRoom);
@@ -69,6 +39,8 @@ public class Program
                     StairRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.store:
+                    Console.Clear();
+                    Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
                     StoreRoomUi(RunningDungeon.currentRoom);
                     break;
             }
@@ -168,8 +140,6 @@ public class Program
     }
     private static void StoreRoomUi(Room store)
     {
-        Console.Clear();
-        Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
         Console.WriteLine("   ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |");
         int i = 1;
         foreach (var workingItem in store.storeCosts)
@@ -190,28 +160,85 @@ public class Program
             i++;
         }
         Console.Write("\n \n \n \n");
-        storePurchase(store);
+        StorePurchase(store);
     }
 
-    private static void storePurchase(Room store)
+    private static void StorePurchase(Room store)
     {
-        Console.WriteLine("Enter the number of the item you'd like to buy, or press 0 to exit the store");
+        Console.WriteLine("Choose an item you'd like to purchase by number, or press 0 to exit the store");
         int i;
         try
         {
-            i = Convert.ToInt32(Console.ReadLine());
+            i = Convert.ToInt32(Console.ReadKey());
             if (i > store.storeCosts.Count + 1)
             {
                 Console.WriteLine("Please enter a valid number");
                 Thread.Sleep(3000);
                 StoreRoomUi(store);
             }
-            
+            else
+            {
+                if (i != 0) PurchaseItem(store, i);
+                else RoomNavigation();
+            }
         }
         catch
         {
             Console.WriteLine("Please enter a valid number");
             Thread.Sleep(3000);
+            StoreRoomUi(store);
+        }
+    }
+
+    private static void RoomNavigation()
+    {
+        Console.Clear();
+        Console.WriteLine("You may:");
+        int i = 0;
+        List<Direction> CurrentOptions = [];
+        if (RunningDungeon?.coordMap[RunningDungeon.North] is not null)
+        {
+            Console.WriteLine(i + ") Go North");
+            CurrentOptions.Add(Direction.north);
+        }
+        if (RunningDungeon?.coordMap[RunningDungeon.East] is not null)
+        {
+            Console.WriteLine(i + ") Go East");
+            CurrentOptions.Add(Direction.east);
+        }
+        if (RunningDungeon?.coordMap[RunningDungeon.South] is not null)
+        {
+            Console.WriteLine(i + ") Go South");
+            CurrentOptions.Add(Direction.south);
+        }
+        if (RunningDungeon?.coordMap[RunningDungeon.West] is not null)
+        {
+            Console.WriteLine(i + ") Go West");
+            CurrentOptions.Add(Direction.west);
+        }
+        try
+        {
+            int roomChoice = Convert.ToInt32(Console.ReadKey());
+
+        }
+        catch
+        {
+
+        }
+    }
+
+    private static void PurchaseItem(Room store, int itemToBuy)
+    {
+        if (RunningDungeon?.currentPlayer.Gold > store.storeCosts[itemToBuy].cost)
+        {
+            RunningDungeon.currentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
+            RunningDungeon.currentPlayer.items.Add(store.storeCosts[itemToBuy].item);
+            store.storeCosts.Remove(store.storeCosts[itemToBuy]);
+        }
+        else
+        {
+            Console.WriteLine("It looks like you don't have enough gold to purchase that item!");
+            Thread.Sleep(2000);
             StoreRoomUi(store);
         }
     }
