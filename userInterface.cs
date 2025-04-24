@@ -3,13 +3,6 @@ namespace hhDungeon;
 
 public class Program
 {
-    public static void Main()
-    {
-        Console.Clear();
-        RunningDungeon = new Dungeon(new Player(), 15, 5);
-        Program program = new();
-        program.GreetPlayer();
-    }
     public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
     Player? player;
     public static Dungeon? RunningDungeon;
