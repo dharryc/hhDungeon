@@ -3,40 +3,58 @@ namespace hhDungeon;
 
 public class Program
 {
-    public static string Greeting = "Welcome to our dungeon this dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enimies these enimies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and the lengendary Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
+    public static void Main()
+    {
+        Console.Clear();
+        RunningDungeon = new Dungeon(new Player(), 15, 5);
+        Program program = new();
+        program.GreetPlayer();
+    }
+    public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
     Player? player;
     public static Dungeon? RunningDungeon;
-    public bool RunningGame;
-    public void Main(string[] args)
-    {
-        RunningDungeon = Dungeon.LoadGame();
-        player = RunningDungeon.currentPlayer;
-        GreetPlayer();
-    }
+    public bool RunningGame = true;
+    // public void Main(string[] args)
+    // {
+    //     RunningDungeon = Dungeon.LoadGame();
+    //     player = RunningDungeon.currentPlayer;
+    //     GreetPlayer();
+    // }
 
     public void GreetPlayer()
     {
         Console.WriteLine(Greeting);
         Console.ReadKey();
+        MainGameLoop();
     }
 
     public void MainGameLoop()
     {
         while (RunningGame)
         {
+            Console.WriteLine("You're here now");
+            Thread.Sleep(500);
             switch (RunningDungeon?.currentRoom.type)
             {
                 case RoomType.empty:
+                    Console.WriteLine("You're in an empty Room");
+                    Thread.Sleep(2000);
                     EmptyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.loot:
-                    LootRoomUi(RunningDungeon.currentRoom);
+                    Console.WriteLine("You're in a loot Room");
+                    Thread.Sleep(2000);
+                    // LootRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.enemy:
-                    EnemyRoomUi(RunningDungeon.currentRoom);
+                    Console.WriteLine("You're in a loot Room");
+                    Thread.Sleep(2000);
+                    // EnemyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.stair:
-                    StairRoomUi(RunningDungeon.currentRoom);
+                    Console.WriteLine("You're in a loot Room");
+                    Thread.Sleep(2000);
+                    // StairRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.store:
                     Console.Clear();
@@ -45,8 +63,16 @@ public class Program
                     break;
             }
         }
-        EndGame();
+        // EndGame();
     }
+
+    private void EmptyRoomUi(Room currentRoom)
+    {
+        Console.WriteLine("AAAAA");
+        Thread.Sleep(2000);
+        RoomNavigation();
+    }
+
     private static void DisplayArmor(int i, (ItemType _type, Items item, int cost) workingItem)
     {
         Armor workingArmor = (Armor)workingItem.item;
@@ -174,6 +200,7 @@ public class Program
             {
                 Console.WriteLine("Please enter a valid number");
                 Thread.Sleep(3000);
+                Console.Clear();
                 StoreRoomUi(store);
             }
             else
@@ -186,6 +213,7 @@ public class Program
         {
             Console.WriteLine("Please enter a valid number");
             Thread.Sleep(3000);
+            Console.Clear();
             StoreRoomUi(store);
         }
     }
@@ -194,36 +222,40 @@ public class Program
     {
         Console.Clear();
         Console.WriteLine("You may:");
-        int i = 0;
-        List<Direction> CurrentOptions = [];
-        if (RunningDungeon?.coordMap[RunningDungeon.North] is not null)
-        {
-            Console.WriteLine(i + ") Go North");
-            CurrentOptions.Add(Direction.north);
-        }
-        if (RunningDungeon?.coordMap[RunningDungeon.East] is not null)
-        {
-            Console.WriteLine(i + ") Go East");
-            CurrentOptions.Add(Direction.east);
-        }
-        if (RunningDungeon?.coordMap[RunningDungeon.South] is not null)
-        {
-            Console.WriteLine(i + ") Go South");
-            CurrentOptions.Add(Direction.south);
-        }
-        if (RunningDungeon?.coordMap[RunningDungeon.West] is not null)
-        {
-            Console.WriteLine(i + ") Go West");
-            CurrentOptions.Add(Direction.west);
-        }
+        Console.WriteLine(1 + ") Go North");
+        Console.WriteLine(2 + ") Go East");
+        Console.WriteLine(3 + ") Go South");
+        Console.WriteLine(4 + ") Go West");
         try
         {
-            int roomChoice = Convert.ToInt32(Console.ReadKey());
-
+            var keyPressed = Console.ReadKey();
+            int roomChoice = 1;
+            if (char.IsDigit(keyPressed.KeyChar))
+            {
+                roomChoice = int.Parse(keyPressed.KeyChar.ToString());
+                switch (roomChoice)
+                {
+                    case 1:
+                        RunningDungeon.MoveRooms(Direction.north);
+                        break;
+                    case 2:
+                        Console.Write("youdidmakeithere");
+                        RunningDungeon.MoveRooms(Direction.east);
+                        break;
+                    case 3:
+                        RunningDungeon.MoveRooms(Direction.south);
+                        break;
+                    case 4:
+                        RunningDungeon.MoveRooms(Direction.west);
+                        break;
+                }
+            }
         }
         catch
         {
-
+            Console.WriteLine("Please choose a valid option");
+            Thread.Sleep(500);
+            RoomNavigation();
         }
     }
 
@@ -239,6 +271,7 @@ public class Program
         {
             Console.WriteLine("It looks like you don't have enough gold to purchase that item!");
             Thread.Sleep(2000);
+            Console.Clear();
             StoreRoomUi(store);
         }
     }

@@ -27,6 +27,8 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
 
     public Room MoveRooms(Direction direction)
     {
+        Console.WriteLine("you're in moveRooms");
+        Thread.Sleep(500);
         switch (direction)
         {
             case Direction.east:

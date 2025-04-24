@@ -28,6 +28,8 @@ public class Room
             if (seenStairs) roomOdds = 96;
 
             int roomChoice = rnd.Next(0, roomOdds);
+            Console.WriteLine(roomChoice);
+            Thread.Sleep(2000);
 
             if (roomChoice < 61)
             {
@@ -53,6 +55,8 @@ public class Room
     }
     public void EnemyRoom(int dif)
     {
+        Console.WriteLine("You made it in EnemyRoomMaker");
+        Thread.Sleep(2000);
         // goblin 40%, slime 30%, orc 10%, troll 5%, skeleton 13%, dragon 2%
         type = RoomType.enemy;
         bool bigLoneEnemy = false;
@@ -65,22 +69,24 @@ public class Room
             enemyChoice = rnd.Next(0, enemyRange);
             if (enemyChoice < 40)
             {
+                Console.WriteLine("You made it in gobby");
+                Thread.Sleep(2000);
                 enemyList.Add(new Goblin(dif));
                 enemyChoice = 101;
-                enemyRange = 93;
+                enemyRange = 82;
                 if (enemyList.Count >= 3) i = -1;
             }
             if (enemyChoice < 70)
             {
                 enemyList.Add(new Slime(dif));
                 enemyChoice = 101;
-                enemyRange = 93;
+                enemyRange = 82;
             }
             if (enemyChoice < 83)
             {
                 enemyList.Add(new Skeleton(dif));
                 enemyChoice = 101;
-                enemyRange = 93;
+                enemyRange = 82;
                 if (enemyList.Count >= 3) i = -1;
             }
             if (enemyChoice < 93)
