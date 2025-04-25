@@ -8,16 +8,18 @@ public class Tests
     public void Setup()
     {
         List<Room> rooms = [];
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 20; i++)
         {
             rooms.Add(new Room(1, false, false));
         }
         foreach (var i in rooms) Console.WriteLine(Convert.ToString(i.type));
         foreach (var i in rooms)
         {
-            if (i.type == RoomType.store)
+            if (i.type == RoomType.enemy)
             {
-                foreach (var b in i.storeCosts) Program.DisplayInventoryItem(b.item, 1);
+                Dungeon dungeon = new Dungeon(new Player(), 15, 15);
+                dungeon.currentRoom = i;
+                FightingUI.FightEnimies(dungeon);
             }
         }
     }

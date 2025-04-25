@@ -9,11 +9,11 @@ public class Program
     public static Dungeon? RunningDungeon;
     public static bool RunningGame = true;
     public static List<Items>? Inventory => RunningDungeon?.currentPlayer.items;
-    // public static void Main()
-    // {
-    //     RunningDungeon = new(new Player(), 15, 1);
-    //     GreetPlayer();
-    // }
+    public static void Main()
+    {
+        RunningDungeon = new(new Player(), 15, 1);
+        GreetPlayer();
+    }
 
     public static void GreetPlayer()
     {
@@ -150,7 +150,7 @@ public class Program
     }
     private static void StoreRoomUi(Room store)
     {
-        Console.WriteLine("   ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |");
+        Console.WriteLine("   ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |");
         int i = 1;
         foreach (var workingItem in store.storeCosts)
         {
@@ -169,7 +169,7 @@ public class Program
             }
             i++;
         }
-        Console.Write("\n \n \n \n");
+        Console.Write("\n");
         StorePurchase(store);
     }
 
@@ -177,28 +177,11 @@ public class Program
     {
         Console.WriteLine("Choose an item you'd like to purchase by number, or press 0 to exit the store");
         int i;
-        try
+        var keyPressed = Console.ReadKey();
+        int itemChoice = -1;
+        if (char.IsDigit(keyPressed.KeyChar))
         {
-            i = Convert.ToInt32(Console.ReadKey());
-            if (i > store.storeCosts.Count + 1)
-            {
-                Console.WriteLine("Please enter a valid number");
-                Thread.Sleep(3000);
-                Console.Clear();
-                StoreRoomUi(store);
-            }
-            else
-            {
-                if (i != 0) PurchaseItem(store, i);
-                else RoomNavigation();
-            }
-        }
-        catch
-        {
-            Console.WriteLine("Please enter a valid number");
-            Thread.Sleep(3000);
-            Console.Clear();
-            StoreRoomUi(store);
+            i = Convert.ToInt32
         }
     }
 
@@ -304,7 +287,7 @@ public class Program
         DisplayInventoryItem(Inventory?[itemChoice], itemChoice);
         Console.WriteLine("\n Is this correct (y/n)?");
         var confirm = Console.ReadKey();
-        if (char.IsDigit(confirm.KeyChar))
+        if (char.IsAscii(confirm.KeyChar))
         {
             if (confirm.KeyChar == 'n' || confirm.KeyChar == 'N')
             {
@@ -312,13 +295,11 @@ public class Program
             }
             else
             {
-
+                
             }
         }
         else
         {
-            Console.WriteLine("Please enter y/n");
-            Thread.Sleep(1000);
             EquipOrConsume(itemChoice);
         }
     }
