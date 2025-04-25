@@ -9,11 +9,11 @@ public class Program
     public static Dungeon? RunningDungeon;
     public static bool RunningGame = true;
     public static List<Items>? Inventory => RunningDungeon?.currentPlayer.items;
-    public static void Main()
-    {
-        RunningDungeon = new(new Player(), 15, 1);
-        GreetPlayer();
-    }
+    // public static void Main()
+    // {
+    //     RunningDungeon = new(new Player(), 15, 1);
+    //     GreetPlayer();
+    // }
 
     public static void GreetPlayer()
     {

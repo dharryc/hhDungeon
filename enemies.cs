@@ -6,12 +6,12 @@ public abstract class Enemies
 {
     protected int Difficulty { get; set; }
     protected int Health { get; set; }
-    protected List<Items> Potential_Loot { get; private set; }
+    public List<Items> Potential_Loot = [];
     protected Weapon? equipedWeapon { get; set; }
     protected int defense { get; set; }
     protected int goldFromKill { get; set; }
 
-    protected EnemyType _Type { get; private set; }
+    public EnemyType _Type;
 
     protected int XPDrop { get; set; }
     public bool Defeated { get; private set; }
@@ -54,7 +54,7 @@ public abstract class Enemies
     }
 
     public int GetHealth()
-        { return Health; }
+    { return Health; }
 }
 public class Goblin : Enemies
 {
@@ -91,6 +91,7 @@ public class Goblin : Enemies
 
     public Goblin(int difficulty)
     {
+        _Type = EnemyType.goblin;
         Difficulty = difficulty;
         Health = 3 ^ (difficulty / 4);
         defense = rnd.Next(0, 3);
@@ -157,6 +158,7 @@ public class Slime : Enemies
         //protected List<Items> Potential_Loot { get; private set; }
         //protected object equipedWeapon { get; set; }
         //protected int defense { get; set; }
+        _Type = EnemyType.slime;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);
         defense = rnd.Next(0, 3);
@@ -228,6 +230,7 @@ public class Orc : Enemies
 
     public Orc(int difficulty)
     {
+        _Type = EnemyType.orc;
         Difficulty = difficulty;
         Health = 6 ^ (difficulty / 5);
         defense = rnd.Next(0, 3);
@@ -285,6 +288,7 @@ public class Troll : Enemies
 
     public Troll(int difficulty)
     {
+        _Type = EnemyType.troll;
         Difficulty = difficulty;
         Health = 9 ^ ((difficulty + 5) / 7);
         defense = rnd.Next(0, 3);
@@ -375,6 +379,7 @@ public class Skeleton : Enemies
 
     public Skeleton(int difficulty)
     {
+        _Type = EnemyType.skeleton;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);
         defense = rnd.Next(0, 3);
@@ -426,6 +431,7 @@ public class Dragon : Enemies
 
     public Dragon(int difficulty)
     {
+        _Type = EnemyType.dragon;
         Difficulty = difficulty;
         Health = 10 ^ ((difficulty + 7) / 7);
         defense = rnd.Next(0, 3);

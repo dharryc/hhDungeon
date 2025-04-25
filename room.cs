@@ -105,7 +105,6 @@ public class Room
             if (bigLoneEnemy) i = -1;
         }
         foreach (var i in enemyList) enemies.Add(i);
-        foreach (var i in enemyList) Console.WriteLine(JsonSerializer.Serialize(i));
     }
     public void LootRoom(int dif)
     {
@@ -160,13 +159,11 @@ public class Room
         for (int i = 0; i < 5; i++)
         {
             itemChoice = rnd.Next(0, 3);
-            Console.Write(itemChoice);
             if (itemChoice == 0) AddArmor(dif);
             if (itemChoice == 1) AddWeapon(dif);
             if (itemChoice == 2) AddPotion();
         }
         foreach (var item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
-        foreach (var item in itemsInRoom) Console.WriteLine(JsonSerializer.Serialize(Convert.ToString(item._type)));
     }
     public void StairRoom()
     {
