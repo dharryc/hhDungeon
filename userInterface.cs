@@ -1,13 +1,14 @@
 
+using System.Text.Json;
+
 namespace hhDungeon;
 
 public class Program
 {
     public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
-    Player? player;
     public static Dungeon? RunningDungeon;
     public static bool RunningGame = true;
-    public static List<Items> Inventory => RunningDungeon.currentPlayer.items;
+    public static List<Items>? Inventory => RunningDungeon?.currentPlayer.items;
     public static void Main()
     {
         RunningDungeon = new(new Player(), 15, 1);
@@ -25,6 +26,7 @@ public class Program
     {
         while (RunningGame)
         {
+            Console.WriteLine(JsonSerializer.Serialize(RunningDungeon.currentRoom));
             switch (RunningDungeon?.currentRoom.type)
             {
                 case RoomType.empty:
@@ -48,7 +50,6 @@ public class Program
                     // StairRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.store:
-                    Console.Clear();
                     Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
                     StoreRoomUi(RunningDungeon.currentRoom);
                     break;
@@ -59,24 +60,23 @@ public class Program
 
     private static void EmptyRoomUi(Room currentRoom)
     {
-        Console.WriteLine("AAAAA");
-        Thread.Sleep(2000);
         RoomNavigation();
     }
 
     private static void DisplayArmor(int i, (ItemType _type, Items item, int cost) workingItem)
     {
         Armor workingArmor = (Armor)workingItem.item;
-        Console.WriteLine(i + "    ARMOR      |");
+        Console.WriteLine();
+        Console.Write(i + "    ARMOR      |");
         switch (workingArmor.GetType())
         {
             case ArmorType.boots:
-                Console.Write("    BOOTS    |");
+                Console.Write("    BOOTS     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("         " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
             case ArmorType.chestplate:
-                Console.Write(" CHESTPLATE  |");
+                Console.Write(" CHESTPLATE   |");
                 Console.Write("      " + workingItem.cost + "       |");
                 Console.Write("         " + workingItem.item.Durability() + "          |");
                 break;
@@ -86,9 +86,9 @@ public class Program
                 Console.Write("         " + workingItem.item.Durability() + "          |");
                 break;
             case ArmorType.leggings:
-                Console.Write("    PANTS    |");
+                Console.Write("    PANTS     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("         " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
         }
 
@@ -99,19 +99,20 @@ public class Program
         //    ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |
         //     WEAPON     |    SWORD    |      22       |        22           |
         Weapon workingWeapon = (Weapon)workingItem.item;
-        Console.WriteLine(i + "    WEAPON     |");
+        Console.WriteLine();
+        Console.Write(i + "    WEAPON     |");
         switch (workingWeapon.Get_Type())
         {
 
             case WeaponType.club:
-                Console.Write("    CLUB     |");
+                Console.Write("    CLUB      |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "          |");
                 break;
             case WeaponType.dagger:
-                Console.Write("   DAGGER    |");
+                Console.Write("   DAGGER     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "          |");
                 break;
             case WeaponType.rib:
                 Console.Write("     RIB     |");
@@ -119,14 +120,14 @@ public class Program
                 Console.Write("      " + workingItem.item.Durability() + "           |");
                 break;
             case WeaponType.shortsword:
-                Console.Write(" SHORTSWORD  |");
+                Console.Write(" SHORTSWORD   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "          |");
                 break;
             case WeaponType.sword:
-                Console.Write("    SWORD    |");
+                Console.Write("    SWORD     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "          |");
                 break;
         }
     }
@@ -135,23 +136,24 @@ public class Program
         //    ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |
         //     POTION     | DEFENCE UP  |      22       |        22           |
         Potion workingPotion = (Potion)workingItem.item;
-        Console.WriteLine(i + "    POTION     |");
+        Console.WriteLine();
+        Console.Write(i + "    POTION     |");
         switch (workingPotion.effect)
         {
             case Effects.regeneration:
-                Console.Write(" REGENERATION|");
+                Console.Write(" REGENERATION |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
             case Effects.strength:
-                Console.Write("  STRENGTH   |");
+                Console.Write("  STRENGTH    |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
             case Effects.defenseBoost:
-                Console.Write(" DEFENCE UP  |");
+                Console.Write(" DEFENCE UP   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
         }
     }
@@ -228,17 +230,16 @@ public class Program
                 switch (roomChoice)
                 {
                     case 1:
-                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.north);
+                        RunningDungeon?.MoveRooms(Direction.north);
                         break;
                     case 2:
-                        Console.Write("youdidmakeithere");
-                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.east);
+                        RunningDungeon?.MoveRooms(Direction.east);
                         break;
                     case 3:
-                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.south);
+                        RunningDungeon?.MoveRooms(Direction.south);
                         break;
                     case 4:
-                        RunningDungeon.currentRoom = RunningDungeon.MoveRooms(Direction.west);
+                        RunningDungeon?.MoveRooms(Direction.west);
                         break;
                     case 5:
                         InventoryUI();
@@ -260,10 +261,10 @@ public class Program
         }
     }
 
-    public static void DisplayInventoryItem(Items item, int i)
+    public static void DisplayInventoryItem(Items? item, int i)
     {
 
-        switch (item._type)
+        switch (item?._type)
         {
             case ItemType.potion:
                 var potion = (Potion)item;
@@ -282,7 +283,7 @@ public class Program
     private static void InventoryUI()
     {
         Console.Clear();
-        if (Inventory.Count > 0)
+        if (Inventory?.Count > 0)
         {
             int i = 0;
             Console.WriteLine("    ITEM TYPE   |   SUBTYPE   |   ITEM DURABILITY   |");
@@ -309,7 +310,7 @@ public class Program
     {
         Console.Clear();
         Console.WriteLine("The item you've chosen to use is:");
-        DisplayInventoryItem(Inventory[itemChoice], itemChoice);
+        DisplayInventoryItem(Inventory?[itemChoice], itemChoice);
         Console.WriteLine("\n Is this correct (y/n)?");
         var confirm = Console.ReadKey();
         if (char.IsDigit(confirm.KeyChar))
@@ -320,7 +321,7 @@ public class Program
             }
             else
             {
-                
+
             }
         }
         else
@@ -336,7 +337,7 @@ public class Program
         if (RunningDungeon?.currentPlayer.Gold > store.storeCosts[itemToBuy].cost)
         {
             RunningDungeon.currentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
-            Inventory.Add(store.storeCosts[itemToBuy].item);
+            Inventory?.Add(store.storeCosts[itemToBuy].item);
             store.storeCosts.Remove(store.storeCosts[itemToBuy]);
         }
         else

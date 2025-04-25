@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace hhDungeon;
 public enum RoomType
 {
@@ -13,7 +15,7 @@ public class Room
     public RoomType type;
     public List<Items> itemsInRoom = [];
     public List<(ItemType _type, Items item, int cost)> storeCosts = [];
-    public List<Enemies>? enemies;
+    public List<Enemies> enemies = [];
     readonly Random rnd = new();
     public Room(int incomingDifficulty, bool seenStairs, bool lastRoom)
     {
@@ -28,9 +30,6 @@ public class Room
             if (seenStairs) roomOdds = 96;
 
             int roomChoice = rnd.Next(0, roomOdds);
-            Console.WriteLine(roomChoice);
-            Thread.Sleep(2000);
-
             if (roomChoice < 61)
             {
                 EnemyRoom(incomingDifficulty);
@@ -50,13 +49,11 @@ public class Room
             {
                 StoreRoom(incomingDifficulty);
             }
-            else StairRoom();
         }
+
     }
     public void EnemyRoom(int dif)
     {
-        Console.WriteLine("You made it in EnemyRoomMaker");
-        Thread.Sleep(2000);
         // goblin 40%, slime 30%, orc 10%, troll 5%, skeleton 13%, dragon 2%
         type = RoomType.enemy;
         bool bigLoneEnemy = false;
@@ -69,8 +66,6 @@ public class Room
             enemyChoice = rnd.Next(0, enemyRange);
             if (enemyChoice < 40)
             {
-                Console.WriteLine("You made it in gobby");
-                Thread.Sleep(2000);
                 enemyList.Add(new Goblin(dif));
                 enemyChoice = 101;
                 enemyRange = 82;
@@ -109,6 +104,8 @@ public class Room
             }
             if (bigLoneEnemy) i = -1;
         }
+        foreach (var i in enemyList) enemies.Add(i);
+        foreach (var i in enemyList) Console.WriteLine(JsonSerializer.Serialize(i));
     }
     public void LootRoom(int dif)
     {
@@ -137,7 +134,11 @@ public class Room
 
     private void AddArmor(int dif)
     {
-        itemsInRoom.Add(new Armor((ArmorType)Enum.ToObject(typeof(ArmorType), rnd.Next(0, 4))));
+        int armorChoice = rnd.Next(0, 4);
+        if (armorChoice == 0) itemsInRoom.Add(new Armor(ArmorType.boots, rnd.Next(0, 4)));
+        if (armorChoice == 1) itemsInRoom.Add(new Armor(ArmorType.chestplate, rnd.Next(0, 4)));
+        if (armorChoice == 2) itemsInRoom.Add(new Armor(ArmorType.helmet, rnd.Next(0, 4)));
+        if (armorChoice == 3) itemsInRoom.Add(new Armor(ArmorType.leggings, rnd.Next(0, 4)));
     }
 
     private void AddWeapon(int difficulty)
@@ -159,20 +160,13 @@ public class Room
         for (int i = 0; i < 5; i++)
         {
             itemChoice = rnd.Next(0, 3);
-            switch (itemChoice)
-            {
-                case 0:
-                    AddArmor(dif);
-                    break;
-                case 1:
-                    AddWeapon(dif);
-                    break;
-                case 2:
-                    AddPotion();
-                    break;
-            }
+            Console.Write(itemChoice);
+            if (itemChoice == 0) AddArmor(dif);
+            if (itemChoice == 1) AddWeapon(dif);
+            if (itemChoice == 2) AddPotion();
         }
-        foreach (Items item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
+        foreach (var item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
+        foreach (var item in itemsInRoom) Console.WriteLine(JsonSerializer.Serialize(Convert.ToString(item._type)));
     }
     public void StairRoom()
     {

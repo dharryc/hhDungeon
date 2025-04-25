@@ -1,7 +1,7 @@
 ﻿namespace hhDungeon;
 
 public enum ItemType { potion, weapon, armor };
-public enum WeaponType { dagger, sword, club, shortsword,rib };
+public enum WeaponType { dagger, sword, club, shortsword, rib };
 
 public enum ArmorType { chestplate, leggings, boots, helmet };
 public abstract class Items
@@ -54,6 +54,7 @@ public class Weapon : Equipment
 
     public Weapon(WeaponType type, int base_damage = 3, int _size = 2, int _durability = 15)
     {
+        _type = ItemType.weapon;
         _weaponType = type;
         _damage = base_damage;
         size = _size;
@@ -81,6 +82,7 @@ public class Armor : Equipment
 
     public Armor(ArmorType type, int base_defense = 3, int _size = 2)
     {
+        _type = ItemType.armor;
         _Type = type;
         _defence = base_defense;
         size = _size;
