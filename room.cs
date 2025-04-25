@@ -129,6 +129,11 @@ public class Room
         }
     }
 
+    public void MakeEmpty()
+    {
+        this.type = RoomType.empty;
+    }
+
     private void AddArmor(int dif)
     {
         itemsInRoom.Add(new Armor((ArmorType)Enum.ToObject(typeof(ArmorType), rnd.Next(0, 4))));
