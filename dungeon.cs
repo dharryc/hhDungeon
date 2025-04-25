@@ -18,7 +18,7 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     public (int x, int y) South => (X, Y - 1);
     public (int x, int y) East => (X + 1, Y);
     public (int x, int y) West => (X - 1, Y);
-    int DifficultyLevel = baseDifficulty;
+    public int DifficultyLevel = baseDifficulty;
     public Player currentPlayer = player ?? new Player();
     public Room currentRoom = new(RoomType.empty);
     int RoomsExplored;

@@ -3,7 +3,7 @@ public class Player
 {
     public Random rnd = new();
     public int XP;
-    public double MaxHealth;
+    public int MaxHealth;
     public int CurrentHealth;
     public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
@@ -90,6 +90,7 @@ public class Player
     {
         BaseATK *= 1.5;
         BaseDefense *= 1.5;
-        MaxHealth += 1.5;
+        double newHealth = MaxHealth * 1.5;
+        MaxHealth = (int)newHealth;
     }
 }

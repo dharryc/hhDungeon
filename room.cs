@@ -131,6 +131,11 @@ public class Room
         }
     }
 
+    public void MakeEmpty()
+    {
+        this.type = RoomType.empty;
+    }
+
     private void AddArmor(int dif)
     {
         int armorChoice = rnd.Next(0, 4);

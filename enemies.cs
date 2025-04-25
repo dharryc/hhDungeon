@@ -9,7 +9,7 @@ public abstract class Enemies
     public List<Items> Potential_Loot = [];
     protected Weapon? equipedWeapon { get; set; }
     protected int defense { get; set; }
-    protected int goldFromKill { get; set; }
+    public int goldFromKill { get; set; }
 
     public EnemyType _Type;
 
@@ -23,6 +23,13 @@ public abstract class Enemies
         {
             Defeated = true;
         }
+        if(Defeated)
+        {
+            if(equipedWeapon is not null)
+            {
+                Potential_Loot.Add(equipedWeapon);
+            }
+        }
     }
 
     public abstract int Attack(int player_maxhealth, int player_level, int difficulty);
@@ -31,7 +38,7 @@ public abstract class Enemies
     {
         return _Type;
     }
-    public object ViewLoot()
+    public List<Items> ViewLoot()
     {
         if (Defeated)
         {
@@ -41,7 +48,7 @@ public abstract class Enemies
             return null;
     }
 
-    public object? GrabLoot()
+    public List<Items> GrabLoot()
     {
         if (Defeated)
         {
@@ -89,7 +96,7 @@ public class Goblin : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold) + diff_level);
     }
 
-    public Goblin(int difficulty)
+    public Goblin(int difficulty, int PlayerLevel = 1)
     {
         _Type = EnemyType.goblin;
         Difficulty = difficulty;
@@ -111,6 +118,8 @@ public class Goblin : Enemies
         {
             Potential_Loot.Add(new Armor(ArmorType.chestplate, 2, 3));
         }
+
+        goldFromKill = GrabGold(difficulty, PlayerLevel);
 
     }
 }
