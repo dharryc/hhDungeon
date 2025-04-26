@@ -1,5 +1,5 @@
 using System.Text.Json;
-namespace hhDungeon;
+namespace hhTestDungeon;
 public enum Direction
 {
     north, south, east, west,

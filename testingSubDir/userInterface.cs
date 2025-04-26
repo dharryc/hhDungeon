@@ -1,17 +1,20 @@
 
 using System.Text.Json;
 
-namespace hhDungeon;
+namespace hhTestDungeon;
 
 public class Program
 {
     public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
-    public static Dungeon? RunningDungeon;
+    public static Dungeon RunningDungeon;
     public static bool RunningGame = true;
-    public static List<Items>? Inventory => RunningDungeon?.currentPlayer.items;
+    public static List<Items>? Inventory => RunningDungeon.currentPlayer.items;
+    public static Player CurrentPlayer => RunningDungeon.currentPlayer;
     public static void Main()
     {
-        RunningDungeon = new(new Player(), 15, 1);
+        var o = new Player();
+        Console.Clear();
+        RunningDungeon = new(o, 15, 1);
         GreetPlayer();
     }
 
@@ -19,6 +22,7 @@ public class Program
     {
         Console.WriteLine(Greeting);
         Console.ReadKey();
+        Console.Clear();
         MainGameLoop();
     }
 
@@ -41,6 +45,7 @@ public class Program
                     //stair stuff
                     break;
                 case RoomType.store:
+                    Console.Clear();
                     Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
                     StoreRoomUi(RunningDungeon.currentRoom);
                     break;
@@ -58,7 +63,7 @@ public class Program
     {
         Armor workingArmor = (Armor)workingItem.item;
         Console.WriteLine();
-        Console.Write(i + "    ARMOR      |");
+        Console.Write(i + "|   ARMOR      |");
         switch (workingArmor.GetType())
         {
             case ArmorType.boots:
@@ -69,12 +74,12 @@ public class Program
             case ArmorType.chestplate:
                 Console.Write(" CHESTPLATE   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("         " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
             case ArmorType.helmet:
                 Console.Write("    HELMET    |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("         " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability() + "           |");
                 break;
             case ArmorType.leggings:
                 Console.Write("    PANTS     |");
@@ -91,7 +96,7 @@ public class Program
         //     WEAPON     |    SWORD    |      22       |        22           |
         Weapon workingWeapon = (Weapon)workingItem.item;
         Console.WriteLine();
-        Console.Write(i + "    WEAPON     |");
+        Console.Write(i + "|   WEAPON     |");
         switch (workingWeapon.Get_Type())
         {
 
@@ -128,7 +133,7 @@ public class Program
         //     POTION     | DEFENCE UP  |      22       |        22           |
         Potion workingPotion = (Potion)workingItem.item;
         Console.WriteLine();
-        Console.Write(i + "    POTION     |");
+        Console.Write(i + "|   POTION     |");
         switch (workingPotion.effect)
         {
             case Effects.regeneration:
@@ -150,7 +155,7 @@ public class Program
     }
     private static void StoreRoomUi(Room store)
     {
-        Console.WriteLine("   ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |");
+        Console.WriteLine("#| ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY  |");
         int i = 1;
         foreach (var workingItem in store.storeCosts)
         {
@@ -169,25 +174,35 @@ public class Program
             }
             i++;
         }
-        Console.Write("\n");
+        Console.WriteLine("\n");
         StorePurchase(store);
     }
 
     private static void StorePurchase(Room store)
     {
         Console.WriteLine("Choose an item you'd like to purchase by number, or press 0 to exit the store");
-        int i;
-        var keyPressed = Console.ReadKey();
-        int itemChoice = -1;
-        if (char.IsDigit(keyPressed.KeyChar))
+        try
         {
-            i = Convert.ToInt32
+            Console.WriteLine("Yoou");
+            var i = Convert.ToInt32(Console.ReadKey().KeyChar.ToString());
+            if (i != -1 && i != 0) PurchaseItem(store, i - 1);
+            else
+            {
+                Console.Clear();
+                RoomNavigation();
+            }
+        }
+        catch
+        {
+            Console.WriteLine("Yoou noooooo");
+            Console.ReadKey();
+            Console.WriteLine("Please enter a valid option");
+            StorePurchase(store);
         }
     }
 
     private static void RoomNavigation()
     {
-        Console.Clear();
         Console.WriteLine("You may:");
         Console.WriteLine(1 + ") Go North");
         Console.WriteLine(2 + ") Go East");
@@ -223,14 +238,12 @@ public class Program
             else
             {
                 Console.WriteLine("Please choose a valid option");
-                Thread.Sleep(500);
                 RoomNavigation();
             }
         }
         catch
         {
             Console.WriteLine("Please choose a valid option");
-            Thread.Sleep(500);
             RoomNavigation();
         }
     }
@@ -279,6 +292,11 @@ public class Program
                 Console.ReadKey();
             }
         }
+        else
+        {
+            Console.WriteLine("It looks like your inventory is empty. Press any key to continue");
+            Console.ReadKey();
+        }
     }
     private static void EquipOrConsume(int itemChoice)
     {
@@ -295,7 +313,7 @@ public class Program
             }
             else
             {
-                
+
             }
         }
         else
@@ -306,9 +324,11 @@ public class Program
 
     private static void PurchaseItem(Room store, int itemToBuy)
     {
-        if (RunningDungeon?.currentPlayer.Gold > store.storeCosts[itemToBuy].cost)
+        foreach (var i in store.storeCosts) Console.WriteLine(JsonSerializer.Serialize(i.item) + " " + itemToBuy);
+        Console.ReadKey();
+        if (CurrentPlayer.Gold >= store.storeCosts[itemToBuy].cost)
         {
-            RunningDungeon.currentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
+            CurrentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
             Inventory?.Add(store.storeCosts[itemToBuy].item);
             store.storeCosts.Remove(store.storeCosts[itemToBuy]);
         }
@@ -319,5 +339,6 @@ public class Program
             Console.Clear();
             StoreRoomUi(store);
         }
+        Console.ReadKey();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace hhDungeon;
+﻿namespace hhTestDungeon;
 
 public class FightingUI
 {

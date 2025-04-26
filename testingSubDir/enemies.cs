@@ -1,4 +1,4 @@
-namespace hhDungeon;
+namespace hhTestDungeon;
 
 
 public enum EnemyType { goblin, slime, orc, troll, skeleton, dragon };

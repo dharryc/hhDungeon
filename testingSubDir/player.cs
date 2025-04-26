@@ -1,4 +1,4 @@
-namespace hhDungeon;
+namespace hhTestDungeon;
 public class Player
 {
     public Random rnd = new();
@@ -8,7 +8,7 @@ public class Player
     public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
     public Weapon? EquippedWeapon;
-    public int Gold;
+    public int Gold = 0;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
     public int CurrentLevel;

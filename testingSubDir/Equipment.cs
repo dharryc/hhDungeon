@@ -1,4 +1,4 @@
-﻿namespace hhDungeon;
+﻿namespace hhTestDungeon;
 
 public enum ItemType { potion, weapon, armor };
 public enum WeaponType { dagger, sword, club, shortsword, rib };

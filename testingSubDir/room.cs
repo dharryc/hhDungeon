@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace hhDungeon;
+namespace hhTestDungeon;
 public enum RoomType
 {
     enemy, //60% chance
@@ -20,38 +20,37 @@ public class Room
     public Room(int incomingDifficulty, bool seenStairs, bool lastRoom)
     {
         // enemy 60% chance, loot 10% chance, store 5% chance, stair 5% chance, empty 20% chance
-        if (lastRoom && !seenStairs)
-        {
-            StairRoom();
-        }
-        else
-        {
-            int roomOdds = 101;
-            if (seenStairs) roomOdds = 96;
+        StoreRoom(incomingDifficulty);
+        // if (lastRoom && !seenStairs)
+        // {
+        //     StairRoom();
+        // }
+        // else
+        // {
+        //     int roomOdds = 101;
+        //     if (seenStairs) roomOdds = 96;
 
-            int roomChoice = rnd.Next(0, roomOdds);
-            if (roomChoice < 61)
-            {
-                StoreRoom(incomingDifficulty);
-                // EnemyRoom(incomingDifficulty);
-                roomChoice = 101;
-            }
-            if (roomChoice < 81)
-            {
-                StoreRoom(incomingDifficulty);
-                // EmptyRoom();
-                roomChoice = 101;
-            }
-            if (roomChoice < 91)
-            {
-                LootRoom(incomingDifficulty);
-                roomChoice = 101;
-            }
-            if (roomChoice < 96)
-            {
-                StoreRoom(incomingDifficulty);
-            }
-        }
+        //     int roomChoice = rnd.Next(0, roomOdds);
+        //     if (roomChoice < 61)
+        //     {
+        //         EnemyRoom(incomingDifficulty);
+        //         roomChoice = 101;
+        //     }
+        //     if (roomChoice < 81)
+        //     {
+        //         EmptyRoom();
+        //         roomChoice = 101;
+        //     }
+        //     if (roomChoice < 91)
+        //     {
+        //         LootRoom(incomingDifficulty);
+        //         roomChoice = 101;
+        //     }
+        //     if (roomChoice < 96)
+        //     {
+        //         StoreRoom(incomingDifficulty);
+        //     }
+        // }
 
     }
     public void EnemyRoom(int dif)
