@@ -168,7 +168,7 @@ public class Room
             if (itemChoice == 1) AddWeapon(dif);
             if (itemChoice == 2) AddPotion();
         }
-        foreach (var item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
+        foreach (var item in itemsInRoom) storeCosts.Add((item.TypeOfItem, item, dif * rnd.Next(1, 5)));
     }
     public void StairRoom()
     {

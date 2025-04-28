@@ -11,6 +11,10 @@ public class Player
     public int Gold;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
+    public (Armor, int durability)? chestplate;
+    public (Armor, int durability)? leggings;
+    public (Armor, int durability)? boots;
+    public (Armor, int durability)? helmet;
     public int CurrentLevel;
     public double BaseATK;
     public double CurrentATK;
@@ -49,6 +53,10 @@ public class Player
         {
             EquippedWeapon = null;
         }
+        if (chestplate is not null) BaseDefense += (double)chestplate?.Item1._defence;
+        if (leggings is not null) BaseDefense += (double)leggings?.Item1._defence;
+        if (helmet is not null) BaseDefense += (double)helmet?.Item1._defence;
+        if (boots is not null) BaseDefense += (double)boots?.Item1._defence;
     }
     public void CheckEffect(Effects effect)
     {

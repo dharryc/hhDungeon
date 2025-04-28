@@ -255,7 +255,7 @@ public class Program
     public static void DisplayInventoryItem(Items? item, int i)
     {
 
-        switch (item?._type)
+        switch (item?.TypeOfItem)
         {
             case ItemType.potion:
                 var potion = (Potion)item;
@@ -267,7 +267,7 @@ public class Program
                 break;
             case ItemType.armor:
                 var armor = (Armor)item;
-                Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor._Type, armor.Durability(), i);
+                Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor.TypeOfArmor, armor.Durability(), i);
                 break;
         }
     }

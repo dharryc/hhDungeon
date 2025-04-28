@@ -140,15 +140,15 @@ public class Room
     private void AddArmor(int dif)
     {
         int armorChoice = rnd.Next(0, 4);
-        if (armorChoice == 0) itemsInRoom.Add(new Armor(ArmorType.boots, rnd.Next(0, 4)));
-        if (armorChoice == 1) itemsInRoom.Add(new Armor(ArmorType.chestplate, rnd.Next(0, 4)));
-        if (armorChoice == 2) itemsInRoom.Add(new Armor(ArmorType.helmet, rnd.Next(0, 4)));
-        if (armorChoice == 3) itemsInRoom.Add(new Armor(ArmorType.leggings, rnd.Next(0, 4)));
+        if (armorChoice == 0) itemsInRoom.Add(new Armor(ArmorType.boots, rnd.Next(5, 15)));
+        if (armorChoice == 1) itemsInRoom.Add(new Armor(ArmorType.chestplate, rnd.Next(5, 15)));
+        if (armorChoice == 2) itemsInRoom.Add(new Armor(ArmorType.helmet, rnd.Next(5, 15)));
+        if (armorChoice == 3) itemsInRoom.Add(new Armor(ArmorType.leggings, rnd.Next(5, 15)));
     }
 
     private void AddWeapon(int difficulty)
     {
-        itemsInRoom.Add(new Weapon((WeaponType)Enum.ToObject(typeof(WeaponType), rnd.Next(0, 4)), rnd.Next(3, 3 * difficulty)));
+        itemsInRoom.Add(new Weapon((WeaponType)Enum.ToObject(typeof(WeaponType), rnd.Next(5, 11)), rnd.Next(3, 3 * difficulty)));
     }
 
     private void AddPotion()
@@ -169,7 +169,7 @@ public class Room
             if (itemChoice == 1) AddWeapon(dif);
             if (itemChoice == 2) AddPotion();
         }
-        foreach (var item in itemsInRoom) storeCosts.Add((item._type, item, dif * rnd.Next(1, 5)));
+        foreach (var item in itemsInRoom) storeCosts.Add((item.TypeOfItem, item, dif * rnd.Next(1, 5)));
     }
     public void StairRoom()
     {

@@ -8,9 +8,13 @@ public class Player
     public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
     public Weapon? EquippedWeapon;
-    public int Gold = 0;
+    public int Gold;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
+    public (Armor equippedChestplate, int durability) chestplate = (new Armor(ArmorType.chestplate, 0, 0), 0);
+    public (Armor equippedLeggings, int durability) leggings = (new Armor(ArmorType.leggings, 0, 0), 0);
+    public (Armor equippedHelmet, int durability) helmet = (new Armor(ArmorType.helmet, 0, 0), 0);
+    public (Armor equippedBoots, int durability) boots = (new Armor(ArmorType.boots, 0, 0), 0);
     public int CurrentLevel;
     public double BaseATK;
     public double CurrentATK;
@@ -49,6 +53,10 @@ public class Player
         {
             EquippedWeapon = null;
         }
+        BaseDefense += chestplate.equippedChestplate._defence;
+        BaseDefense += leggings.equippedLeggings._defence;
+        BaseDefense += helmet.equippedHelmet._defence;
+        BaseDefense += boots.equippedBoots._defence;
     }
     public void CheckEffect(Effects effect)
     {

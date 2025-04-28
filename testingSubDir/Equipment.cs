@@ -6,9 +6,9 @@ public enum WeaponType { dagger, sword, club, shortsword, rib };
 public enum ArmorType { chestplate, leggings, boots, helmet };
 public abstract class Items
 {
-    public ItemType _type { get; set; }
-    protected int size { get; set; }
-    protected int _Durability { get; set; }
+    public ItemType TypeOfItem { get; set; }
+    public int size { get; set; }
+    public int _Durability { get; set; }
 
     public int GetSize()
     {
@@ -24,7 +24,7 @@ public abstract class Items
 
 public class Equipment : Items
 {
-    protected bool _Equipped { get; set; }
+    public bool _Equipped { get; set; }
 
     public bool AmIEquipped()
     { return _Equipped; }
@@ -40,8 +40,8 @@ public class Equipment : Items
 
 public class Weapon : Equipment
 {
-    protected WeaponType _weaponType { get; }
-    protected int _damage { get; }
+    public WeaponType TypeOfWeapon { get; }
+    public int _damage { get; }
 
     public int AttackWith()
     {
@@ -50,12 +50,12 @@ public class Weapon : Equipment
     }
 
     public WeaponType Get_Type()
-    { return _weaponType; }
+    { return TypeOfWeapon; }
 
     public Weapon(WeaponType type, int base_damage = 3, int _size = 2, int _durability = 15)
     {
-        _type = ItemType.weapon;
-        _weaponType = type;
+        TypeOfItem = ItemType.weapon;
+        TypeOfWeapon = type;
         _damage = base_damage;
         size = _size;
         _Durability = _durability;
@@ -65,8 +65,8 @@ public class Weapon : Equipment
 
 public class Armor : Equipment
 {
-    public ArmorType _Type { get; }
-    protected int _defence { get; }
+    public ArmorType TypeOfArmor { get; }
+    public int _defence { get; }
 
     public int Defend()
     {
@@ -75,15 +75,12 @@ public class Armor : Equipment
     }
 
     public ArmorType GetType()
-    { return _Type; }
-
-
-    public int GetDefence() => _defence;
+    { return TypeOfArmor; }
 
     public Armor(ArmorType type, int base_defense = 3, int _size = 2)
     {
-        _type = ItemType.armor;
-        _Type = type;
+        TypeOfItem = ItemType.armor;
+        TypeOfArmor = type;
         _defence = base_defense;
         size = _size;
     }

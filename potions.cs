@@ -10,6 +10,6 @@ public class Potion : Items
         duration = durationIn;
         size = 1;
         _Durability = 1;
-        _type = ItemType.potion;
+        TypeOfItem = ItemType.potion;
     }
 }

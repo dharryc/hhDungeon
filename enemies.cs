@@ -4,16 +4,16 @@ namespace hhDungeon;
 public enum EnemyType { goblin, slime, orc, troll, skeleton, dragon };
 public abstract class Enemies
 {
-    protected int Difficulty { get; set; }
-    protected int Health { get; set; }
+    public int Difficulty { get; set; }
+    public int Health { get; set; }
     public List<Items> Potential_Loot = [];
-    protected Weapon? equipedWeapon { get; set; }
-    protected int defense { get; set; }
+    public Weapon? equipedWeapon { get; set; }
+    public int defense { get; set; }
     public int goldFromKill { get; set; }
 
     public EnemyType _Type;
 
-    protected int XPDrop { get; set; }
+    public int XPDrop { get; set; }
     public bool Defeated { get; private set; }
     //Methods
     public void TakeDamage(int Amount)
@@ -162,11 +162,11 @@ public class Slime : Enemies
 
     public Slime(int difficulty)
     {
-        //protected int Difficulty { get; set; }
-        //protected int Health { get; set; }
-        //protected List<Items> Potential_Loot { get; private set; }
-        //protected object equipedWeapon { get; set; }
-        //protected int defense { get; set; }
+        //public int Difficulty { get; set; }
+        //public int Health { get; set; }
+        //public List<Items> Potential_Loot { get; private set; }
+        //public object equipedWeapon { get; set; }
+        //public int defense { get; set; }
         _Type = EnemyType.slime;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);

@@ -58,10 +58,11 @@ public class Program
         Console.WriteLine(3 + ") Go South");
         Console.WriteLine(4 + ") Go West");
         Console.WriteLine(5 + ") View Inventory");
+        if (RunningDungeon.currentRoom.type == RoomType.store) Console.WriteLine(6 + ") Re-enter store");
         try
         {
             var keyPressed = Console.ReadKey();
-            int roomChoice = 1;
+            int roomChoice = 0;
             if (char.IsDigit(keyPressed.KeyChar))
             {
                 roomChoice = int.Parse(keyPressed.KeyChar.ToString());
@@ -81,6 +82,19 @@ public class Program
                         break;
                     case 5:
                         InventoryUI();
+                        break;
+                    case 6:
+                        if (RunningDungeon.currentRoom.type == RoomType.store)
+                        {
+                            Console.Clear();
+                            StoreRoomUi(RunningDungeon.currentRoom);
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Please choose a valid option");
+                            RoomNavigation();
+                        }
                         break;
                     default:
                         Console.Clear();
@@ -115,7 +129,7 @@ public class Program
         Armor workingArmor = (Armor)workingItem.item;
         Console.WriteLine();
         Console.Write(i + "|   ARMOR      |");
-        switch (workingArmor.GetType())
+        switch (workingArmor.TypeOfArmor)
         {
             case ArmorType.boots:
                 Console.Write("    BOOTS     |");
@@ -210,6 +224,7 @@ public class Program
         {
             Console.WriteLine("It looks like this store is empty!\nPress any key to continue");
             Console.ReadKey();
+            Console.Clear();
             RoomNavigation();
         }
         else
@@ -230,7 +245,6 @@ public class Program
                     case ItemType.weapon:
                         DisplayWeapon(i, workingItem);
                         break;
-
                 }
                 i++;
             }
@@ -267,20 +281,16 @@ public class Program
 
     public static void DisplayInventoryItem(Items? item, int i)
     {
-
-        switch (item?._type)
+        switch (item?.TypeOfItem)
         {
+            case ItemType.armor:
+                DisplayArmor(i, (item.TypeOfItem, item, 0));
+                break;
             case ItemType.potion:
-                var potion = (Potion)item;
-                Console.WriteLine("{2})     POTION     | {0}  |        {1}          |", potion.effect, potion.duration, i);
+                DisplayPotion(i, (item.TypeOfItem, item, 0));
                 break;
             case ItemType.weapon:
-                var weapon = (Weapon)item;
-                Console.WriteLine("{2})     WEAPON     | {0}  |        {1}          |", weapon.Get_Type(), weapon.Durability(), i);
-                break;
-            case ItemType.armor:
-                var armor = (Armor)item;
-                Console.WriteLine("{2})      ARMOR     | {0}  |        {1}          |", armor._Type, armor.Durability(), i);
+                DisplayWeapon(i, (item.TypeOfItem, item, 0));
                 break;
         }
     }
@@ -296,18 +306,16 @@ public class Program
                 DisplayInventoryItem(item, i);
                 i++;
             }
+            Console.WriteLine();
             Console.WriteLine("To equip or use an item, select it by number");
             var selectedItem = Console.ReadKey();
-            if (char.IsDigit(selectedItem.KeyChar))
+            try
             {
                 EquipOrConsume(int.Parse(selectedItem.KeyChar.ToString()));
             }
-            else
+            catch
             {
-                Console.WriteLine("It looks like your inventory is empty right now!");
-                Console.WriteLine("Press any key to continue");
-                Console.ReadKey();
-                Console.Clear();
+                InventoryUI();
             }
         }
         else
@@ -333,13 +341,16 @@ public class Program
             }
             else if (confirm.KeyChar == 'y' || confirm.KeyChar == 'Y')
             {
-                switch (itemToUse._type)
+                switch (itemToUse.TypeOfItem)
                 {
                     case ItemType.armor:
+                        EquipArmor(itemToUse);
                         break;
                     case ItemType.potion:
+                        drinkPotion(itemToUse);
                         break;
                     case ItemType.weapon:
+                        equipWeapon(itemToUse);
                         break;
                 }
             }
@@ -350,13 +361,48 @@ public class Program
         }
     }
 
+    private static void equipWeapon(Items itemToUse)
+    {
+        CurrentPlayer.EquippedWeapon = (Weapon)itemToUse;
+    }
+
+    private static void drinkPotion(Items itemToUse)
+    {
+        Potion potion = (Potion)itemToUse;
+        CurrentPlayer.currentEffects.Add((potion.effect, potion.duration));
+    }
+
+    private static void EquipArmor(Items itemToUse)
+    {
+        var armor = (Armor)itemToUse;
+        switch (armor.TypeOfArmor)
+        {
+            case ArmorType.boots:
+                CurrentPlayer.boots = (armor, armor._Durability);
+                break;
+            case ArmorType.helmet:
+                CurrentPlayer.helmet = (armor, armor._Durability);
+                break;
+            case ArmorType.leggings:
+                CurrentPlayer.leggings = (armor, armor._Durability);
+                break;
+            case ArmorType.chestplate:
+                CurrentPlayer.chestplate = (armor, armor._Durability);
+                break;
+        }
+    }
+
     private static void PurchaseItem(Room store, int itemToBuy)
     {
+        Console.Clear();
         if (CurrentPlayer.Gold >= store.storeCosts[itemToBuy].cost)
         {
+            Console.WriteLine("Success!");
+            Console.WriteLine("The " + store.storeCosts[itemToBuy].item.TypeOfItem.ToString().ToUpper() + " has been added to your inventory\nPress any key to continue");
             CurrentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
             Inventory?.Add(store.storeCosts[itemToBuy].item);
             store.storeCosts.Remove(store.storeCosts[itemToBuy]);
+            Console.ReadKey();
         }
         else
         {

@@ -60,7 +60,7 @@ public class FightingUI
                 Gold += enimy.goldFromKill;
                 foreach (var loot in enimy.ViewLoot())
                 {
-                    Loot += loot._type.ToString() + " and ";
+                    Loot += loot.TypeOfItem.ToString() + " and ";
                 }
             }
         }
