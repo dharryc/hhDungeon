@@ -41,7 +41,7 @@ public class FightingUI
         Console.WriteLine(GetRoomLootInToString(dungeon.currentRoom));
         Console.WriteLine("do you wish to grab the loot, if so, press 1 and enter otherwise press enter");
         bool ShouldContinue = Console.ReadLine() == "1";
-        if(ShouldContinue)
+        if (ShouldContinue)
         {
             GrabLootFromRoom(dungeon);
             dungeon.currentRoom.MakeEmpty();
@@ -50,7 +50,7 @@ public class FightingUI
 
     public static string GetRoomLootInToString(Room room)
     {
-        string Loot = "";
+        string Loot = "Type of Item  |  Durability  | Size";
         if (room.enemies is not null)
         {
 
@@ -60,7 +60,18 @@ public class FightingUI
                 Gold += enimy.goldFromKill;
                 foreach (var loot in enimy.ViewLoot())
                 {
-                    Loot += loot._type.ToString() + " and ";
+                    Loot = "\n " + loot.GetType().Name ;
+                    for (int i = loot.GetType().ToString().Length; i < 15; i++)
+                    {
+                        Loot += " ";
+                    }
+                    Loot += "|   " + loot.Durability();
+                    for (int i = loot.Durability().ToString().Length; i < 15; i++)
+                    {
+                        Loot += " ";
+                    }
+                    Loot += "|   " + loot.GetSize();
+
                 }
             }
         }
@@ -105,10 +116,15 @@ public class FightingUI
 
     public static string BuildEnemyStringFormat(Dungeon dungeon)
     {
-        string ToReturn = "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room, they are ";
+        string ToReturn = "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room";
         foreach (var enemy in dungeon.currentRoom.enemies)
         {
-            ToReturn += enemy.GetType().ToString() + " at " + enemy.GetHealth() + " health";
+            ToReturn += "\n" + enemy.GetType().ToString();
+            for (int i = enemy.GetType().ToString().ToCharArray().Length; i < 12;)
+            {
+                ToReturn += " ";
+            }
+            ToReturn += "| " + enemy.GetHealth();
         }
         return ToReturn;
 
