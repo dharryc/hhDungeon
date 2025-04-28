@@ -1,6 +1,3 @@
-
-using System.Text.Json;
-
 namespace hhTestDungeon;
 
 public class Program
@@ -13,6 +10,7 @@ public class Program
     public static void Main()
     {
         var o = new Player();
+        o.Gold = 50000;
         Console.Clear();
         RunningDungeon = new(o, 15, 1);
         GreetPlayer();
@@ -46,16 +44,69 @@ public class Program
                     break;
                 case RoomType.store:
                     Console.Clear();
-                    Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
                     StoreRoomUi(RunningDungeon.currentRoom);
                     break;
             }
         }
         // EndGame();
     }
+    private static void RoomNavigation()
+    {
+        Console.WriteLine("You may:");
+        Console.WriteLine(1 + ") Go North");
+        Console.WriteLine(2 + ") Go East");
+        Console.WriteLine(3 + ") Go South");
+        Console.WriteLine(4 + ") Go West");
+        Console.WriteLine(5 + ") View Inventory");
+        try
+        {
+            var keyPressed = Console.ReadKey();
+            int roomChoice = 1;
+            if (char.IsDigit(keyPressed.KeyChar))
+            {
+                roomChoice = int.Parse(keyPressed.KeyChar.ToString());
+                switch (roomChoice)
+                {
+                    case 1:
+                        RunningDungeon?.MoveRooms(Direction.north);
+                        break;
+                    case 2:
+                        RunningDungeon?.MoveRooms(Direction.east);
+                        break;
+                    case 3:
+                        RunningDungeon?.MoveRooms(Direction.south);
+                        break;
+                    case 4:
+                        RunningDungeon?.MoveRooms(Direction.west);
+                        break;
+                    case 5:
+                        InventoryUI();
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Please choose a valid option");
+                        RoomNavigation();
+                        break;
+
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Please choose a valid option");
+                RoomNavigation();
+            }
+        }
+        catch
+        {
+            Console.Clear();
+            RoomNavigation();
+        }
+    }
 
     private static void EmptyRoomUi(Room currentRoom)
     {
+        Console.WriteLine("You're in an empty room");
         RoomNavigation();
     }
 
@@ -155,27 +206,37 @@ public class Program
     }
     private static void StoreRoomUi(Room store)
     {
-        Console.WriteLine("#| ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY  |");
-        int i = 1;
-        foreach (var workingItem in store.storeCosts)
+        if (store.storeCosts.Count == 0)
         {
-            switch (workingItem._type)
-            {
-                case ItemType.armor:
-                    DisplayArmor(i, workingItem);
-                    break;
-                case ItemType.potion:
-                    DisplayPotion(i, workingItem);
-                    break;
-                case ItemType.weapon:
-                    DisplayWeapon(i, workingItem);
-                    break;
-
-            }
-            i++;
+            Console.WriteLine("It looks like this store is empty!\nPress any key to continue");
+            Console.ReadKey();
+            RoomNavigation();
         }
-        Console.WriteLine("\n");
-        StorePurchase(store);
+        else
+        {
+            Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
+            Console.WriteLine("#| ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY  |");
+            int i = 1;
+            foreach (var workingItem in store.storeCosts)
+            {
+                switch (workingItem._type)
+                {
+                    case ItemType.armor:
+                        DisplayArmor(i, workingItem);
+                        break;
+                    case ItemType.potion:
+                        DisplayPotion(i, workingItem);
+                        break;
+                    case ItemType.weapon:
+                        DisplayWeapon(i, workingItem);
+                        break;
+
+                }
+                i++;
+            }
+            Console.WriteLine("\n");
+            StorePurchase(store);
+        }
     }
 
     private static void StorePurchase(Room store)
@@ -183,70 +244,26 @@ public class Program
         Console.WriteLine("Choose an item you'd like to purchase by number, or press 0 to exit the store");
         try
         {
-            Console.WriteLine("Yoou");
             var i = Convert.ToInt32(Console.ReadKey().KeyChar.ToString());
-            if (i != -1 && i != 0) PurchaseItem(store, i - 1);
-            else
+            if (i != -1 && i != 0 && i <= store.storeCosts.Count) PurchaseItem(store, i - 1);
+            else if (i == 0)
             {
                 Console.Clear();
                 RoomNavigation();
             }
+            else
+            {
+                Console.Clear();
+                StoreRoomUi(store);
+            }
         }
         catch
         {
-            Console.WriteLine("Yoou noooooo");
-            Console.ReadKey();
-            Console.WriteLine("Please enter a valid option");
-            StorePurchase(store);
+            Console.Clear();
+            StoreRoomUi(store);
         }
     }
 
-    private static void RoomNavigation()
-    {
-        Console.WriteLine("You may:");
-        Console.WriteLine(1 + ") Go North");
-        Console.WriteLine(2 + ") Go East");
-        Console.WriteLine(3 + ") Go South");
-        Console.WriteLine(4 + ") Go West");
-        Console.WriteLine(5 + ") View Inventory");
-        try
-        {
-            var keyPressed = Console.ReadKey();
-            int roomChoice = 1;
-            if (char.IsDigit(keyPressed.KeyChar))
-            {
-                roomChoice = int.Parse(keyPressed.KeyChar.ToString());
-                switch (roomChoice)
-                {
-                    case 1:
-                        RunningDungeon?.MoveRooms(Direction.north);
-                        break;
-                    case 2:
-                        RunningDungeon?.MoveRooms(Direction.east);
-                        break;
-                    case 3:
-                        RunningDungeon?.MoveRooms(Direction.south);
-                        break;
-                    case 4:
-                        RunningDungeon?.MoveRooms(Direction.west);
-                        break;
-                    case 5:
-                        InventoryUI();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Please choose a valid option");
-                RoomNavigation();
-            }
-        }
-        catch
-        {
-            Console.WriteLine("Please choose a valid option");
-            RoomNavigation();
-        }
-    }
 
     public static void DisplayInventoryItem(Items? item, int i)
     {
@@ -273,7 +290,7 @@ public class Program
         if (Inventory?.Count > 0)
         {
             int i = 0;
-            Console.WriteLine("    ITEM TYPE   |   SUBTYPE   |   ITEM DURABILITY   |");
+            Console.WriteLine("    ITEM TYPE     |   SUBTYPE   |   ITEM DURABILITY   |");
             foreach (var item in Inventory)
             {
                 DisplayInventoryItem(item, i);
@@ -290,19 +307,22 @@ public class Program
                 Console.WriteLine("It looks like your inventory is empty right now!");
                 Console.WriteLine("Press any key to continue");
                 Console.ReadKey();
+                Console.Clear();
             }
         }
         else
         {
             Console.WriteLine("It looks like your inventory is empty. Press any key to continue");
             Console.ReadKey();
+            Console.Clear();
         }
     }
     private static void EquipOrConsume(int itemChoice)
     {
+        var itemToUse = Inventory?[itemChoice];
         Console.Clear();
         Console.WriteLine("The item you've chosen to use is:");
-        DisplayInventoryItem(Inventory?[itemChoice], itemChoice);
+        DisplayInventoryItem(itemToUse, itemChoice);
         Console.WriteLine("\n Is this correct (y/n)?");
         var confirm = Console.ReadKey();
         if (char.IsAscii(confirm.KeyChar))
@@ -311,9 +331,17 @@ public class Program
             {
                 InventoryUI();
             }
-            else
+            else if (confirm.KeyChar == 'y' || confirm.KeyChar == 'Y')
             {
-
+                switch (itemToUse._type)
+                {
+                    case ItemType.armor:
+                        break;
+                    case ItemType.potion:
+                        break;
+                    case ItemType.weapon:
+                        break;
+                }
             }
         }
         else
@@ -324,8 +352,6 @@ public class Program
 
     private static void PurchaseItem(Room store, int itemToBuy)
     {
-        foreach (var i in store.storeCosts) Console.WriteLine(JsonSerializer.Serialize(i.item) + " " + itemToBuy);
-        Console.ReadKey();
         if (CurrentPlayer.Gold >= store.storeCosts[itemToBuy].cost)
         {
             CurrentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
@@ -336,9 +362,9 @@ public class Program
         {
             Console.WriteLine("It looks like you don't have enough gold to purchase that item!");
             Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
             Console.Clear();
             StoreRoomUi(store);
         }
-        Console.ReadKey();
     }
 }
