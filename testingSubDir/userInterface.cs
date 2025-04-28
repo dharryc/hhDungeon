@@ -134,22 +134,22 @@ public class Program
             case ArmorType.boots:
                 Console.Write("    BOOTS     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case ArmorType.chestplate:
                 Console.Write(" CHESTPLATE   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case ArmorType.helmet:
                 Console.Write("    HELMET    |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case ArmorType.leggings:
-                Console.Write("    PANTS     |");
+                Console.Write("   LEGGINGS   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
         }
 
@@ -162,33 +162,33 @@ public class Program
         Weapon workingWeapon = (Weapon)workingItem.item;
         Console.WriteLine();
         Console.Write(i + "|   WEAPON     |");
-        switch (workingWeapon.Get_Type())
+        switch (workingWeapon.TypeOfWeapon)
         {
 
             case WeaponType.club:
                 Console.Write("    CLUB      |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case WeaponType.dagger:
                 Console.Write("   DAGGER     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case WeaponType.rib:
-                Console.Write("     RIB     |");
+                Console.Write("     RIB      |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("      " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case WeaponType.shortsword:
                 Console.Write(" SHORTSWORD   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case WeaponType.sword:
                 Console.Write("    SWORD     |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "          |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
         }
     }
@@ -204,17 +204,17 @@ public class Program
             case Effects.regeneration:
                 Console.Write(" REGENERATION |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case Effects.strength:
                 Console.Write("  STRENGTH    |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
             case Effects.defenseBoost:
                 Console.Write(" DEFENCE UP   |");
                 Console.Write("      " + workingItem.cost + "       |");
-                Console.Write("        " + workingItem.item.Durability() + "           |");
+                Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
         }
     }
@@ -307,11 +307,13 @@ public class Program
                 i++;
             }
             Console.WriteLine();
-            Console.WriteLine("To equip or use an item, select it by number");
-            var selectedItem = Console.ReadKey();
+            Console.WriteLine("You currently have {0:n0} Gold", CurrentPlayer.Gold);
+            Console.WriteLine("To use or equip, select an item by number, then press enter, or press e to exit");
+            var selectedItem = Console.ReadLine();
             try
             {
-                EquipOrConsume(int.Parse(selectedItem.KeyChar.ToString()));
+                if (selectedItem?.ToString() == "e" || selectedItem?.ToString() == "E") RoomNavigation();
+                else EquipOrConsume(int.Parse(selectedItem.ToString()));
             }
             catch
             {
@@ -341,7 +343,7 @@ public class Program
             }
             else if (confirm.KeyChar == 'y' || confirm.KeyChar == 'Y')
             {
-                switch (itemToUse.TypeOfItem)
+                switch (itemToUse?.TypeOfItem)
                 {
                     case ItemType.armor:
                         EquipArmor(itemToUse);
@@ -350,7 +352,7 @@ public class Program
                         drinkPotion(itemToUse);
                         break;
                     case ItemType.weapon:
-                        equipWeapon(itemToUse);
+                        EquipWeapon(itemToUse);
                         break;
                 }
             }
@@ -361,7 +363,7 @@ public class Program
         }
     }
 
-    private static void equipWeapon(Items itemToUse)
+    private static void EquipWeapon(Items itemToUse)
     {
         CurrentPlayer.EquippedWeapon = (Weapon)itemToUse;
     }
@@ -378,16 +380,28 @@ public class Program
         switch (armor.TypeOfArmor)
         {
             case ArmorType.boots:
-                CurrentPlayer.boots = (armor, armor._Durability);
+                CurrentPlayer.boots = (armor, armor.Durability);
+                Console.Clear();
+                Console.WriteLine("You've equipped the Boots! Press any key to continue");
+                Console.ReadKey();
                 break;
             case ArmorType.helmet:
-                CurrentPlayer.helmet = (armor, armor._Durability);
+                CurrentPlayer.helmet = (armor, armor.Durability);
+                Console.Clear();
+                Console.WriteLine("You've equipped the Helmet! Press any key to continue");
+                Console.ReadKey();
                 break;
             case ArmorType.leggings:
-                CurrentPlayer.leggings = (armor, armor._Durability);
+                CurrentPlayer.leggings = (armor, armor.Durability);
+                Console.Clear();
+                Console.WriteLine("You've equipped the Leggings! Press any key to continue");
+                Console.ReadKey();
                 break;
             case ArmorType.chestplate:
-                CurrentPlayer.chestplate = (armor, armor._Durability);
+                CurrentPlayer.chestplate = (armor, armor.Durability);
+                Console.Clear();
+                Console.WriteLine("You've equipped the Chestplate! Press any key to continue");
+                Console.ReadKey();
                 break;
         }
     }

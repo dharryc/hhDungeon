@@ -49,7 +49,7 @@ public class Player
             if (i.duration <= 0) currentEffects.Remove(i);
             else CheckEffect(i.effect);
         }
-        if (EquippedWeapon?.Durability() <= 0)
+        if (EquippedWeapon?.Durability <= 0)
         {
             EquippedWeapon = null;
         }

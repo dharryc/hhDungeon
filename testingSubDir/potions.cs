@@ -8,8 +8,8 @@ public class Potion : Items
     {
         effect = effectIn;
         duration = durationIn;
-        size = 1;
-        _Durability = 1;
+        Size = 1;
+        Durability = 1;
         TypeOfItem = ItemType.potion;
     }
 }
