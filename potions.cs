@@ -4,6 +4,7 @@ public class Potion : Items
 {
     public Effects effect { get; }
     public int duration { get; }
+
     public Potion(Effects effectIn, int durationIn)
     {
         effect = effectIn;

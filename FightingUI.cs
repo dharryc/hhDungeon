@@ -21,15 +21,15 @@ public class FightingUI
         bool enemiesAlive = true;
         while (enemiesAlive)
         {
-
             Console.WriteLine(BuildEnemyStringFormat(dungeon));
             Console.WriteLine("Which Enemy do you want to atack?");
             int choice = GetChoice(dungeon.currentRoom.enemies.Count());
-            dungeon.currentRoom.enemies[choice].TakeDamage((int)dungeon.currentPlayer.Attack().damage);
+            dungeon
+                .currentRoom.enemies[choice]
+                .TakeDamage((int)dungeon.currentPlayer.Attack().damage);
             enemiesAlive = AreEnimiesAlive(dungeon);
 
             AttackPlayer(dungeon);
-
         }
 
         LootRoom(dungeon);
@@ -38,7 +38,9 @@ public class FightingUI
     public static void LootRoom(Dungeon dungeon)
     {
         Console.WriteLine(GetRoomLootInToString(dungeon.currentRoom));
-        Console.WriteLine("do you wish to grab the loot, if so, press 1 and enter otherwise press enter");
+        Console.WriteLine(
+            "do you wish to grab the loot, if so, press 1 and enter otherwise press enter"
+        );
         bool ShouldContinue = Console.ReadLine() == "1";
         if (ShouldContinue)
         {
@@ -52,7 +54,6 @@ public class FightingUI
         string Loot = "Type of Item  |  Durability  | Size";
         if (room.enemies is not null)
         {
-
             int Gold = 0;
             foreach (var enemy in room.enemies)
             {
@@ -82,10 +83,13 @@ public class FightingUI
     {
         foreach (var Enimy in dungeon.currentRoom.enemies)
         {
-            dungeon.currentPlayer.CurrentHealth -= Enimy.Attack(dungeon.currentPlayer.MaxHealth, dungeon.currentPlayer.CurrentLevel, dungeon.DifficultyLevel);
+            dungeon.currentPlayer.CurrentHealth -= Enimy.Attack(
+                dungeon.currentPlayer.MaxHealth,
+                dungeon.currentPlayer.CurrentLevel,
+                dungeon.DifficultyLevel
+            );
         }
     }
-
 
     public static bool AreEnimiesAlive(Dungeon dungeon)
     {
@@ -98,12 +102,12 @@ public class FightingUI
             }
         }
         return enimiesDead == dungeon.currentRoom.enemies.Count();
-
     }
 
     public static string BuildEnemyStringFormat(Dungeon dungeon)
     {
-        string ToReturn = "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room";
+        string ToReturn =
+            "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room";
         int enemyNum = 0;
         foreach (var enemy in dungeon.currentRoom.enemies)
         {
@@ -116,7 +120,6 @@ public class FightingUI
             ToReturn += "| " + enemy.GetHealth();
         }
         return ToReturn;
-
     }
 
     public static string GetEnemyList(Dungeon dungeon)

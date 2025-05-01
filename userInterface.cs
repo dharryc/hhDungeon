@@ -4,12 +4,14 @@ namespace hhDungeon;
 
 public class Program
 {
-    public static string Greeting = "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
+    public static string Greeting =
+        "Welcome to our dungeon! This dungeon was made by Harry and Himni \nThis dungeon works such that there will be shops along your way. \nThere will also be many enemies. These enemies include the goblins, slimes, orcs (\"the goblins big brothers\"), Trolls, and *the LEGENDARY* Dragons\nThere will also be armor and weapons that you can equip.\nPress any key to continue";
     public static Dungeon RunningDungeon;
     public static bool RunningGame = true;
     public static List<Items>? Inventory => RunningDungeon.currentPlayer.items;
     public static Player CurrentPlayer => RunningDungeon.currentPlayer;
     public static Random Rnd = new();
+
     public static void Main()
     {
         Console.Clear();
@@ -32,19 +34,24 @@ public class Program
             switch (RunningDungeon?.currentRoom.type)
             {
                 case RoomType.empty:
+                    CurrentPlayer.CheckStateBasedActions();
                     EmptyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.loot:
+                    CurrentPlayer.CheckStateBasedActions();
                     LootRoomUi();
                     break;
                 case RoomType.enemy:
+                    CurrentPlayer.CheckStateBasedActions();
                     Console.Clear();
                     EnemyUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.stair:
+                    CurrentPlayer.CheckStateBasedActions();
                     StairRoomUi();
                     break;
                 case RoomType.store:
+                    CurrentPlayer.CheckStateBasedActions();
                     Console.Clear();
                     StoreRoomUi(RunningDungeon.currentRoom);
                     break;
@@ -82,7 +89,9 @@ public class Program
     private static void StairRoomUi()
     {
         Console.Clear();
-        Console.WriteLine("You've entered a STAIR ROOM! If you DECEND, the dungeon will get harder!");
+        Console.WriteLine(
+            "You've entered a STAIR ROOM! If you DECEND, the dungeon will get harder!"
+        );
         Console.WriteLine("Press y to decend, and any other key to continue exploring this floor!");
         var keyPressed = Console.ReadKey();
         if (char.IsAscii(keyPressed.KeyChar))
@@ -103,25 +112,43 @@ public class Program
         List<Items> loot = [];
         int goldWon = 0;
         var enemyList = currentRoom.enemies;
-        if (enemyList.Count == 0) RoomNavigation();
+        if (enemyList.Count == 0)
+            RoomNavigation();
         Console.WriteLine("You've entered a room with {0} Enemies!\n", enemyList.Count);
         while (enemyList.Count > 0)
         {
-            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
+            Console.WriteLine(
+                "CURRENT HEALTH: {0}   |   GOLD: {1}   ",
+                CurrentPlayer.CurrentHealth,
+                CurrentPlayer.Gold
+            );
             Console.WriteLine("Choose an enemy to attack!");
             Console.WriteLine("# |   ENEMY TYPE   |   HEALTH   ");
             DisplayEnemies(enemyList);
             int attackedEnemy = ChooseEnemyToAttack(enemyList.Count);
             var damageDealt = CurrentPlayer.Attack();
             Console.Clear();
-            if (damageDealt.crit) Console.WriteLine("You scored a CRITICAL HIT, dealing {0} damage to the {1}!", (int)damageDealt.damage, enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
-            else Console.WriteLine("You did {0} damage to the {1}!", (int)damageDealt.damage, enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
+            if (damageDealt.crit)
+                Console.WriteLine(
+                    "You scored a CRITICAL HIT, dealing {0} damage to the {1}!",
+                    (int)damageDealt.damage,
+                    enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper()
+                );
+            else
+                Console.WriteLine(
+                    "You did {0} damage to the {1}!",
+                    (int)damageDealt.damage,
+                    enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper()
+                );
             Console.WriteLine("Press any key to continue!");
             Console.ReadKey();
             enemyList[attackedEnemy].TakeDamage((int)damageDealt.damage);
             if (enemyList[attackedEnemy].Defeated)
             {
-                Console.WriteLine("You defeated the {0}!", enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
+                Console.WriteLine(
+                    "You defeated the {0}!",
+                    enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper()
+                );
                 loot.AddRange(enemyList[attackedEnemy].Potential_Loot);
                 goldWon += enemyList[attackedEnemy].GoldFromKill;
                 enemyList.RemoveAt(attackedEnemy);
@@ -129,13 +156,22 @@ public class Program
             if (enemyList.Count > 0)
             {
                 var enemy = enemyList[Rnd.Next(0, enemyList.Count)];
-                int damageToTake = enemy.Attack(CurrentPlayer.MaxHealth, CurrentPlayer.playerLevel, RunningDungeon.DifficultyLevel);
-                Console.WriteLine("The {0} attacks you doing {1} pts of damage!", enemy.TypeOfEnemy.ToString().ToUpper(), damageToTake);
+                int damageToTake = enemy.Attack(
+                    CurrentPlayer.MaxHealth,
+                    CurrentPlayer.playerLevel,
+                    RunningDungeon.DifficultyLevel
+                );
+                Console.WriteLine(
+                    "The {0} attacks you doing {1} pts of damage!",
+                    enemy.TypeOfEnemy.ToString().ToUpper(),
+                    damageToTake
+                );
                 Console.WriteLine("Press any key to continue!");
                 Console.ReadKey();
                 CurrentPlayer.CurrentHealth -= damageToTake;
             }
-            if (CurrentPlayer.CurrentHealth <= 0) GameOver();
+            if (CurrentPlayer.CurrentHealth <= 0)
+                GameOver();
             if (enemyList.Count == 0)
             {
                 currentRoom.type = RoomType.empty;
@@ -146,7 +182,8 @@ public class Program
         Console.Clear();
         CurrentPlayer.Gold += goldWon;
         Console.WriteLine("You've defeated all the enemies!\nYour reward is:\n\n{0} Gold", goldWon);
-        foreach (var i in loot) DisplayInventoryItem(i, loot.IndexOf(i));
+        foreach (var i in loot)
+            DisplayInventoryItem(i, loot.IndexOf(i));
         Console.WriteLine("\nPress any key to continue");
         Console.ReadKey();
     }
@@ -160,9 +197,12 @@ public class Program
             i++;
         }
     }
+
     private static void GameOver()
     {
-        Console.WriteLine("You've died! To run the dungeon again, press any key, or to exit, press CTRL + C");
+        Console.WriteLine(
+            "You've died! To run the dungeon again, press any key, or to exit, press CTRL + C"
+        );
         Console.ReadKey();
         Main();
     }
@@ -172,7 +212,8 @@ public class Program
         var keyPressed = Console.ReadKey();
         if (char.IsDigit(keyPressed.KeyChar))
         {
-            if (int.Parse(keyPressed.KeyChar.ToString()) < maxIndex) return int.Parse(keyPressed.KeyChar.ToString());
+            if (int.Parse(keyPressed.KeyChar.ToString()) < maxIndex)
+                return int.Parse(keyPressed.KeyChar.ToString());
         }
         else
         {
@@ -215,14 +256,19 @@ public class Program
 
     private static void RoomNavigation()
     {
-        Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
+        Console.WriteLine(
+            "CURRENT HEALTH: {0}   |   GOLD: {1}   ",
+            CurrentPlayer.CurrentHealth,
+            CurrentPlayer.Gold
+        );
         Console.WriteLine("You may:");
         Console.WriteLine(1 + ") Go North");
         Console.WriteLine(2 + ") Go East");
         Console.WriteLine(3 + ") Go South");
         Console.WriteLine(4 + ") Go West");
         Console.WriteLine(5 + ") View Inventory");
-        if (RunningDungeon.currentRoom.type == RoomType.store) Console.WriteLine(6 + ") Re-enter store");
+        if (RunningDungeon.currentRoom.type == RoomType.store)
+            Console.WriteLine(6 + ") Re-enter store");
         try
         {
             var keyPressed = Console.ReadKey();
@@ -265,7 +311,6 @@ public class Program
                         Console.WriteLine("Please choose a valid option");
                         RoomNavigation();
                         break;
-
                 }
             }
             else
@@ -317,11 +362,10 @@ public class Program
                 Console.Write("        " + workingItem.item.Durability + "           |");
                 break;
         }
-
     }
+
     private static void DisplayWeapon(int i, (ItemType _type, Items item, int cost) workingItem)
     {
-
         //    ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |
         //     WEAPON     |    SWORD    |      22       |        22           |
         Weapon workingWeapon = (Weapon)workingItem.item;
@@ -329,7 +373,6 @@ public class Program
         Console.Write(i + "|   WEAPON     |");
         switch (workingWeapon.TypeOfWeapon)
         {
-
             case WeaponType.club:
                 Console.Write("    CLUB      |");
                 Console.Write("      " + workingItem.cost + "       |");
@@ -357,6 +400,7 @@ public class Program
                 break;
         }
     }
+
     private static void DisplayPotion(int i, (ItemType _type, Items item, int cost) workingItem)
     {
         //    ITEM TYPE   |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY   |
@@ -383,6 +427,7 @@ public class Program
                 break;
         }
     }
+
     private static void StoreRoomUi(Room store)
     {
         if (store.storeCosts.Count == 0)
@@ -395,7 +440,9 @@ public class Program
         else
         {
             Console.WriteLine("You've entered a small shop! The items avalible to purchase are:");
-            Console.WriteLine("#| ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY  |");
+            Console.WriteLine(
+                "#| ITEM TYPE    |   SUBTYPE   |   ITEM COST   |   ITEM DURABILITY  |"
+            );
             int i = 1;
             foreach (var workingItem in store.storeCosts)
             {
@@ -420,11 +467,14 @@ public class Program
 
     private static void StorePurchase(Room store)
     {
-        Console.WriteLine("Choose an item you'd like to purchase by number, or press 0 to exit the store");
+        Console.WriteLine(
+            "Choose an item you'd like to purchase by number, or press 0 to exit the store"
+        );
         try
         {
             var i = Convert.ToInt32(Console.ReadKey().KeyChar.ToString());
-            if (i != -1 && i != 0 && i <= store.storeCosts.Count) PurchaseItem(store, i - 1);
+            if (i != -1 && i != 0 && i <= store.storeCosts.Count)
+                PurchaseItem(store, i - 1);
             else if (i == 0)
             {
                 Console.Clear();
@@ -443,7 +493,6 @@ public class Program
         }
     }
 
-
     public static void DisplayInventoryItem(Items? item, int i)
     {
         switch (item?.TypeOfItem)
@@ -459,12 +508,17 @@ public class Program
                 break;
         }
     }
+
     private static void InventoryUI()
     {
         Console.Clear();
         if (Inventory?.Count > 0)
         {
-            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
+            Console.WriteLine(
+                "CURRENT HEALTH: {0}   |   GOLD: {1}   ",
+                CurrentPlayer.CurrentHealth,
+                CurrentPlayer.Gold
+            );
             int i = 0;
             Console.WriteLine("    ITEM TYPE     |   SUBTYPE   |   ITEM DURABILITY   |");
             foreach (var item in Inventory)
@@ -474,12 +528,16 @@ public class Program
             }
             Console.WriteLine();
             Console.WriteLine("You currently have {0:n0} Gold", CurrentPlayer.Gold);
-            Console.WriteLine("To use or equip, select an item by number, then press enter, or press e to exit");
+            Console.WriteLine(
+                "To use or equip, select an item by number, then press enter, or press e to exit"
+            );
             var selectedItem = Console.ReadLine();
             try
             {
-                if (selectedItem?.ToString() == "e" || selectedItem?.ToString() == "E") RoomNavigation();
-                else EquipOrConsume(int.Parse(selectedItem.ToString()));
+                if (selectedItem?.ToString() == "e" || selectedItem?.ToString() == "E")
+                    RoomNavigation();
+                else
+                    EquipOrConsume(int.Parse(selectedItem.ToString()));
             }
             catch
             {
@@ -488,12 +546,17 @@ public class Program
         }
         else
         {
-            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
+            Console.WriteLine(
+                "CURRENT HEALTH: {0}   |   GOLD: {1}   ",
+                CurrentPlayer.CurrentHealth,
+                CurrentPlayer.Gold
+            );
             Console.WriteLine("It looks like your inventory is empty. Press any key to continue");
             Console.ReadKey();
             Console.Clear();
         }
     }
+
     private static void EquipOrConsume(int itemChoice)
     {
         var itemToUse = Inventory?[itemChoice];
@@ -580,7 +643,11 @@ public class Program
         if (CurrentPlayer.Gold >= store.storeCosts[itemToBuy].cost)
         {
             Console.WriteLine("Success!");
-            Console.WriteLine("The " + store.storeCosts[itemToBuy].item.TypeOfItem.ToString().ToUpper() + " has been added to your inventory\nPress any key to continue");
+            Console.WriteLine(
+                "The "
+                    + store.storeCosts[itemToBuy].item.TypeOfItem.ToString().ToUpper()
+                    + " has been added to your inventory\nPress any key to continue"
+            );
             CurrentPlayer.Gold -= store.storeCosts[itemToBuy].cost;
             Inventory?.Add(store.storeCosts[itemToBuy].item);
             store.storeCosts.Remove(store.storeCosts[itemToBuy]);

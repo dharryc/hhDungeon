@@ -1,7 +1,15 @@
 namespace hhDungeon;
 
+public enum EnemyType
+{
+    goblin,
+    slime,
+    orc,
+    troll,
+    skeleton,
+    dragon,
+};
 
-public enum EnemyType { goblin, slime, orc, troll, skeleton, dragon };
 public abstract class Enemies
 {
     public int Difficulty { get; set; }
@@ -15,6 +23,7 @@ public abstract class Enemies
 
     public int XPDrop { get; set; }
     public bool Defeated { get; private set; }
+
     //Methods
     public void TakeDamage(int Amount)
     {
@@ -52,8 +61,11 @@ public abstract class Enemies
     }
 
     public int GetHealth()
-    { return Health; }
+    {
+        return Health;
+    }
 }
+
 public class Goblin : Enemies
 {
     static int min_damage_rel_player = 12;
@@ -62,6 +74,7 @@ public class Goblin : Enemies
     static int gold_cap = 10;
     static int min_gold = 0;
     static int max_gold = 3;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -99,7 +112,10 @@ public class Goblin : Enemies
             EquipedWeapon = new Weapon(WeaponType.dagger, difficulty, 1);
             Potential_Loot.Add(EquipedWeapon);
         }
-        else { EquipedWeapon = null; }
+        else
+        {
+            EquipedWeapon = null;
+        }
 
         if (rnd.Next(0, (9 / difficulty) + 2) == 0)
         {
@@ -112,10 +128,8 @@ public class Goblin : Enemies
         }
 
         GoldFromKill = GrabGold(difficulty, PlayerLevel);
-
     }
 }
-
 
 public class Slime : Enemies
 {
@@ -125,6 +139,7 @@ public class Slime : Enemies
     int gold_cap = 5;
     int min_gold = 0;
     int max_gold = 1;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -185,13 +200,9 @@ public class Slime : Enemies
                         break;
                 }
             }
-
         }
-
     }
-
 }
-
 
 public class Orc : Enemies
 {
@@ -201,6 +212,7 @@ public class Orc : Enemies
     int gold_cap = 20;
     int min_gold = 1;
     int max_gold = 4;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -208,7 +220,6 @@ public class Orc : Enemies
         {
             diff_level = gold_cap;
         }
-
 
         double total = 1 / rnd.Next(6, 10) * player_maxhealth;
         if (EquipedWeapon is not null)
@@ -230,7 +241,6 @@ public class Orc : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
     }
 
-
     public Orc(int difficulty)
     {
         TypeOfEnemy = EnemyType.orc;
@@ -242,26 +252,27 @@ public class Orc : Enemies
             EquipedWeapon = new Weapon(WeaponType.shortsword, difficulty, 1);
             Potential_Loot.Add(EquipedWeapon);
         }
-        else { EquipedWeapon = new Weapon(WeaponType.dagger, 2, 1); }
+        else
+        {
+            EquipedWeapon = new Weapon(WeaponType.dagger, 2, 1);
+        }
 
         if (rnd.Next(0, 9) == 8)
         {
             Potential_Loot.Add(new Armor(ArmorType.chestplate, 4, 3));
         }
-
     }
-
 }
 
 public class Troll : Enemies
 {
-
     int min_damage_rel_player = 6;
     int max_damage_rel_player = 3;
     Random rnd = new();
     int gold_cap = 30;
     int min_gold = 0;
     int max_gold = 7;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -289,7 +300,6 @@ public class Troll : Enemies
         return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
     }
 
-
     public Troll(int difficulty)
     {
         TypeOfEnemy = EnemyType.troll;
@@ -301,13 +311,15 @@ public class Troll : Enemies
             EquipedWeapon = new Weapon(WeaponType.sword, 5, 2);
             Potential_Loot.Add(EquipedWeapon);
         }
-        else { EquipedWeapon = new Weapon(WeaponType.club, 3, 2); }
+        else
+        {
+            EquipedWeapon = new Weapon(WeaponType.club, 3, 2);
+        }
 
         if (rnd.Next(0, 9) == 8)
         {
             Potential_Loot.Add(new Armor(ArmorType.chestplate, 5, 4));
         }
-
 
         if (rnd.Next(0, 5 / difficulty) <= 1)
         {
@@ -338,14 +350,9 @@ public class Troll : Enemies
                         break;
                 }
             }
-
         }
-
     }
 }
-
-
-
 
 public class Skeleton : Enemies
 {
@@ -355,6 +362,7 @@ public class Skeleton : Enemies
     int gold_cap = 15;
     int min_gold = 0;
     int max_gold = 2;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -393,12 +401,8 @@ public class Skeleton : Enemies
             EquipedWeapon = new Weapon(WeaponType.rib, 1, 2);
             Potential_Loot.Add(EquipedWeapon);
         }
-
-
     }
-
 }
-
 
 public class Dragon : Enemies
 {
@@ -408,6 +412,7 @@ public class Dragon : Enemies
     int gold_cap = 20;
     int min_gold = 15;
     int max_gold = 80;
+
     public override int Attack(int player_maxhealth, int player_level, int difficulty) // returns the damage.
     {
         int diff_level = difficulty * player_level;
@@ -441,7 +446,5 @@ public class Dragon : Enemies
         Difficulty = difficulty;
         Health = 10 ^ ((difficulty + 7) / 7);
         Defense = rnd.Next(0, 3);
-
     }
-
 }

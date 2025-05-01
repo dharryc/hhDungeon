@@ -1,9 +1,29 @@
 ﻿namespace hhDungeon;
 
-public enum ItemType { potion, weapon, armor };
-public enum WeaponType { dagger, sword, club, shortsword, rib };
+public enum ItemType
+{
+    potion,
+    weapon,
+    armor,
+};
 
-public enum ArmorType { chestplate, leggings, boots, helmet };
+public enum WeaponType
+{
+    dagger,
+    sword,
+    club,
+    shortsword,
+    rib,
+};
+
+public enum ArmorType
+{
+    chestplate,
+    leggings,
+    boots,
+    helmet,
+};
+
 public abstract class Items
 {
     public ItemType TypeOfItem { get; set; }
@@ -16,7 +36,9 @@ public class Equipment : Items
     public bool _Equipped { get; set; }
 
     public bool AmIEquipped()
-    { return _Equipped; }
+    {
+        return _Equipped;
+    }
 
     public bool ToggleEquiped()
     {
@@ -24,8 +46,6 @@ public class Equipment : Items
         return _Equipped;
     }
 }
-
-
 
 public class Weapon : Equipment
 {
@@ -45,7 +65,6 @@ public class Weapon : Equipment
         Damage = base_damage;
         Size = 2;
         Durability = _durability;
-
     }
 }
 

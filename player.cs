@@ -1,4 +1,5 @@
 namespace hhDungeon;
+
 public class Player
 {
     public Random rnd = new();
@@ -7,13 +8,19 @@ public class Player
     public int MaxHealth = 15;
     public int CurrentHealth = 15;
     public List<Items> items = [];
-    public List<(Effects effect, int duration)> currentEffects = [];
+    public List<(Effects effect, int duration)> currentEffects = new();
     public Weapon? EquippedWeapon;
     public int Gold;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
-    public (Armor equippedChestplate, int durability) chestplate = (new Armor(ArmorType.chestplate, 0, 0), 0);
-    public (Armor equippedLeggings, int durability) leggings = (new Armor(ArmorType.leggings, 0, 0), 0);
+    public (Armor equippedChestplate, int durability) chestplate = (
+        new Armor(ArmorType.chestplate, 0, 0),
+        0
+    );
+    public (Armor equippedLeggings, int durability) leggings = (
+        new Armor(ArmorType.leggings, 0, 0),
+        0
+    );
     public (Armor equippedHelmet, int durability) helmet = (new Armor(ArmorType.helmet, 0, 0), 0);
     public (Armor equippedBoots, int durability) boots = (new Armor(ArmorType.boots, 0, 0), 0);
     public int CurrentLevel;
@@ -22,12 +29,14 @@ public class Player
     public int critOdds = 9;
     public double BaseDefense;
     public double CurrentDefense;
+
     public (double damage, bool crit) Attack()
     {
         bool criticalHit = false;
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
-        if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
+        if (hitCrit % (critOdds - 1) == 0)
+            critMult += rnd.NextDouble() * 0.3;
         if (EquippedWeapon != null)
         {
             return ((CurrentATK + EquippedWeapon.AttackWith()) * critMult, criticalHit);
@@ -37,19 +46,31 @@ public class Player
             return (CurrentATK * critMult, criticalHit);
         }
     }
+
     public (int Health, List<Effects> effects) GetStatus()
     {
         List<Effects> returnedEffects = [];
-        foreach (var (effect, duration) in currentEffects) returnedEffects.Add(effect);
+        foreach (var (effect, duration) in currentEffects)
+            returnedEffects.Add(effect);
         return (CurrentHealth, returnedEffects);
     }
+
     public void CheckStateBasedActions()
     {
-        if (XP > NewLevelXPThreshold) LevelUp();
-        foreach (var i in currentEffects)
+        if (XP > NewLevelXPThreshold)
+            LevelUp();
+        for (int i = 0; i < currentEffects.Count; i++)
         {
-            if (i.duration <= 0) currentEffects.Remove(i);
-            else CheckEffect(i.effect);
+            if (currentEffects[i].duration <= 0)
+            {
+                currentEffects.RemoveAt(i);
+                i--;
+            }
+            else
+            {
+                CheckEffect(currentEffects[i].effect);
+                currentEffects[i] = (currentEffects[i].effect, currentEffects[i].duration - 1);
+            }
         }
         if (EquippedWeapon?.Durability <= 0)
         {
@@ -60,6 +81,7 @@ public class Player
         BaseDefense += helmet.equippedHelmet._defence;
         BaseDefense += boots.equippedBoots._defence;
     }
+
     public void CheckEffect(Effects effect)
     {
         switch (effect)
@@ -82,6 +104,8 @@ public class Player
                 break;
             case Effects.regeneration:
                 CurrentHealth += 5;
+                if (CurrentHealth > MaxHealth)
+                    CurrentHealth = MaxHealth;
                 break;
             case Effects.poison:
                 CurrentHealth -= 5;
@@ -96,6 +120,7 @@ public class Player
                 break;
         }
     }
+
     public void LevelUp()
     {
         BaseATK *= 1.5;

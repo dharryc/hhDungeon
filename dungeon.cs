@@ -1,14 +1,27 @@
 using System.Text.Json;
+
 namespace hhDungeon;
+
 public enum Direction
 {
-    north, south, east, west,
+    north,
+    south,
+    east,
+    west,
 }
 
 public enum Effects
 {
-    strength, weakness, defenseBoost, poison, defenseDown, regeneration, weakness2, weakness3,
+    strength,
+    weakness,
+    defenseBoost,
+    poison,
+    defenseDown,
+    regeneration,
+    weakness2,
+    weakness3,
 }
+
 public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
 {
     public Dictionary<(int x, int y), Room> coordMap = [];
@@ -99,9 +112,11 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                 }
         }
     }
+
     public void SaveGame(List<Dungeon>? savedGames)
     {
-        if (!File.Exists("./savedGames")) File.Create("./savedGames");
+        if (!File.Exists("./savedGames"))
+            File.Create("./savedGames");
         savedGames ??= [];
         savedGames.Add(this);
         File.WriteAllText("./savedGames", JsonSerializer.Serialize(savedGames));
@@ -111,11 +126,15 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     {
         if (!File.Exists("./savedGames"))
         {
-            Dungeon? savedDungeon = JsonSerializer.Deserialize<Dungeon>(File.ReadAllText("./savedGames"));
-            if (savedDungeon != null) return savedDungeon;
+            Dungeon? savedDungeon = JsonSerializer.Deserialize<Dungeon>(
+                File.ReadAllText("./savedGames")
+            );
+            if (savedDungeon != null)
+                return savedDungeon;
         }
         return new Dungeon(new Player(), 50, 1);
     }
+
     public static void DownStairs(Dungeon dungeon)
     {
         dungeon.coordMap = [];
