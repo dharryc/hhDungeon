@@ -102,5 +102,6 @@ public class Player
         BaseDefense *= 1.5;
         double newHealth = MaxHealth * 1.5;
         MaxHealth = (int)newHealth;
+        CurrentHealth = MaxHealth;
     }
 }

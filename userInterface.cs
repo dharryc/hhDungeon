@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace hhDungeon;
 
 public class Program
@@ -10,10 +12,8 @@ public class Program
     public static Random Rnd = new();
     public static void Main()
     {
-        var o = new Player();
-        o.Gold = 50000;
         Console.Clear();
-        RunningDungeon = new(o, 15, 1);
+        RunningDungeon = new(new Player(), 5, 1);
         GreetPlayer();
     }
 
@@ -56,8 +56,27 @@ public class Program
     private static void LootRoomUi()
     {
         Console.Clear();
-        Console.WriteLine("You've entered a LOOT ROOM!");
-        
+        if (RunningDungeon.currentRoom.itemsInRoom.Count > 0)
+        {
+            Console.WriteLine("You've entered a LOOT ROOM, and gain:\n");
+            int inventoryNum = 0;
+            foreach (var i in RunningDungeon.currentRoom.itemsInRoom)
+            {
+                DisplayInventoryItem(i, inventoryNum);
+                inventoryNum++;
+            }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            RoomNavigation();
+        }
+        else
+        {
+            Console.WriteLine("You've entered an empty room!");
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            RoomNavigation();
+        }
+        RoomNavigation();
     }
 
     private static void StairRoomUi()
@@ -82,12 +101,13 @@ public class Program
     private static void EnemyUi(Room currentRoom)
     {
         List<Items> loot = [];
-        bool enemiesInRoom = true;
         int goldWon = 0;
         var enemyList = currentRoom.enemies;
+        if (enemyList.Count == 0) RoomNavigation();
         Console.WriteLine("You've entered a room with {0} Enemies!\n", enemyList.Count);
-        while (enemiesInRoom)
+        while (enemyList.Count > 0)
         {
+            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
             Console.WriteLine("Choose an enemy to attack!");
             Console.WriteLine("# |   ENEMY TYPE   |   HEALTH   ");
             DisplayEnemies(enemyList);
@@ -118,7 +138,6 @@ public class Program
             if (CurrentPlayer.CurrentHealth <= 0) GameOver();
             if (enemyList.Count == 0)
             {
-                enemiesInRoom = false;
                 currentRoom.type = RoomType.empty;
             }
             Console.Clear();
@@ -143,7 +162,9 @@ public class Program
     }
     private static void GameOver()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("You've died! To run the dungeon again, press any key, or to exit, press CTRL + C");
+        Console.ReadKey();
+        Main();
     }
 
     private static int ChooseEnemyToAttack(int maxIndex)
@@ -194,6 +215,7 @@ public class Program
 
     private static void RoomNavigation()
     {
+        Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
         Console.WriteLine("You may:");
         Console.WriteLine(1 + ") Go North");
         Console.WriteLine(2 + ") Go East");
@@ -442,6 +464,7 @@ public class Program
         Console.Clear();
         if (Inventory?.Count > 0)
         {
+            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
             int i = 0;
             Console.WriteLine("    ITEM TYPE     |   SUBTYPE   |   ITEM DURABILITY   |");
             foreach (var item in Inventory)
@@ -465,6 +488,7 @@ public class Program
         }
         else
         {
+            Console.WriteLine("CURRENT HEALTH: {0}   |   GOLD: {1}   ", CurrentPlayer.CurrentHealth, CurrentPlayer.Gold);
             Console.WriteLine("It looks like your inventory is empty. Press any key to continue");
             Console.ReadKey();
             Console.Clear();
