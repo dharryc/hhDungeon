@@ -21,6 +21,7 @@ public class Room
 
     public Room(int incomingDifficulty, bool seenStairs, bool lastRoom)
     {
+        //in need of touchup
         // enemy 60% chance, loot 10% chance, store 5% chance, stair 5% chance, empty 20% chance
         if (lastRoom && !seenStairs)
         {
