@@ -56,25 +56,10 @@ public class FightingUI
             int Gold = 0;
             foreach (var enemy in room.enemies)
             {
-                Gold += enemy.goldFromKill;
-                if (enemy.Potential_Loot.Count > 0)
+                Gold += enimy.goldFromKill;
+                foreach (var loot in enimy.Potential_Loot)
                 {
-
-                    foreach (var loot in enemy.Potential_Loot)
-                    {
-                        Loot = "\n " + loot.GetType().Name;
-                        for (int i = loot.GetType().ToString().Length; i < 15; i++)
-                        {
-                            Loot += " ";
-                        }
-                        Loot += "|   " + loot.Durability;
-                        for (int i = loot.Durability.ToString().Length; i < 15; i++)
-                        {
-                            Loot += " ";
-                        }
-                        Loot += "|   " + loot.Size;
-
-                    }
+                    Loot += loot.TypeOfItem.ToString() + " and ";
                 }
             }
         }
