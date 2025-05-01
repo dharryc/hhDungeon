@@ -35,10 +35,9 @@ public class Program
                     EmptyRoomUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.loot:
-                    //loot room stuff
+                    LootRoomUi();
                     break;
                 case RoomType.enemy:
-                    // FightingUI.FightEnimies(RunningDungeon);
                     Console.Clear();
                     EnemyUi(RunningDungeon.currentRoom);
                     break;
@@ -52,6 +51,32 @@ public class Program
             }
         }
         // EndGame();
+    }
+
+    private static void LootRoomUi()
+    {
+        Console.Clear();
+        Console.WriteLine("You've entered a LOOT ROOM!");
+        
+    }
+
+    private static void StairRoomUi()
+    {
+        Console.Clear();
+        Console.WriteLine("You've entered a STAIR ROOM! If you DECEND, the dungeon will get harder!");
+        Console.WriteLine("Press y to decend, and any other key to continue exploring this floor!");
+        var keyPressed = Console.ReadKey();
+        if (char.IsAscii(keyPressed.KeyChar))
+        {
+            if (keyPressed.KeyChar.ToString() == "y" || keyPressed.KeyChar.ToString() == "Y")
+            {
+                Dungeon.DownStairs(RunningDungeon);
+                Console.WriteLine("You have decended 1 floor and leveled up!");
+                Console.WriteLine("Press any key to continue!");
+                Console.ReadKey();
+            }
+        }
+        RoomNavigation();
     }
 
     private static void EnemyUi(Room currentRoom)

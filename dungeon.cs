@@ -22,7 +22,7 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
     public Player currentPlayer = player ?? new Player();
     public Room currentRoom = new(RoomType.empty);
     int RoomsExplored;
-    readonly int MaxRooms = firstFloorSize;
+    int MaxRooms = firstFloorSize;
     bool seenStairs = false;
 
     public void MoveRooms(Direction direction)
@@ -115,5 +115,17 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
             if (savedDungeon != null) return savedDungeon;
         }
         return new Dungeon(new Player(), 50, 1);
+    }
+    public static void DownStairs(Dungeon dungeon)
+    {
+        dungeon.coordMap = [];
+        dungeon.X = 0;
+        dungeon.Y = 0;
+        dungeon.DifficultyLevel++;
+        dungeon.currentRoom = new(RoomType.empty);
+        dungeon.RoomsExplored = 0;
+        dungeon.MaxRooms = dungeon.MaxRooms + 5;
+        dungeon.seenStairs = false;
+        dungeon.currentPlayer.LevelUp();
     }
 }

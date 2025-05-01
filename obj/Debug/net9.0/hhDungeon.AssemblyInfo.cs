@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hhDungeon")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+084f67aedfcb98e3cc1256b150719b2166c01ea3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f548bef6c3da5ffe1cceccec3bba6b2552101292")]
 [assembly: System.Reflection.AssemblyProductAttribute("hhDungeon")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hhDungeon")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
