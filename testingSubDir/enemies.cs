@@ -38,15 +38,6 @@ public abstract class Enemies
     {
         return _Type;
     }
-    public List<Items> ViewLoot()
-    {
-        if (Defeated)
-        {
-            return Potential_Loot;
-        }
-        else
-            return null;
-    }
 
     public List<Items> GrabLoot()
     {

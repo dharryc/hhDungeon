@@ -372,6 +372,7 @@ public class Program
     {
         Potion potion = (Potion)itemToUse;
         CurrentPlayer.currentEffects.Add((potion.effect, potion.duration));
+        CurrentPlayer.items.Remove(itemToUse);
     }
 
     private static void EquipArmor(Items itemToUse)
