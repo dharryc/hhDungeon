@@ -8,23 +8,23 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\harry.cook\\.nuget\\packages\\": {},
+    "C:\\Users\\dharr\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\harry.cook\\hhDungeon\\hhDungeon.csproj",
+      "projectUniqueName": "C:\\Users\\dharr\\se\\hhDungeon\\hhDungeon.csproj",
       "projectName": "hhDungeon",
-      "projectPath": "C:\\Users\\harry.cook\\hhDungeon\\hhDungeon.csproj",
-      "packagesPath": "C:\\Users\\harry.cook\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\harry.cook\\hhDungeon\\obj\\",
+      "projectPath": "C:\\Users\\dharr\\se\\hhDungeon\\hhDungeon.csproj",
+      "packagesPath": "C:\\Users\\dharr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dharr\\se\\hhDungeon\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\harry.cook\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dharr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,7 +33,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
