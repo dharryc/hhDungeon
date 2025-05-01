@@ -7,19 +7,8 @@ public enum ArmorType { chestplate, leggings, boots, helmet };
 public abstract class Items
 {
     public ItemType TypeOfItem { get; set; }
-    public int size { get; set; }
-    public int _Durability { get; set; }
-
-    public int GetSize()
-    {
-        return size;
-    }
-
-    public int Durability()
-    {
-        return _Durability;
-    }
-
+    public int Size { get; set; }
+    public int Durability { get; set; }
 }
 
 public class Equipment : Items
@@ -41,24 +30,21 @@ public class Equipment : Items
 public class Weapon : Equipment
 {
     public WeaponType TypeOfWeapon { get; }
-    public int _damage { get; }
+    public int Damage { get; }
 
     public int AttackWith()
     {
-        _Durability -= 1;
-        return _damage;
+        Durability -= 1;
+        return Damage;
     }
 
-    public WeaponType Get_Type()
-    { return TypeOfWeapon; }
-
-    public Weapon(WeaponType type, int base_damage = 3, int _size = 2, int _durability = 15)
+    public Weapon(WeaponType type, int base_damage = 3, int _durability = 15)
     {
         TypeOfItem = ItemType.weapon;
         TypeOfWeapon = type;
-        _damage = base_damage;
-        size = _size;
-        _Durability = _durability;
+        Damage = base_damage;
+        Size = 2;
+        Durability = _durability;
 
     }
 }
@@ -70,18 +56,16 @@ public class Armor : Equipment
 
     public int Defend()
     {
-        _Durability -= 1;
+        Durability -= 1;
         return _defence;
     }
-
-    public ArmorType GetType()
-    { return TypeOfArmor; }
 
     public Armor(ArmorType type, int base_defense = 3, int _size = 2)
     {
         TypeOfItem = ItemType.armor;
         TypeOfArmor = type;
         _defence = base_defense;
-        size = _size;
+        Size = 2;
+        Durability = _size;
     }
 }

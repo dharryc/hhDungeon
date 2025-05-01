@@ -2,7 +2,6 @@
 
 public class FightingUI
 {
-    private string EnemyFightInstructions = "";
     public static string GetEnimyList(Dungeon dungeon)
     {
         string enimies = string.Empty;
@@ -26,7 +25,7 @@ public class FightingUI
             Console.WriteLine(BuildEnemyStringFormat(dungeon));
             Console.WriteLine("Which Enemy do you want to atack?");
             int choice = GetChoice(dungeon.currentRoom.enemies.Count());
-            dungeon.currentRoom.enemies[choice - 1].TakeDamage((int)dungeon.currentPlayer.Attack());
+            dungeon.currentRoom.enemies[choice].TakeDamage((int)dungeon.currentPlayer.Attack().damage);
             enemiesAlive = AreEnimiesAlive(dungeon);
 
             AttackPlayer(dungeon);
@@ -55,23 +54,12 @@ public class FightingUI
         {
 
             int Gold = 0;
-            foreach (var enimy in room.enemies)
+            foreach (var enemy in room.enemies)
             {
-                Gold += enimy.goldFromKill;
-                foreach (var loot in enimy.ViewLoot())
+                Gold += enemy.GoldFromKill;
+                foreach (var loot in enemy.Potential_Loot)
                 {
-                    Loot = "\n " + loot.GetType().Name ;
-                    for (int i = loot.GetType().ToString().Length; i < 15; i++)
-                    {
-                        Loot += " ";
-                    }
-                    Loot += "|   " + loot.Durability();
-                    for (int i = loot.Durability().ToString().Length; i < 15; i++)
-                    {
-                        Loot += " ";
-                    }
-                    Loot += "|   " + loot.GetSize();
-
+                    Loot += loot.TypeOfItem.ToString() + " and ";
                 }
             }
         }
@@ -82,10 +70,9 @@ public class FightingUI
     {
         foreach (var emeny in dungeon.currentRoom.enemies)
         {
-            List<Items> itemsToGrab = emeny.GrabLoot();
+            List<Items> itemsToGrab = emeny.Potential_Loot;
             foreach (var item in itemsToGrab)
             {
-
                 dungeon.currentPlayer.items.Add(item);
             }
         }
@@ -105,7 +92,7 @@ public class FightingUI
         int enimiesDead = 0;
         foreach (var emeny in dungeon.currentRoom.enemies)
         {
-            if (emeny.GetHealth() < 0)
+            if (emeny.GetHealth() <= 0)
             {
                 enimiesDead++;
             }
@@ -117,10 +104,12 @@ public class FightingUI
     public static string BuildEnemyStringFormat(Dungeon dungeon)
     {
         string ToReturn = "There are " + dungeon.currentRoom.enemies.Count() + " enemies in this room";
+        int enemyNum = 0;
         foreach (var enemy in dungeon.currentRoom.enemies)
         {
-            ToReturn += "\n" + enemy.GetType().ToString();
-            for (int i = enemy.GetType().ToString().ToCharArray().Length; i < 12;)
+            ToReturn += "\n" + enemyNum + ") " + enemy.GetType().ToString();
+            enemyNum++;
+            for (int i = enemy.GetType().ToString().ToCharArray().Length; i < 12; i++)
             {
                 ToReturn += " ";
             }
@@ -135,7 +124,7 @@ public class FightingUI
         throw new NotImplementedException();
     }
 
-    public static int GetChoice(int n = 1)
+    public static int GetChoice(int n)
     {
         int choice;
         int.TryParse(Console.ReadLine(), out choice);

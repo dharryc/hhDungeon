@@ -7,11 +7,11 @@ public abstract class Enemies
     public int Difficulty { get; set; }
     public int Health { get; set; }
     public List<Items> Potential_Loot = [];
-    public Weapon? equipedWeapon { get; set; }
-    public int defense { get; set; }
-    public int goldFromKill { get; set; }
+    public Weapon? EquipedWeapon { get; set; }
+    public int Defense { get; set; }
+    public int GoldFromKill { get; set; }
 
-    public EnemyType _Type;
+    public EnemyType TypeOfEnemy;
 
     public int XPDrop { get; set; }
     public bool Defeated { get; private set; }
@@ -23,11 +23,11 @@ public abstract class Enemies
         {
             Defeated = true;
         }
-        if(Defeated)
+        if (Defeated)
         {
-            if(equipedWeapon is not null)
+            if (EquipedWeapon is not null)
             {
-                Potential_Loot.Add(equipedWeapon);
+                Potential_Loot.Add(EquipedWeapon);
             }
         }
     }
@@ -36,16 +36,7 @@ public abstract class Enemies
 
     public EnemyType GetType()
     {
-        return _Type;
-    }
-    public List<Items> ViewLoot()
-    {
-        if (Defeated)
-        {
-            return Potential_Loot;
-        }
-        else
-            return null;
+        return TypeOfEnemy;
     }
 
     public List<Items> GrabLoot()
@@ -78,12 +69,13 @@ public class Goblin : Enemies
         {
             diff_level = gold_cap;
         }
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth) * difficulty / 3;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(7, 13) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 3;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -98,16 +90,16 @@ public class Goblin : Enemies
 
     public Goblin(int difficulty, int PlayerLevel = 1)
     {
-        _Type = EnemyType.goblin;
+        TypeOfEnemy = EnemyType.goblin;
         Difficulty = difficulty;
         Health = 3 ^ (difficulty / 4);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
         if (rnd.Next(0, 9 / difficulty) == 0)
         {
-            equipedWeapon = new Weapon(WeaponType.dagger, difficulty, 1);
-            Potential_Loot.Add(equipedWeapon);
+            EquipedWeapon = new Weapon(WeaponType.dagger, difficulty, 1);
+            Potential_Loot.Add(EquipedWeapon);
         }
-        else { equipedWeapon = null; }
+        else { EquipedWeapon = null; }
 
         if (rnd.Next(0, (9 / difficulty) + 2) == 0)
         {
@@ -119,7 +111,7 @@ public class Goblin : Enemies
             Potential_Loot.Add(new Armor(ArmorType.chestplate, 2, 3));
         }
 
-        goldFromKill = GrabGold(difficulty, PlayerLevel);
+        GoldFromKill = GrabGold(difficulty, PlayerLevel);
 
     }
 }
@@ -141,12 +133,13 @@ public class Slime : Enemies
             diff_level = gold_cap;
         }
 
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth + diff_level) * difficulty / 5;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(15, 21) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 5;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -167,10 +160,10 @@ public class Slime : Enemies
         //public List<Items> Potential_Loot { get; private set; }
         //public object equipedWeapon { get; set; }
         //public int defense { get; set; }
-        _Type = EnemyType.slime;
+        TypeOfEnemy = EnemyType.slime;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
         if (rnd.Next(0, 4 / difficulty) == 0)
         {
             Potion pP1 = new Potion(Effects.strength, 3);
@@ -217,12 +210,13 @@ public class Orc : Enemies
         }
 
 
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth + diff_level) * difficulty / 4;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(6, 10) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 4;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -239,16 +233,16 @@ public class Orc : Enemies
 
     public Orc(int difficulty)
     {
-        _Type = EnemyType.orc;
+        TypeOfEnemy = EnemyType.orc;
         Difficulty = difficulty;
         Health = 6 ^ (difficulty / 5);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
         if (rnd.Next(0, 9 / difficulty) == 0)
         {
-            equipedWeapon = new Weapon(WeaponType.shortsword, difficulty, 1);
-            Potential_Loot.Add(equipedWeapon);
+            EquipedWeapon = new Weapon(WeaponType.shortsword, difficulty, 1);
+            Potential_Loot.Add(EquipedWeapon);
         }
-        else { equipedWeapon = new Weapon(WeaponType.dagger, 2, 1); }
+        else { EquipedWeapon = new Weapon(WeaponType.dagger, 2, 1); }
 
         if (rnd.Next(0, 9) == 8)
         {
@@ -275,12 +269,13 @@ public class Troll : Enemies
         {
             diff_level = gold_cap;
         }
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth + diff_level) * difficulty / 5;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(3, 7) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 5;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -297,16 +292,16 @@ public class Troll : Enemies
 
     public Troll(int difficulty)
     {
-        _Type = EnemyType.troll;
+        TypeOfEnemy = EnemyType.troll;
         Difficulty = difficulty;
         Health = 9 ^ ((difficulty + 5) / 7);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
         if (rnd.Next(0, (7 / difficulty) + 2) == 0)
         {
-            equipedWeapon = new Weapon(WeaponType.sword, 5, 2);
-            Potential_Loot.Add(equipedWeapon);
+            EquipedWeapon = new Weapon(WeaponType.sword, 5, 2);
+            Potential_Loot.Add(EquipedWeapon);
         }
-        else { equipedWeapon = new Weapon(WeaponType.club, 3, 2); }
+        else { EquipedWeapon = new Weapon(WeaponType.club, 3, 2); }
 
         if (rnd.Next(0, 9) == 8)
         {
@@ -367,12 +362,13 @@ public class Skeleton : Enemies
         {
             diff_level = gold_cap;
         }
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth + diff_level) * difficulty / 3;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(7, 13) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 3;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -388,14 +384,14 @@ public class Skeleton : Enemies
 
     public Skeleton(int difficulty)
     {
-        _Type = EnemyType.skeleton;
+        TypeOfEnemy = EnemyType.skeleton;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
         if (rnd.Next(0, (7 / difficulty) + 2) == 0)
         {
-            equipedWeapon = new Weapon(WeaponType.rib, 1, 2);
-            Potential_Loot.Add(equipedWeapon);
+            EquipedWeapon = new Weapon(WeaponType.rib, 1, 2);
+            Potential_Loot.Add(EquipedWeapon);
         }
 
 
@@ -419,12 +415,13 @@ public class Dragon : Enemies
         {
             diff_level = gold_cap;
         }
-        int total = (rnd.Next(max_damage_rel_player, min_damage_rel_player + 1) * player_maxhealth + diff_level) * difficulty / 10;
-        if (equipedWeapon is not null)
+        double total = 1 / rnd.Next(1, 3) * player_maxhealth;
+        if (EquipedWeapon is not null)
         {
-            total += equipedWeapon.AttackWith();
+            total += EquipedWeapon.AttackWith();
         }
-        return total;
+        total *= difficulty / 4;
+        return Math.Max((int)total, 1);
     }
 
     public int GrabGold(int difficulty, int player_level)
@@ -440,10 +437,10 @@ public class Dragon : Enemies
 
     public Dragon(int difficulty)
     {
-        _Type = EnemyType.dragon;
+        TypeOfEnemy = EnemyType.dragon;
         Difficulty = difficulty;
         Health = 10 ^ ((difficulty + 7) / 7);
-        defense = rnd.Next(0, 3);
+        Defense = rnd.Next(0, 3);
 
     }
 

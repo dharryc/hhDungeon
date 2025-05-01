@@ -1,0 +1,15 @@
+C:\Users\dharr\se\hhDungeon\bin\Debug\net9.0\hhDungeon.exe
+C:\Users\dharr\se\hhDungeon\bin\Debug\net9.0\hhDungeon.deps.json
+C:\Users\dharr\se\hhDungeon\bin\Debug\net9.0\hhDungeon.runtimeconfig.json
+C:\Users\dharr\se\hhDungeon\bin\Debug\net9.0\hhDungeon.dll
+C:\Users\dharr\se\hhDungeon\bin\Debug\net9.0\hhDungeon.pdb
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.AssemblyInfoInputs.cache
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.AssemblyInfo.cs
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.csproj.CoreCompileInputs.cache
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.sourcelink.json
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.dll
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\refint\hhDungeon.dll
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.pdb
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\hhDungeon.genruntimeconfig.cache
+C:\Users\dharr\se\hhDungeon\obj\Debug\net9.0\ref\hhDungeon.dll

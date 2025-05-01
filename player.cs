@@ -2,37 +2,39 @@ namespace hhDungeon;
 public class Player
 {
     public Random rnd = new();
+    public int playerLevel = 1;
     public int XP;
-    public int MaxHealth;
-    public int CurrentHealth;
+    public int MaxHealth = 15;
+    public int CurrentHealth = 15;
     public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
     public Weapon? EquippedWeapon;
     public int Gold;
     public int MaxInventorySpace;
     public int NewLevelXPThreshold;
-    public (Armor, int durability)? chestplate;
-    public (Armor, int durability)? leggings;
-    public (Armor, int durability)? boots;
-    public (Armor, int durability)? helmet;
+    public (Armor equippedChestplate, int durability) chestplate = (new Armor(ArmorType.chestplate, 0, 0), 0);
+    public (Armor equippedLeggings, int durability) leggings = (new Armor(ArmorType.leggings, 0, 0), 0);
+    public (Armor equippedHelmet, int durability) helmet = (new Armor(ArmorType.helmet, 0, 0), 0);
+    public (Armor equippedBoots, int durability) boots = (new Armor(ArmorType.boots, 0, 0), 0);
     public int CurrentLevel;
-    public double BaseATK;
-    public double CurrentATK;
+    public double BaseATK = 2;
+    public double CurrentATK = 2;
     public int critOdds = 9;
     public double BaseDefense;
     public double CurrentDefense;
-    public double Attack()
+    public (double damage, bool crit) Attack()
     {
+        bool criticalHit = false;
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
         if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
         if (EquippedWeapon != null)
         {
-            return (CurrentATK + EquippedWeapon.AttackWith()) * critMult;
+            return ((CurrentATK + EquippedWeapon.AttackWith()) * critMult, criticalHit);
         }
         else
         {
-            return CurrentATK * critMult;
+            return (CurrentATK * critMult, criticalHit);
         }
     }
     public (int Health, List<Effects> effects) GetStatus()
@@ -49,14 +51,14 @@ public class Player
             if (i.duration <= 0) currentEffects.Remove(i);
             else CheckEffect(i.effect);
         }
-        if (EquippedWeapon?.Durability() <= 0)
+        if (EquippedWeapon?.Durability <= 0)
         {
             EquippedWeapon = null;
         }
-        if (chestplate is not null) BaseDefense += (double)chestplate?.Item1._defence;
-        if (leggings is not null) BaseDefense += (double)leggings?.Item1._defence;
-        if (helmet is not null) BaseDefense += (double)helmet?.Item1._defence;
-        if (boots is not null) BaseDefense += (double)boots?.Item1._defence;
+        BaseDefense += chestplate.equippedChestplate._defence;
+        BaseDefense += leggings.equippedLeggings._defence;
+        BaseDefense += helmet.equippedHelmet._defence;
+        BaseDefense += boots.equippedBoots._defence;
     }
     public void CheckEffect(Effects effect)
     {

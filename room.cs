@@ -133,21 +133,27 @@ public class Room
 
     public void MakeEmpty()
     {
-        this.type = RoomType.empty;
+        type = RoomType.empty;
     }
 
     private void AddArmor(int dif)
     {
         int armorChoice = rnd.Next(0, 4);
-        if (armorChoice == 0) itemsInRoom.Add(new Armor(ArmorType.boots, rnd.Next(0, 4)));
-        if (armorChoice == 1) itemsInRoom.Add(new Armor(ArmorType.chestplate, rnd.Next(0, 4)));
-        if (armorChoice == 2) itemsInRoom.Add(new Armor(ArmorType.helmet, rnd.Next(0, 4)));
-        if (armorChoice == 3) itemsInRoom.Add(new Armor(ArmorType.leggings, rnd.Next(0, 4)));
+        if (armorChoice == 0) itemsInRoom.Add(new Armor(ArmorType.boots, rnd.Next(5, 15)));
+        if (armorChoice == 1) itemsInRoom.Add(new Armor(ArmorType.helmet, rnd.Next(5, 15)));
+        if (armorChoice == 2) itemsInRoom.Add(new Armor(ArmorType.leggings, rnd.Next(5, 15)));
+        if (armorChoice == 3) itemsInRoom.Add(new Armor(ArmorType.chestplate, rnd.Next(5, 15)));
     }
 
     private void AddWeapon(int difficulty)
     {
-        itemsInRoom.Add(new Weapon((WeaponType)Enum.ToObject(typeof(WeaponType), rnd.Next(0, 4)), rnd.Next(3, 3 * difficulty)));
+        // public Weapon(WeaponType type, int base_damage = 3, int _size = 2, int _durability = 15)
+        int weaponChoice = rnd.Next(0, 5);
+        if (weaponChoice == 0) itemsInRoom.Add(new Weapon(WeaponType.rib, rnd.Next(5, 11), rnd.Next(3, 3 * difficulty + 5)));
+        if (weaponChoice == 1) itemsInRoom.Add(new Weapon(WeaponType.club, rnd.Next(5, 11), rnd.Next(3, 3 * difficulty + 5)));
+        if (weaponChoice == 2) itemsInRoom.Add(new Weapon(WeaponType.sword, rnd.Next(5, 11), rnd.Next(3, 3 * difficulty + 5)));
+        if (weaponChoice == 3) itemsInRoom.Add(new Weapon(WeaponType.dagger, rnd.Next(5, 11), rnd.Next(3, 3 * difficulty + 5)));
+        if (weaponChoice == 4) itemsInRoom.Add(new Weapon(WeaponType.shortsword, rnd.Next(5, 11), rnd.Next(3, 3 * difficulty + 5)));
     }
 
     private void AddPotion()
