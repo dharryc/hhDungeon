@@ -2,9 +2,10 @@ namespace hhTestDungeon;
 public class Player
 {
     public Random rnd = new();
+    public int playerLevel = 1;
     public int XP;
-    public int MaxHealth;
-    public int CurrentHealth;
+    public int MaxHealth = 15;
+    public int CurrentHealth = 15;
     public List<Items> items = [];
     public List<(Effects effect, int duration)> currentEffects = [];
     public Weapon? EquippedWeapon;
@@ -16,23 +17,24 @@ public class Player
     public (Armor equippedHelmet, int durability) helmet = (new Armor(ArmorType.helmet, 0, 0), 0);
     public (Armor equippedBoots, int durability) boots = (new Armor(ArmorType.boots, 0, 0), 0);
     public int CurrentLevel;
-    public double BaseATK;
-    public double CurrentATK;
+    public double BaseATK = 2;
+    public double CurrentATK = 2;
     public int critOdds = 9;
     public double BaseDefense;
     public double CurrentDefense;
-    public double Attack()
+    public (double damage, bool crit) Attack()
     {
+        bool criticalHit = false;
         int hitCrit = rnd.Next(1, critOdds);
         double critMult = 1;
         if (hitCrit % (critOdds - 1) == 0) critMult += rnd.NextDouble() * 0.3;
         if (EquippedWeapon != null)
         {
-            return (CurrentATK + EquippedWeapon.AttackWith()) * critMult;
+            return ((CurrentATK + EquippedWeapon.AttackWith()) * critMult, criticalHit);
         }
         else
         {
-            return CurrentATK * critMult;
+            return (CurrentATK * critMult, criticalHit);
         }
     }
     public (int Health, List<Effects> effects) GetStatus()

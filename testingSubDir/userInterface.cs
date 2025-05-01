@@ -7,6 +7,7 @@ public class Program
     public static bool RunningGame = true;
     public static List<Items>? Inventory => RunningDungeon.currentPlayer.items;
     public static Player CurrentPlayer => RunningDungeon.currentPlayer;
+    public static Random Rnd = new();
     public static void Main()
     {
         var o = new Player();
@@ -37,7 +38,9 @@ public class Program
                     //loot room stuff
                     break;
                 case RoomType.enemy:
-                    FightingUI.FightEnimies(RunningDungeon);
+                    // FightingUI.FightEnimies(RunningDungeon);
+                    Console.Clear();
+                    EnemyUi(RunningDungeon.currentRoom);
                     break;
                 case RoomType.stair:
                     //stair stuff
@@ -50,6 +53,120 @@ public class Program
         }
         // EndGame();
     }
+
+    private static void EnemyUi(Room currentRoom)
+    {
+        List<Items> loot = [];
+        bool enemiesInRoom = true;
+        int goldWon = 0;
+        var enemyList = currentRoom.enemies;
+        Console.WriteLine("You've entered a room with {0} Enemies!\n", enemyList.Count);
+        while (enemiesInRoom)
+        {
+            Console.WriteLine("Choose an enemy to attack!");
+            Console.WriteLine("# |   ENEMY TYPE   |   HEALTH   ");
+            DisplayEnemies(enemyList);
+            int attackedEnemy = ChooseEnemyToAttack(enemyList.Count);
+            var damageDealt = CurrentPlayer.Attack();
+            Console.Clear();
+            if (damageDealt.crit) Console.WriteLine("You scored a CRITICAL HIT, dealing {0} damage to the {1}!", (int)damageDealt.damage, enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
+            else Console.WriteLine("You did {0} damage to the {1}!", (int)damageDealt.damage, enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
+            Console.WriteLine("Press any key to continue!");
+            Console.ReadKey();
+            enemyList[attackedEnemy].TakeDamage((int)damageDealt.damage);
+            if (enemyList[attackedEnemy].Defeated)
+            {
+                Console.WriteLine("You defeated the {0}!", enemyList[attackedEnemy].TypeOfEnemy.ToString().ToUpper());
+                loot.AddRange(enemyList[attackedEnemy].Potential_Loot);
+                goldWon += enemyList[attackedEnemy].GoldFromKill;
+                enemyList.RemoveAt(attackedEnemy);
+            }
+            if (enemyList.Count > 0)
+            {
+                var enemy = enemyList[Rnd.Next(0, enemyList.Count)];
+                int damageToTake = enemy.Attack(CurrentPlayer.MaxHealth, CurrentPlayer.playerLevel, RunningDungeon.DifficultyLevel);
+                Console.WriteLine("The {0} attacks you doing {1} pts of damage!", enemy.TypeOfEnemy.ToString().ToUpper(), damageToTake);
+                Console.WriteLine("Press any key to continue!");
+                Console.ReadKey();
+                CurrentPlayer.CurrentHealth -= damageToTake;
+            }
+            if (CurrentPlayer.CurrentHealth <= 0) GameOver();
+            if (enemyList.Count == 0)
+            {
+                enemiesInRoom = false;
+                currentRoom.type = RoomType.empty;
+            }
+            Console.Clear();
+        }
+        Inventory.AddRange(loot);
+        Console.Clear();
+        CurrentPlayer.Gold += goldWon;
+        Console.WriteLine("You've defeated all the enemies!\nYour reward is:\n\n{0} Gold", goldWon);
+        foreach (var i in loot) DisplayInventoryItem(i, loot.IndexOf(i));
+        Console.WriteLine("\nPress any key to continue");
+        Console.ReadKey();
+    }
+
+    private static void DisplayEnemies(List<Enemies> enemyList)
+    {
+        int i = 0;
+        foreach (var enemy in enemyList)
+        {
+            DisplayEnemy(enemy, i);
+            i++;
+        }
+    }
+    private static void GameOver()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static int ChooseEnemyToAttack(int maxIndex)
+    {
+        var keyPressed = Console.ReadKey();
+        if (char.IsDigit(keyPressed.KeyChar))
+        {
+            if (int.Parse(keyPressed.KeyChar.ToString()) < maxIndex) return int.Parse(keyPressed.KeyChar.ToString());
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("Please enter a valid number!");
+            DisplayEnemies(RunningDungeon.currentRoom.enemies);
+            return ChooseEnemyToAttack(maxIndex);
+        }
+        Console.Clear();
+        Console.WriteLine("Please enter a valid number!");
+        DisplayEnemies(RunningDungeon.currentRoom.enemies);
+        return ChooseEnemyToAttack(maxIndex);
+    }
+
+    private static void DisplayEnemy(Enemies enemy, int enemyNum)
+    {
+        //"# |   ENEMY TYPE   |   HEALTH   "
+        switch (enemy.TypeOfEnemy)
+        {
+            case EnemyType.orc:
+                Console.WriteLine("{0} |       Orc      |     {1}     ", enemyNum, enemy.Health);
+                break;
+            case EnemyType.slime:
+                Console.WriteLine("{0} |      Slime     |     {1}     ", enemyNum, enemy.Health);
+                break;
+            case EnemyType.troll:
+                Console.WriteLine("{0} |      Troll     |     {1}     ", enemyNum, enemy.Health);
+                break;
+            case EnemyType.dragon:
+                Console.WriteLine("{0} |      Dragon    |     {1}     ", enemyNum, enemy.Health);
+                break;
+            case EnemyType.goblin:
+                Console.WriteLine("{0} |      Goblin    |     {1}     ", enemyNum, enemy.Health);
+                break;
+            case EnemyType.skeleton:
+                Console.WriteLine("{0} |     skeleton   |     {1}     ", enemyNum, enemy.Health);
+                break;
+        }
+    }
+
     private static void RoomNavigation()
     {
         Console.WriteLine("You may:");
@@ -120,6 +237,7 @@ public class Program
 
     private static void EmptyRoomUi(Room currentRoom)
     {
+        Console.Clear();
         Console.WriteLine("You're in an empty room");
         RoomNavigation();
     }

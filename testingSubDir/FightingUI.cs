@@ -25,7 +25,7 @@ public class FightingUI
             Console.WriteLine(BuildEnemyStringFormat(dungeon));
             Console.WriteLine("Which Enemy do you want to atack?");
             int choice = GetChoice(dungeon.currentRoom.enemies.Count());
-            dungeon.currentRoom.enemies[choice].TakeDamage((int)dungeon.currentPlayer.Attack());
+            dungeon.currentRoom.enemies[choice].TakeDamage((int)dungeon.currentPlayer.Attack().damage);
             enemiesAlive = AreEnimiesAlive(dungeon);
 
             AttackPlayer(dungeon);
@@ -56,8 +56,8 @@ public class FightingUI
             int Gold = 0;
             foreach (var enemy in room.enemies)
             {
-                Gold += enimy.goldFromKill;
-                foreach (var loot in enimy.Potential_Loot)
+                Gold += enemy.GoldFromKill;
+                foreach (var loot in enemy.Potential_Loot)
                 {
                     Loot += loot.TypeOfItem.ToString() + " and ";
                 }
