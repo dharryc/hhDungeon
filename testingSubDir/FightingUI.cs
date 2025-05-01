@@ -41,7 +41,7 @@ public class FightingUI
         Console.WriteLine(GetRoomLootInToString(dungeon.currentRoom));
         Console.WriteLine("do you wish to grab the loot, if so, press 1 and enter otherwise press enter");
         bool ShouldContinue = Console.ReadLine() == "1";
-        if(ShouldContinue)
+        if (ShouldContinue)
         {
             GrabLootFromRoom(dungeon);
             dungeon.currentRoom.MakeEmpty();
@@ -58,7 +58,7 @@ public class FightingUI
             foreach (var enimy in room.enemies)
             {
                 Gold += enimy.goldFromKill;
-                foreach (var loot in enimy.ViewLoot())
+                foreach (var loot in enimy.Potential_Loot)
                 {
                     Loot += loot.TypeOfItem.ToString() + " and ";
                 }
