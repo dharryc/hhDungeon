@@ -74,7 +74,10 @@ public class FightingUI
             List<Items> itemsToGrab = emeny.Potential_Loot;
             foreach (var item in itemsToGrab)
             {
-                dungeon.currentPlayer.items.Add(item);
+                if (item is not null)
+                {
+                    dungeon.currentPlayer.items.Add(item);
+                }
             }
         }
     }
@@ -122,23 +125,17 @@ public class FightingUI
         return ToReturn;
     }
 
-    public static string GetEnemyList(Dungeon dungeon)
-    {
-        throw new NotImplementedException();
-    }
-
     public static int GetChoice(int n)
     {
-        int choice;
-        int.TryParse(Console.ReadLine(), out choice);
-        if (choice <= n && n > 0)
+        while (true)
         {
-            return choice;
-        }
-        else
-        {
+            int choice;
+            int.TryParse(Console.ReadLine(), out choice);
+            if (choice <= n && n > 0)
+            {
+                return choice;
+            }
             Console.WriteLine("Please enter a number between 1 and " + n);
-            return GetChoice(n);
         }
     }
 }

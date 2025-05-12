@@ -47,7 +47,6 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                 {
                     currentRoom = returnRoom;
                     X += 1;
-                    break;
                 }
                 else
                 {
@@ -57,14 +56,14 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                     seenStairs = nextRoom.type == RoomType.stair;
                     currentRoom = nextRoom;
                     X += 1;
-                    break;
                 }
+                break;
+
             case Direction.west:
                 if (coordMap.TryGetValue(West, out returnRoom))
                 {
                     currentRoom = returnRoom;
                     X -= 1;
-                    break;
                 }
                 else
                 {
@@ -74,14 +73,14 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                     seenStairs = nextRoom.type == RoomType.stair;
                     currentRoom = nextRoom;
                     X -= 1;
-                    break;
                 }
+                break;
+
             case Direction.north:
                 if (coordMap.TryGetValue(North, out returnRoom))
                 {
                     currentRoom = returnRoom;
                     Y += 1;
-                    break;
                 }
                 else
                 {
@@ -91,14 +90,14 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                     seenStairs = nextRoom.type == RoomType.stair;
                     currentRoom = nextRoom;
                     Y += 1;
-                    break;
                 }
+                break;
+
             case Direction.south:
                 if (coordMap.TryGetValue(South, out returnRoom))
                 {
                     currentRoom = returnRoom;
                     Y -= 1;
-                    break;
                 }
                 else
                 {
@@ -108,9 +107,10 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
                     seenStairs = nextRoom.type == RoomType.stair;
                     currentRoom = nextRoom;
                     Y -= 1;
-                    break;
                 }
+                break;
         }
+        player.CheckStateBasedActions();
     }
 
     public void SaveGame(List<Dungeon>? savedGames)
@@ -137,7 +137,7 @@ public class Dungeon(Player? player, int firstFloorSize, int baseDifficulty)
 
     public static void DownStairs(Dungeon dungeon)
     {
-        dungeon.coordMap = [];
+        dungeon.coordMap = new();
         dungeon.X = 0;
         dungeon.Y = 0;
         dungeon.DifficultyLevel++;

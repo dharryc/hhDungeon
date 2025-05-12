@@ -128,5 +128,8 @@ public class Player
         double newHealth = MaxHealth * 1.5;
         MaxHealth = (int)newHealth;
         CurrentHealth = MaxHealth;
+        BaseATK *=1.5;
+        BaseATK += 1;
+        CheckStateBasedActions();
     }
 }
