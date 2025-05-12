@@ -98,7 +98,7 @@ public class Goblin : Enemies
         {
             diff_level = gold_cap;
         }
-        return (difficulty * rnd.Next(min_gold, max_gold) + diff_level);
+        return difficulty * rnd.Next(min_gold, max_gold) + diff_level;
     }
 
     public Goblin(int difficulty, int PlayerLevel = 1)
@@ -119,12 +119,12 @@ public class Goblin : Enemies
 
         if (rnd.Next(0, (9 / difficulty) + 2) == 0)
         {
-            Potential_Loot.Add(new Potion(Effects.regeneration, 2));
+            Potential_Loot.Add(new Potion(Effects.regeneration, 3));
         }
 
         if (rnd.Next(0, 9) == 8)
         {
-            Potential_Loot.Add(new Armor(ArmorType.chestplate, 2, 3));
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 2, 3, 10));
         }
 
         GoldFromKill = GrabGold(difficulty, PlayerLevel);
@@ -165,16 +165,11 @@ public class Slime : Enemies
             diff_level = gold_cap;
         }
 
-        return (difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level);
+        return difficulty * rnd.Next(min_gold, max_gold + 1) + diff_level;
     }
 
     public Slime(int difficulty)
     {
-        //public int Difficulty { get; set; }
-        //public int Health { get; set; }
-        //public List<Items> Potential_Loot { get; private set; }
-        //public object equipedWeapon { get; set; }
-        //public int defense { get; set; }
         TypeOfEnemy = EnemyType.slime;
         Difficulty = difficulty;
         Health = 2 ^ (difficulty / 5);
@@ -259,7 +254,7 @@ public class Orc : Enemies
 
         if (rnd.Next(0, 9) == 8)
         {
-            Potential_Loot.Add(new Armor(ArmorType.chestplate, 4, 3));
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 4, 3, 15));
         }
     }
 }
@@ -308,17 +303,17 @@ public class Troll : Enemies
         Defense = rnd.Next(0, 3);
         if (rnd.Next(0, (7 / difficulty) + 2) == 0)
         {
-            EquipedWeapon = new Weapon(WeaponType.sword, 5, 2);
+            EquipedWeapon = new Weapon(WeaponType.sword, 5, 20);
             Potential_Loot.Add(EquipedWeapon);
         }
         else
         {
-            EquipedWeapon = new Weapon(WeaponType.club, 3, 2);
+            EquipedWeapon = new Weapon(WeaponType.club, 3, 20);
         }
 
         if (rnd.Next(0, 9) == 8)
         {
-            Potential_Loot.Add(new Armor(ArmorType.chestplate, 5, 4));
+            Potential_Loot.Add(new Armor(ArmorType.chestplate, 5, 4, 20));
         }
 
         if (rnd.Next(0, 5 / difficulty) <= 1)

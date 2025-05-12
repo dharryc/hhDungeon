@@ -24,6 +24,23 @@ public enum ArmorType
     helmet,
 };
 
+
+
+public class Potion : Items
+{
+    public Effects effect { get; }
+    public int duration { get; }
+
+    public Potion(Effects effectIn, int durationIn)
+    {
+        effect = effectIn;
+        duration = durationIn;
+        Size = 1;
+        Durability = 1;
+        TypeOfItem = ItemType.potion;
+    }
+}
+
 public abstract class Items
 {
     public ItemType TypeOfItem { get; set; }
@@ -79,12 +96,12 @@ public class Armor : Equipment
         return _defence;
     }
 
-    public Armor(ArmorType type, int base_defense = 3, int _size = 2)
+    public Armor(ArmorType type, int base_defense = 3, int _size = 2, int _durability = 15)
     {
         TypeOfItem = ItemType.armor;
         TypeOfArmor = type;
-        _defence = base_defense;
-        Size = 2;
-        Durability = _size;
+        _defence = Math.Abs(base_defense);
+        Size = Math.Abs(_size);
+        Durability =  Math.Abs(_durability);
     }
 }
